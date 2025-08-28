@@ -8,8 +8,8 @@
 
 ### 2. 推送代码到 GitHub
 ```bash
-# 添加远程仓库（替换 YOUR_USERNAME）
-git remote add origin https://github.com/YOUR_USERNAME/ai-compass.git
+# 添加远程仓库
+git remote add origin https://github.com/Fzero1925/ai-compass.git
 
 # 添加所有文件
 git add .
@@ -49,21 +49,21 @@ git push -u origin main
 ### 4. 触发部署
 - 代码推送后会自动触发部署流程
 - 在 Actions 标签可以查看部署进度
-- 部署成功后网站地址为: `https://YOUR_USERNAME.github.io/ai-compass/`
+- 部署成功后网站地址为: `https://fzero1925.github.io/ai-compass/`
 
 ### 5. 自定义域名（可选）
 如果有自定义域名：
 1. 编辑 `public/CNAME` 文件，取消注释并填入域名
-2. 在域名管理处添加 CNAME 记录指向 `YOUR_USERNAME.github.io`
+2. 在域名管理处添加 CNAME 记录指向 `Fzero1925.github.io`
 3. 在 GitHub Pages 设置中验证域名
 
 ## 部署后验证
 
 访问以下页面确认部署成功：
-- 首页: `https://YOUR_USERNAME.github.io/ai-compass/`
-- 工具大全: `https://YOUR_USERNAME.github.io/ai-compass/tools/`
-- 图像工具: `https://YOUR_USERNAME.github.io/ai-compass/tools/image-tools/`
-- 工具详情: `https://YOUR_USERNAME.github.io/ai-compass/tools/image-tools/nano-banana/`
+- 首页: `https://fzero1925.github.io/ai-compass/`
+- 工具大全: `https://fzero1925.github.io/ai-compass/tools/`
+- 图像工具: `https://fzero1925.github.io/ai-compass/tools/image-tools/`
+- 工具详情: `https://fzero1925.github.io/ai-compass/tools/image-tools/nano-banana/`
 
 ## 后续更新
 
