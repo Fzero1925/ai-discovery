@@ -3,20 +3,33 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import CategoryCard from '../components/CategoryCard.astro';
-import ToolCard from '../components/ToolCard.astro';
+import ArticleCard from '../components/ArticleCard.astro';
 import SearchModal from '../components/SearchModal.astro';
 import StructuredData from '../components/StructuredData.astro';
-import { categories, featuredTools } from '../data/tools';
+import { articleCategories, getFeaturedArticles, getLatestArticles } from '../data/articles';
 
-const pageTitle = "AI Compass - 发现最优质的AI工具";
-const pageDescription = "专业的AI工具目录与点评平台，涵盖图像编辑、文本处理、效率办公等多个领域的优质AI工具推荐和深度评测。";
+// 转换分类数据格式以保持兼容性
+const categories = Object.entries(articleCategories).map(([key, value]) => ({
+  slug: key,
+  name: value.name,
+  description: value.description,
+  icon: value.icon,
+  color: value.color
+}));
+
+// 获取文章数据
+const featuredArticles = getFeaturedArticles();
+const latestArticles = getLatestArticles(6);
+
+const pageTitle = "AI Compass - 专业AI工具评测与教程平台";
+const pageDescription = "提供深度AI工具评测、使用教程和行业洞察。涵盖图像AI、文本AI、生产力工具等领域的专业分析和实用指南。";
 ---
 
 <BaseLayout title={pageTitle} description={pageDescription}>
   <!-- Search data for homepage -->
-  <div data-pagefind-body data-pagefind-meta="title:AI工具目录首页" data-pagefind-meta="type:首页" style="display: none;">
-    AI Compass AI工具目录 人工智能工具推荐 图像工具 文本工具 效率工具 视频工具 
-    专业点评 对比分析 工具评测 {categories.map(c => c.name).join(' ')} {featuredTools.map(t => t.title).join(' ')}
+  <div data-pagefind-body data-pagefind-meta="title:AI工具评测平台首页" data-pagefind-meta="type:首页" style="display: none;">
+    AI Compass AI工具评测 人工智能教程 图像AI 文本AI 生产力工具 多媒体工具 
+    专业评测 深度分析 使用指南 行业洞察 工具对比 {categories.map(c => c.name).join(' ')} {featuredArticles.map(a => a.title).join(' ')}
   </div>
   <Header />
   
@@ -25,13 +38,14 @@ const pageDescription = "专业的AI工具目录与点评平台，涵盖图像�
     <section class="bg-gradient-to-br from-primary-50 via-white to-secondary-50 py-20">
       <div class="max-w-6xl mx-auto px-4 sm:px-6 text-center">
         <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 mb-6">
-          发现最优质的
+          专业的
           <span class="bg-gradient-to-r from-primary-600 to-secondary-600 bg-clip-text text-transparent">
-            AI 工具
+            AI工具评测
           </span>
+          平台
         </h1>
         <p class="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
-          专业点评与对比分析，帮你找到最适合的AI工具。涵盖图像编辑、文本处理、效率办公等多个领域。
+          深度评测、实用教程、行业洞察。帮你掌握最新AI工具，提升工作效率和创作能力。
         </p>
         
         <!-- Search Bar -->
@@ -41,7 +55,7 @@ const pageDescription = "专业的AI工具目录与点评平台，涵盖图像�
               onclick="openSearch()"
               class="w-full pl-12 pr-4 py-4 text-lg border border-gray-300 rounded-xl hover:border-primary-300 focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all text-left text-gray-500 hover:text-gray-700"
             >
-              搜索 AI 工具...
+              搜索文章、教程、评测...
               <span class="float-right text-sm text-gray-400 mt-1">Ctrl+K</span>
             </button>
             <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
@@ -56,15 +70,15 @@ const pageDescription = "专业的AI工具目录与点评平台，涵盖图像�
         <div class="flex justify-center space-x-8 text-sm text-gray-600">
           <div class="text-center">
             <div class="font-semibold text-2xl text-gray-900">50+</div>
-            <div>优质工具</div>
+            <div>深度评测</div>
           </div>
           <div class="text-center">
             <div class="font-semibold text-2xl text-gray-900">1000+</div>
-            <div>用户评价</div>
+            <div>实用教程</div>
           </div>
           <div class="text-center">
-            <div class="font-semibold text-2xl text-gray-900">10+</div>
-            <div>工具分类</div>
+            <div class="font-semibold text-2xl text-gray-900">8</div>
+            <div>专业分类</div>
           </div>
         </div>
       </div>
@@ -74,9 +88,9 @@ const pageDescription = "专业的AI工具目录与点评平台，涵盖图像�
     <section class="py-20">
       <div class="max-w-6xl mx-auto px-4 sm:px-6">
         <div class="text-center mb-12">
-          <h2 class="text-3xl font-bold text-gray-900 mb-4">工具分类</h2>
+          <h2 class="text-3xl font-bold text-gray-900 mb-4">内容分类</h2>
           <p class="text-gray-600 max-w-2xl mx-auto">
-            按功能分类浏览AI工具，快速找到你需要的解决方案
+            按主题分类浏览文章内容，快速找到你需要的AI知识和指南
           </p>
         </div>
         
@@ -88,26 +102,44 @@ const pageDescription = "专业的AI工具目录与点评平台，涵盖图像�
       </div>
     </section>
     
-    <!-- Featured Tools Section -->
+    <!-- Featured Articles Section -->
     <section class="py-20 bg-gray-50">
       <div class="max-w-6xl mx-auto px-4 sm:px-6">
         <div class="text-center mb-12">
-          <h2 class="text-3xl font-bold text-gray-900 mb-4">热门推荐</h2>
+          <h2 class="text-3xl font-bold text-gray-900 mb-4">精选文章</h2>
           <p class="text-gray-600 max-w-2xl mx-auto">
-            精选最受欢迎和最具价值的AI工具，经过专业评测验证
+            专业团队精心打造的AI工具评测、教程和行业洞察文章
           </p>
         </div>
         
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {featuredTools.map(tool => (
-            <ToolCard {...tool} />
+          {featuredArticles.map(article => (
+            <ArticleCard {...article} />
           ))}
         </div>
         
         <div class="text-center mt-12">
-          <a href="/tools" class="btn-primary text-lg px-8 py-3">
-            查看全部工具
+          <a href="/articles" class="btn-primary text-lg px-8 py-3">
+            查看全部文章
           </a>
+        </div>
+      </div>
+    </section>
+    
+    <!-- Latest Articles Section -->
+    <section class="py-20">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6">
+        <div class="text-center mb-12">
+          <h2 class="text-3xl font-bold text-gray-900 mb-4">最新发布</h2>
+          <p class="text-gray-600 max-w-2xl mx-auto">
+            最新的AI工具评测和教程，及时掌握AI领域的前沿动态
+          </p>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {latestArticles.slice(0, 3).map(article => (
+            <ArticleCard {...article} />
+          ))}
         </div>
       </div>
     </section>
@@ -116,10 +148,10 @@ const pageDescription = "专业的AI工具目录与点评平台，涵盖图像�
     <section class="py-20 bg-primary-600">
       <div class="max-w-4xl mx-auto px-4 sm:px-6 text-center">
         <h2 class="text-3xl font-bold text-white mb-4">
-          获取最新AI工具资讯
+          获取最新AI资讯和教程
         </h2>
         <p class="text-primary-100 mb-8 text-lg">
-          订阅我们的通讯，第一时间了解新工具发布和深度评测
+          订阅我们的通讯，第一时间获取专业评测、实用教程和行业洞察
         </p>
         
         <div class="max-w-md mx-auto flex">
@@ -157,7 +189,20 @@ const pageDescription = "专业的AI工具目录与点评平台，涵盖图像�
     data={{
       name: "AI Compass",
       url: "https://fzero1925.github.io/ai-compass",
-      description: "专业的AI工具目录与点评平台"
+      description: "专业的AI工具评测与教程平台"
+    }} 
+  />
+  <StructuredData 
+    type="itemlist" 
+    data={{
+      name: "AI工具评测文章",
+      description: "专业的AI工具评测、教程和使用指南",
+      items: featuredArticles.map(article => ({
+        name: article.title,
+        url: `https://fzero1925.github.io/ai-compass/articles/${article.slug}/`,
+        description: article.description,
+        datePublished: article.publishDate
+      }))
     }} 
   />
 </BaseLayout>

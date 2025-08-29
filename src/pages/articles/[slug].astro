@@ -1,0 +1,65 @@
+---
+import ArticleLayout from '../../layouts/ArticleLayout.astro';
+import { getArticleBySlug, getRelatedArticles, articles } from '../../data/articles';
+import ArticleCard from '../../components/ArticleCard.astro';
+
+export async function getStaticPaths() {
+  return articles.map((article) => ({
+    params: { slug: article.slug },
+    props: article,
+  }));
+}
+
+const { slug } = Astro.params;
+const article = getArticleBySlug(slug as string);
+
+if (!article) {
+  return Astro.redirect('/404');
+}
+
+const relatedArticles = getRelatedArticles(slug as string, 3);
+---
+
+<ArticleLayout {...article}>
+  <!-- Article content will be defined in individual article files -->
+  <div data-pagefind-body data-pagefind-meta={`title:${article.title}`} data-pagefind-meta={`category:${article.category}`} data-pagefind-meta="type:文章">
+    <div id="article-content">
+      <!-- This will be replaced with actual article content -->
+      <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-6 mb-8">
+        <h2>🚧 内容开发中</h2>
+        <p class="text-gray-600 mt-2">
+          这篇文章正在开发中，完整内容即将上线。请关注我们的最新动态。
+        </p>
+      </div>
+      
+      <!-- Placeholder content based on article data -->
+      <h2>文章概述</h2>
+      <p>{article.description}</p>
+      
+      <h2>主要内容</h2>
+      <p>本文将深入探讨以下内容：</p>
+      <ul>
+        {article.tags.map(tag => (
+          <li>{tag}相关的详细分析和使用指南</li>
+        ))}
+      </ul>
+      
+      <h2>总结</h2>
+      <p>通过本文的介绍，你将能够更好地了解和使用相关的AI工具。我们将持续更新内容，为你提供最新的信息和实用指南。</p>
+    </div>
+  </div>
+  
+  <!-- Related Articles -->
+  {relatedArticles.length > 0 && (
+    <section class="border-t border-gray-200 py-12">
+      <div class="max-w-4xl mx-auto px-4 sm:px-6">
+        <h2 class="text-2xl font-bold text-gray-900 mb-8">相关文章</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {relatedArticles.map(relatedArticle => (
+            <ArticleCard {...relatedArticle} />
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+</ArticleLayout>

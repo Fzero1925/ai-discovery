@@ -1,6 +1,6 @@
 ---
 export interface Props {
-  type: 'website' | 'product' | 'organization' | 'breadcrumblist';
+  type: 'website' | 'product' | 'organization' | 'breadcrumblist' | 'article' | 'itemlist';
   data: any;
 }
 
@@ -80,6 +80,75 @@ switch (type) {
         "position": index + 1,
         "name": item.name,
         "item": item.url
+      }))
+    };
+    break;
+    
+  case 'article':
+    structuredData = {
+      "@context": "https://schema.org",
+      "@type": "TechArticle",
+      "headline": data.headline,
+      "description": data.description,
+      "image": data.image,
+      "author": {
+        "@type": "Organization",
+        "name": data.author?.name || "AI Compass Team",
+        "url": "https://fzero1925.github.io/ai-compass"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "AI Compass",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://fzero1925.github.io/ai-compass/favicon.svg",
+          "width": "60",
+          "height": "60"
+        },
+        "url": "https://fzero1925.github.io/ai-compass"
+      },
+      "datePublished": data.datePublished,
+      "dateModified": data.dateModified || data.datePublished,
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": data.mainEntityOfPage?.['@id']
+      },
+      "keywords": data.keywords,
+      "articleSection": data.articleSection,
+      "wordCount": data.wordCount,
+      "about": {
+        "@type": "Thing",
+        "name": data.articleSection
+      },
+      "inLanguage": "zh-CN"
+    };
+    break;
+    
+  case 'itemlist':
+    structuredData = {
+      "@context": "https://schema.org",
+      "@type": "ItemList",
+      "name": data.name,
+      "description": data.description,
+      "numberOfItems": data.items.length,
+      "itemListElement": data.items.map((item: any, index: number) => ({
+        "@type": "ListItem",
+        "position": index + 1,
+        "item": {
+          "@type": "TechArticle",
+          "name": item.name,
+          "url": item.url,
+          "description": item.description,
+          "datePublished": item.datePublished,
+          "author": {
+            "@type": "Organization",
+            "name": "AI Compass Team"
+          },
+          "publisher": {
+            "@type": "Organization",
+            "name": "AI Compass"
+          }
+        }
       }))
     };
     break;

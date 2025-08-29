@@ -1,23 +1,23 @@
 ---
 export interface Props {
-  id: string;
+  slug: string;
   name: string;
   description: string;
   icon: string;
-  count: number;
+  color?: string;
 }
 
-const { id, name, description, icon, count } = Astro.props;
+const { slug, name, description, icon, color = 'from-gray-500 to-gray-600' } = Astro.props;
 ---
 
 <a 
-  href={`/tools/${id}`}
-  class="category-card block transform hover:scale-105 transition-all duration-300"
+  href={`/articles/category/${slug}`}
+  class={`category-card block transform hover:scale-105 transition-all duration-300 bg-gradient-to-br ${color} p-6 rounded-xl text-white shadow-lg group`}
 >
   <div class="flex items-center justify-between mb-4">
     <div class="text-3xl">{icon}</div>
     <div class="bg-white/20 backdrop-blur-sm px-3 py-1 rounded-full">
-      <span class="text-sm font-medium">{count} 个工具</span>
+      <span class="text-sm font-medium">专业内容</span>
     </div>
   </div>
   
@@ -25,7 +25,7 @@ const { id, name, description, icon, count } = Astro.props;
   <p class="text-white/80 text-sm leading-relaxed">{description}</p>
   
   <div class="mt-4 flex items-center text-sm font-medium">
-    <span>探索工具</span>
+    <span>浏览文章</span>
     <svg class="ml-2 w-4 h-4 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
     </svg>

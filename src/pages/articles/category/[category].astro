@@ -1,0 +1,182 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Header from '../../../components/Header.astro';
+import Footer from '../../../components/Footer.astro';
+import ArticleCard from '../../../components/ArticleCard.astro';
+import SearchModal from '../../../components/SearchModal.astro';
+import StructuredData from '../../../components/StructuredData.astro';
+import { getArticlesByCategory, articleCategories, type ArticleCategory } from '../../../data/articles';
+
+export async function getStaticPaths() {
+  return Object.keys(articleCategories).map((category) => ({
+    params: { category },
+    props: { category: category as ArticleCategory },
+  }));
+}
+
+const { category } = Astro.props;
+const categoryInfo = articleCategories[category];
+const articles = getArticlesByCategory(category);
+
+const pageTitle = `${categoryInfo.name}文章 - AI Compass`;
+const pageDescription = `浏览${categoryInfo.name}相关的专业文章，${categoryInfo.description}。`;
+---
+
+<BaseLayout title={pageTitle} description={pageDescription}>
+  <!-- Search data -->
+  <div data-pagefind-body data-pagefind-meta={`title:${categoryInfo.name}文章分类`} data-pagefind-meta={`category:${category}`} data-pagefind-meta="type:分类页面" style="display: none;">
+    {categoryInfo.name} {categoryInfo.description} {articles.map(a => a.title).join(' ')}
+  </div>
+  
+  <Header />
+  
+  <main>
+    <!-- Breadcrumb -->
+    <section class="bg-gray-50 py-4">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6">
+        <nav class="flex items-center space-x-2 text-sm text-gray-600">
+          <a href="/" class="hover:text-primary-600 transition-colors">首页</a>
+          <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 111.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
+          </svg>
+          <a href="/articles" class="hover:text-primary-600 transition-colors">文章</a>
+          <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 111.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
+          </svg>
+          <span class="text-gray-900 font-medium">{categoryInfo.name}</span>
+        </nav>
+      </div>
+    </section>
+
+    <!-- Header Section -->
+    <section class="py-16 bg-gradient-to-br from-primary-50 via-white to-secondary-50">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 text-center">
+        <!-- Category Icon and Badge -->
+        <div class="mb-6">
+          <span class={`inline-flex items-center gap-3 px-6 py-3 rounded-full text-lg font-medium bg-gradient-to-r ${categoryInfo.color} text-white shadow-lg`}>
+            <span class="text-2xl">{categoryInfo.icon}</span>
+            {categoryInfo.name}
+          </span>
+        </div>
+        
+        <h1 class="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-6">
+          {categoryInfo.name}文章
+        </h1>
+        <p class="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
+          {categoryInfo.description}，为你提供专业的分析和实用指南。
+        </p>
+        
+        <!-- Stats -->
+        <div class="flex justify-center items-center space-x-8 text-sm text-gray-600 mb-8">
+          <div class="flex items-center gap-2">
+            <svg class="w-5 h-5 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+            </svg>
+            <span class="font-semibold text-primary-600">{articles.length}</span>
+            <span>篇文章</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <svg class="w-5 h-5 text-secondary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+            <span class="font-semibold text-secondary-600">{Math.round(articles.reduce((sum, a) => sum + a.readTime, 0) / articles.length)}</span>
+            <span>分钟平均阅读</span>
+          </div>
+        </div>
+        
+        <!-- Search Bar -->
+        <div class="max-w-xl mx-auto">
+          <div class="relative">
+            <button 
+              onclick="openSearch()"
+              class="w-full pl-12 pr-4 py-3 text-lg border border-gray-300 rounded-xl hover:border-primary-300 focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all text-left text-gray-500 hover:text-gray-700"
+            >
+              搜索{categoryInfo.name}文章...
+              <span class="float-right text-sm text-gray-400 mt-1">Ctrl+K</span>
+            </button>
+            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+              <svg class="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+              </svg>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Articles Grid -->
+    <section class="py-16">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6">
+        {articles.length > 0 ? (
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {articles.map(article => (
+              <ArticleCard {...article} />
+            ))}
+          </div>
+        ) : (
+          <!-- Empty State -->
+          <div class="text-center py-16">
+            <div class="text-6xl mb-4">{categoryInfo.icon}</div>
+            <h3 class="text-xl font-medium text-gray-900 mb-2">暂无{categoryInfo.name}文章</h3>
+            <p class="text-gray-500 mb-8">我们正在努力创建更多{categoryInfo.name}相关的优质内容</p>
+            <div class="flex justify-center space-x-4">
+              <a href="/articles" class="btn-primary">
+                浏览全部文章
+              </a>
+              <a href="/" class="btn-secondary">
+                返回首页
+              </a>
+            </div>
+          </div>
+        )}
+      </div>
+    </section>
+
+    <!-- Other Categories -->
+    {articles.length > 0 && (
+      <section class="py-16 bg-gray-50">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6">
+          <div class="text-center mb-12">
+            <h2 class="text-2xl font-bold text-gray-900 mb-4">其他分类</h2>
+            <p class="text-gray-600">探索更多AI相关的专业内容</p>
+          </div>
+          
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+            {Object.entries(articleCategories)
+              .filter(([key]) => key !== category)
+              .map(([key, info]) => (
+                <a 
+                  href={`/articles/category/${key}`}
+                  class={`group p-4 bg-white rounded-lg border border-gray-200 hover:shadow-md transition-all text-center hover:bg-gradient-to-r hover:${info.color} hover:text-white`}
+                >
+                  <div class="text-2xl mb-2">{info.icon}</div>
+                  <div class="font-medium text-sm">{info.name}</div>
+                </a>
+              ))
+            }
+          </div>
+        </div>
+      </section>
+    )}
+  </main>
+  
+  <Footer />
+  <SearchModal />
+  
+  <!-- Structured Data for Category -->
+  {articles.length > 0 && (
+    <StructuredData 
+      type="itemlist" 
+      data={{
+        name: `${categoryInfo.name}相关文章`,
+        description: `关于${categoryInfo.name}的专业评测、教程和分析文章`,
+        items: articles.map(article => ({
+          name: article.title,
+          url: `https://fzero1925.github.io/ai-compass/articles/${article.slug}/`,
+          description: article.description,
+          datePublished: article.publishDate
+        }))
+      }} 
+    />
+  )}
+</BaseLayout>
