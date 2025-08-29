@@ -85,7 +85,7 @@ export const articles: Article[] = [
     tags: ['图像编辑', 'AI工具', '评测', 'Nano Banana'],
     readTime: 8,
     featured: true,
-    image: '/images/articles/nano-banana-review.webp'
+    image: '/images/articles/nano-banana-review.svg'
   },
   {
     slug: 'chatgpt-advanced-guide',
@@ -97,7 +97,7 @@ export const articles: Article[] = [
     tags: ['ChatGPT', '文本AI', '教程', '提示词'],
     readTime: 12,
     featured: true,
-    image: '/images/articles/chatgpt-guide.webp'
+    image: '/images/articles/chatgpt-guide.svg'
   },
   {
     slug: 'ai-writing-tools-comparison-2025',
@@ -109,7 +109,7 @@ export const articles: Article[] = [
     tags: ['写作工具', '对比分析', 'ChatGPT', 'Claude', 'Jasper'],
     readTime: 15,
     featured: true,
-    image: '/images/articles/ai-writing-comparison.webp'
+    image: '/images/articles/ai-writing-comparison.svg'
   },
   {
     slug: 'ai-image-generation-beginner-guide',
@@ -121,7 +121,7 @@ export const articles: Article[] = [
     tags: ['图像生成', 'AI绘画', '入门教程', 'Midjourney', 'DALL-E'],
     readTime: 10,
     featured: false,
-    image: '/images/articles/ai-image-guide.webp'
+    image: '/images/articles/ai-image-guide.svg'
   }
 ];
 

@@ -1,0 +1,49 @@
+<svg width="1200" height="630" viewBox="0 0 1200 630" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg-gradient-cg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f0fdf4;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#f0f9ff;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#fffbeb;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="icon-gradient-cg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#10b981;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#0ea5e9;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <rect width="1200" height="630" fill="url(#bg-gradient-cg)"/>
+  
+  <!-- Chat/conversation icon -->
+  <g transform="translate(520, 245)">
+    <!-- Main chat bubble -->
+    <path d="M20 20 L140 20 Q160 20, 160 40 L160 80 Q160 100, 140 100 L60 100 L40 120 L40 100 L20 100 Q0 100, 0 80 L0 40 Q0 20, 20 20 Z" 
+          fill="url(#icon-gradient-cg)" opacity="0.8"/>
+    
+    <!-- Text lines -->
+    <line x1="20" y1="45" x2="140" y2="45" stroke="white" stroke-width="3" stroke-linecap="round"/>
+    <line x1="20" y1="60" x2="120" y2="60" stroke="white" stroke-width="3" stroke-linecap="round"/>
+    <line x1="20" y1="75" x2="100" y2="75" stroke="white" stroke-width="3" stroke-linecap="round"/>
+    
+    <!-- Secondary bubble -->
+    <path d="M40 0 L120 0 Q135 0, 135 15 L135 35 Q135 50, 120 50 L50 50 L35 65 L35 50 L40 50 Q25 50, 25 35 L25 15 Q25 0, 40 0 Z" 
+          fill="url(#icon-gradient-cg)" opacity="0.6"/>
+    
+    <!-- AI symbol -->
+    <circle cx="80" cy="25" r="8" fill="white"/>
+    <text x="80" y="30" text-anchor="middle" fill="url(#icon-gradient-cg)" font-family="system-ui" font-size="10" font-weight="bold">AI</text>
+  </g>
+  
+  <!-- Decorative elements -->
+  <circle cx="200" cy="140" r="4" fill="#10b981" opacity="0.4"/>
+  <circle cx="1000" cy="470" r="6" fill="#0ea5e9" opacity="0.4"/>
+  
+  <rect x="0" y="480" width="1200" height="150" fill="white" opacity="0.8"/>
+  
+  <text x="600" y="530" text-anchor="middle" fill="#1f2937" font-family="system-ui, -apple-system, sans-serif" font-size="28" font-weight="600">
+    ChatGPT 高级应用指南
+  </text>
+  
+  <text x="600" y="570" text-anchor="middle" fill="#6b7280" font-family="system-ui, -apple-system, sans-serif" font-size="16">
+    从入门到精通的完整使用教程
+  </text>
+</svg>

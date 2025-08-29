@@ -84,8 +84,32 @@ const pageDescription = "提供深度AI工具评测、使用教程和行业洞�
       </div>
     </section>
     
-    <!-- Categories Section -->
+    <!-- Latest Articles Section -->
     <section class="py-20">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6">
+        <div class="text-center mb-12">
+          <h2 class="text-3xl font-bold text-gray-900 mb-4">最新发布</h2>
+          <p class="text-gray-600 max-w-2xl mx-auto">
+            最新的AI工具评测和教程，及时掌握AI领域的前沿动态
+          </p>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {latestArticles.slice(0, 6).map(article => (
+            <ArticleCard {...article} />
+          ))}
+        </div>
+        
+        <div class="text-center mt-12">
+          <a href="/articles" class="btn-primary text-lg px-8 py-3">
+            查看全部文章
+          </a>
+        </div>
+      </div>
+    </section>
+    
+    <!-- Categories Section -->
+    <section class="py-20 bg-gray-50">
       <div class="max-w-6xl mx-auto px-4 sm:px-6">
         <div class="text-center mb-12">
           <h2 class="text-3xl font-bold text-gray-900 mb-4">内容分类</h2>
@@ -103,7 +127,7 @@ const pageDescription = "提供深度AI工具评测、使用教程和行业洞�
     </section>
     
     <!-- Featured Articles Section -->
-    <section class="py-20 bg-gray-50">
+    <section class="py-20">
       <div class="max-w-6xl mx-auto px-4 sm:px-6">
         <div class="text-center mb-12">
           <h2 class="text-3xl font-bold text-gray-900 mb-4">精选文章</h2>
@@ -114,30 +138,6 @@ const pageDescription = "提供深度AI工具评测、使用教程和行业洞�
         
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {featuredArticles.map(article => (
-            <ArticleCard {...article} />
-          ))}
-        </div>
-        
-        <div class="text-center mt-12">
-          <a href="/articles" class="btn-primary text-lg px-8 py-3">
-            查看全部文章
-          </a>
-        </div>
-      </div>
-    </section>
-    
-    <!-- Latest Articles Section -->
-    <section class="py-20">
-      <div class="max-w-6xl mx-auto px-4 sm:px-6">
-        <div class="text-center mb-12">
-          <h2 class="text-3xl font-bold text-gray-900 mb-4">最新发布</h2>
-          <p class="text-gray-600 max-w-2xl mx-auto">
-            最新的AI工具评测和教程，及时掌握AI领域的前沿动态
-          </p>
-        </div>
-        
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {latestArticles.slice(0, 3).map(article => (
             <ArticleCard {...article} />
           ))}
         </div>
