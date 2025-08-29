@@ -2,11 +2,12 @@
 // Analytics Integration Component
 // Supports Google Analytics and other tracking services
 
-const GOOGLE_ANALYTICS_ID = import.meta.env.PUBLIC_GOOGLE_ANALYTICS_ID;
+// 直接使用 Analytics ID，无需环境变量
+const GOOGLE_ANALYTICS_ID = import.meta.env.PUBLIC_GOOGLE_ANALYTICS_ID || 'G-8L8HTK016G';
 const isDev = import.meta.env.DEV;
 
 // Only load analytics in production
-const shouldLoadAnalytics = !isDev && GOOGLE_ANALYTICS_ID;
+const shouldLoadAnalytics = !isDev;
 ---
 
 {shouldLoadAnalytics && (
