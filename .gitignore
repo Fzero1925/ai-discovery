@@ -107,3 +107,11 @@ temp/
 # Package manager backups
 package-lock.json.backup
 yarn.lock.backup
+
+# 项目管理文档 - 不上传GitHub，仅本地管理使用
+PROJECT-STATUS.md
+DEPLOYMENT.md
+PLATFORM-TRANSFORMATION.md
+IMAGE-GUIDELINES.md
+CLAUDE.md
+.claude/
