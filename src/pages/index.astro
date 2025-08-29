@@ -4,6 +4,8 @@ import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import CategoryCard from '../components/CategoryCard.astro';
 import ToolCard from '../components/ToolCard.astro';
+import SearchModal from '../components/SearchModal.astro';
+import StructuredData from '../components/StructuredData.astro';
 import { categories, featuredTools } from '../data/tools';
 
 const pageTitle = "AI Compass - 发现最优质的AI工具";
@@ -11,6 +13,11 @@ const pageDescription = "专业的AI工具目录与点评平台，涵盖图像�
 ---
 
 <BaseLayout title={pageTitle} description={pageDescription}>
+  <!-- Search data for homepage -->
+  <div data-pagefind-body data-pagefind-meta="title:AI工具目录首页" data-pagefind-meta="type:首页" style="display: none;">
+    AI Compass AI工具目录 人工智能工具推荐 图像工具 文本工具 效率工具 视频工具 
+    专业点评 对比分析 工具评测 {categories.map(c => c.name).join(' ')} {featuredTools.map(t => t.title).join(' ')}
+  </div>
   <Header />
   
   <main>
@@ -30,12 +37,14 @@ const pageDescription = "专业的AI工具目录与点评平台，涵盖图像�
         <!-- Search Bar -->
         <div class="max-w-2xl mx-auto mb-8">
           <div class="relative">
-            <input 
-              type="search" 
-              placeholder="搜索 AI 工具..."
-              class="w-full pl-12 pr-4 py-4 text-lg border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-            />
-            <div class="absolute inset-y-0 left-0 pl-4 flex items-center">
+            <button 
+              onclick="openSearch()"
+              class="w-full pl-12 pr-4 py-4 text-lg border border-gray-300 rounded-xl hover:border-primary-300 focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all text-left text-gray-500 hover:text-gray-700"
+            >
+              搜索 AI 工具...
+              <span class="float-right text-sm text-gray-400 mt-1">Ctrl+K</span>
+            </button>
+            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
               <svg class="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
               </svg>
@@ -132,4 +141,35 @@ const pageDescription = "专业的AI工具目录与点评平台，涵盖图像�
   </main>
   
   <Footer />
+  <SearchModal />
+  
+  <!-- Structured Data -->
+  <StructuredData 
+    type="website" 
+    data={{
+      name: "AI Compass",
+      url: "https://fzero1925.github.io/ai-compass",
+      description: pageDescription
+    }} 
+  />
+  <StructuredData 
+    type="organization" 
+    data={{
+      name: "AI Compass",
+      url: "https://fzero1925.github.io/ai-compass",
+      description: "专业的AI工具目录与点评平台"
+    }} 
+  />
 </BaseLayout>
+
+<script>
+  // Initialize search functionality
+  document.addEventListener('DOMContentLoaded', () => {
+    const openSearchBtn = document.getElementById('open-search');
+    openSearchBtn?.addEventListener('click', () => {
+      if (window.openSearch) {
+        window.openSearch();
+      }
+    });
+  });
+</script>

@@ -45,8 +45,11 @@ const {
     
     <!-- Additional Meta -->
     <meta name="author" content="AI Compass" />
-    <meta name="robots" content="index, follow" />
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
     <link rel="canonical" href={url} />
+    
+    <!-- Sitemap -->
+    <link rel="sitemap" type="application/xml" title="Sitemap" href="/ai-compass/sitemap.xml" />
     
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -56,6 +59,9 @@ const {
   
   <body>
     <slot />
+    
+    <!-- Search Modal -->
+    <div id="search-modal-container"></div>
     
     <!-- Google Analytics placeholder -->
     <!-- <script async src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"></script> -->

@@ -1,0 +1,92 @@
+---
+export interface Props {
+  type: 'website' | 'product' | 'organization' | 'breadcrumblist';
+  data: any;
+}
+
+const { type, data } = Astro.props;
+
+let structuredData;
+
+switch (type) {
+  case 'website':
+    structuredData = {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": data.name,
+      "url": data.url,
+      "description": data.description,
+      "publisher": {
+        "@type": "Organization",
+        "name": "AI Compass",
+        "url": data.url
+      },
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": {
+          "@type": "EntryPoint",
+          "urlTemplate": `${data.url}/search?q={search_term_string}`
+        },
+        "query-input": "required name=search_term_string"
+      }
+    };
+    break;
+    
+  case 'product':
+    structuredData = {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": data.name,
+      "description": data.description,
+      "url": data.url,
+      "applicationCategory": "AI工具",
+      "operatingSystem": data.operatingSystem || "Web Browser",
+      "price": data.price || "0",
+      "priceCurrency": "CNY",
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": data.rating,
+        "reviewCount": data.reviewCount,
+        "bestRating": "5",
+        "worstRating": "1"
+      },
+      "offers": {
+        "@type": "Offer",
+        "price": data.price || "0",
+        "priceCurrency": "CNY",
+        "availability": "https://schema.org/InStock"
+      }
+    };
+    break;
+    
+  case 'organization':
+    structuredData = {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": data.name,
+      "url": data.url,
+      "logo": data.logo,
+      "description": data.description,
+      "sameAs": data.sameAs || []
+    };
+    break;
+    
+  case 'breadcrumblist':
+    structuredData = {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": data.items.map((item: any, index: number) => ({
+        "@type": "ListItem",
+        "position": index + 1,
+        "name": item.name,
+        "item": item.url
+      }))
+    };
+    break;
+    
+  default:
+    structuredData = data;
+}
+---
+
+<script type="application/ld+json" set:html={JSON.stringify(structuredData)}></script>

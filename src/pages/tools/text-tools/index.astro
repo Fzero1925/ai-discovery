@@ -1,0 +1,245 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Header from '../../../components/Header.astro';
+import Footer from '../../../components/Footer.astro';
+import ToolCard from '../../../components/ToolCard.astro';
+import SearchModal from '../../../components/SearchModal.astro';
+import StructuredData from '../../../components/StructuredData.astro';
+import { featuredTools } from '../../../data/tools';
+
+// Filter tools by category
+const textTools = featuredTools.filter(tool => tool.category === 'text-tools');
+
+const pageTitle = "文本工具 - AI Compass";
+const pageDescription = "发现最优质的AI文本处理工具，包含对话AI、写作助手、翻译工具等多种功能的专业工具推荐和评测。";
+---
+
+<BaseLayout title={pageTitle} description={pageDescription}>
+  <!-- Search data for text tools category -->
+  <div data-pagefind-body data-pagefind-meta="title:文本工具分类页" data-pagefind-meta="category:文本工具" data-pagefind-meta="type:分类页" style="display: none;">
+    文本工具 AI写作 对话AI 翻译工具 写作助手 ChatGPT 文本处理 自然语言处理 AI助手
+    {textTools.map(t => t.title + ' ' + t.description).join(' ')}
+  </div>
+  
+  <Header />
+  
+  <main class="min-h-screen bg-gray-50">
+    <!-- Category Header -->
+    <section class="bg-gradient-to-br from-primary-50 via-white to-secondary-50 py-16">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6">
+        <!-- Breadcrumb -->
+        <nav class="mb-6">
+          <ol class="flex items-center space-x-2 text-sm text-gray-500">
+            <li><a href="/ai-compass/" class="hover:text-primary-600">首页</a></li>
+            <li>/</li>
+            <li class="text-gray-900">文本工具</li>
+          </ol>
+        </nav>
+        
+        <div class="text-center">
+          <div class="text-6xl mb-6">✍️</div>
+          <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+            AI 文本工具
+          </h1>
+          <p class="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
+            专业的AI文本处理工具集合，涵盖对话AI、写作辅助、翻译服务、内容生成等多个领域，让文字工作更高效。
+          </p>
+          
+          <!-- Stats -->
+          <div class="flex justify-center space-x-8 text-sm text-gray-600 mb-8">
+            <div class="text-center">
+              <div class="font-semibold text-2xl text-gray-900">{textTools.length}+</div>
+              <div>精选工具</div>
+            </div>
+            <div class="text-center">
+              <div class="font-semibold text-2xl text-gray-900">1000+</div>
+              <div>用户评价</div>
+            </div>
+            <div class="text-center">
+              <div class="font-semibold text-2xl text-gray-900">98%</div>
+              <div>满意度</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- Filters -->
+    <section class="py-8 bg-white border-b border-gray-200">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6">
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+          <!-- Search -->
+          <div class="flex-1 max-w-md">
+            <div class="relative">
+              <button
+                onclick="openSearch()"
+                class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg hover:border-primary-300 focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all text-left text-gray-500 hover:text-gray-700"
+              >
+                搜索文本工具...
+              </button>
+              <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                </svg>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Filter Buttons -->
+          <div class="flex flex-wrap gap-3">
+            <button class="bg-primary-600 text-white px-4 py-2 rounded-lg text-sm font-medium">
+              全部
+            </button>
+            <button class="bg-gray-100 text-gray-700 px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-200 transition-colors">
+              对话AI
+            </button>
+            <button class="bg-gray-100 text-gray-700 px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-200 transition-colors">
+              写作辅助
+            </button>
+            <button class="bg-gray-100 text-gray-700 px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-200 transition-colors">
+              翻译工具
+            </button>
+            <button class="bg-gray-100 text-gray-700 px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-200 transition-colors">
+              免费工具
+            </button>
+          </div>
+          
+          <!-- Sort -->
+          <div class="flex items-center space-x-2">
+            <span class="text-sm text-gray-500">排序：</span>
+            <select class="border border-gray-300 rounded px-3 py-2 text-sm focus:ring-2 focus:ring-primary-500 focus:border-transparent">
+              <option>最新发布</option>
+              <option>用户评分</option>
+              <option>使用人数</option>
+              <option>价格从低到高</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- Tools Grid -->
+    <section class="py-12">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6">
+        {textTools.length > 0 ? (
+          <>
+            <div class="flex items-center justify-between mb-8">
+              <h2 class="text-2xl font-bold text-gray-900">
+                找到 {textTools.length} 个文本工具
+              </h2>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {textTools.map(tool => (
+                <ToolCard {...tool} />
+              ))}
+            </div>
+          </>
+        ) : (
+          <div class="text-center py-16">
+            <div class="text-6xl mb-4">🔍</div>
+            <h3 class="text-xl font-semibold text-gray-900 mb-2">暂无文本工具</h3>
+            <p class="text-gray-600">我们正在努力收集更多优质的文本工具，敬请期待！</p>
+          </div>
+        )}
+      </div>
+    </section>
+    
+    <!-- Features Section -->
+    <section class="py-16 bg-white">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6">
+        <div class="text-center mb-12">
+          <h2 class="text-3xl font-bold text-gray-900 mb-4">为什么选择AI文本工具？</h2>
+          <p class="text-gray-600 max-w-2xl mx-auto">
+            AI文本工具正在改变我们处理文字的方式，提供更高效、更智能的文本处理体验
+          </p>
+        </div>
+        
+        <div class="grid md:grid-cols-3 gap-8">
+          <div class="text-center">
+            <div class="w-12 h-12 bg-primary-100 text-primary-600 rounded-lg flex items-center justify-center mx-auto mb-4">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+              </svg>
+            </div>
+            <h3 class="text-lg font-semibold text-gray-900 mb-2">效率提升</h3>
+            <p class="text-gray-600">AI辅助写作和编辑，大幅提升文字处理效率，节省宝贵时间</p>
+          </div>
+          
+          <div class="text-center">
+            <div class="w-12 h-12 bg-secondary-100 text-secondary-600 rounded-lg flex items-center justify-center mx-auto mb-4">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
+              </svg>
+            </div>
+            <h3 class="text-lg font-semibold text-gray-900 mb-2">创意激发</h3>
+            <p class="text-gray-600">AI能提供新颖的写作思路和创意灵感，突破传统思维局限</p>
+          </div>
+          
+          <div class="text-center">
+            <div class="w-12 h-12 bg-green-100 text-green-600 rounded-lg flex items-center justify-center mx-auto mb-4">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+              </svg>
+            </div>
+            <h3 class="text-lg font-semibold text-gray-900 mb-2">质量保证</h3>
+            <p class="text-gray-600">智能语法检查和风格优化，确保文本质量和专业性</p>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- CTA Section -->
+    <section class="py-16 bg-primary-600">
+      <div class="max-w-4xl mx-auto px-4 sm:px-6 text-center">
+        <h2 class="text-3xl font-bold text-white mb-4">
+          没找到合适的工具？
+        </h2>
+        <p class="text-primary-100 mb-8 text-lg">
+          告诉我们你的需求，或者推荐优质的AI文本工具
+        </p>
+        
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+          <a
+            href="/ai-compass/submit"
+            class="bg-white text-primary-600 font-semibold px-8 py-3 rounded-lg hover:bg-gray-50 transition-colors"
+          >
+            推荐工具
+          </a>
+          <a
+            href="/ai-compass/contact"
+            class="border-2 border-white text-white font-semibold px-8 py-3 rounded-lg hover:bg-white hover:text-primary-600 transition-colors"
+          >
+            联系我们
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+  
+  <Footer />
+  <SearchModal />
+  
+  <!-- Structured Data -->
+  <StructuredData 
+    type="breadcrumblist" 
+    data={{
+      items: [
+        { name: "首页", url: "https://fzero1925.github.io/ai-compass/" },
+        { name: "文本工具", url: "https://fzero1925.github.io/ai-compass/tools/text-tools/" }
+      ]
+    }} 
+  />
+</BaseLayout>
+
+<script>
+  // Initialize search functionality
+  document.addEventListener('DOMContentLoaded', () => {
+    const openSearchBtn = document.getElementById('open-search');
+    openSearchBtn?.addEventListener('click', () => {
+      if (window.openSearch) {
+        window.openSearch();
+      }
+    });
+  });
+</script>

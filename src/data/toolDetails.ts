@@ -76,6 +76,183 @@ export interface ToolDetail {
 }
 
 export const toolDetails: Record<string, ToolDetail> = {
+  'chatgpt': {
+    id: 'chatgpt',
+    title: 'ChatGPT',
+    category: 'text-tools',
+    rating: 4.8,
+    rating_count: 2156,
+    description: '最受欢迎的 AI 对话助手，支持写作、编程、分析等多种任务',
+    hot: true,
+    last_updated: '2025-01-20',
+    tags: ['对话AI', '写作辅助', '编程助手'],
+    pricing: 'freemium',
+    url: 'https://chat.openai.com',
+    
+    introduction: {
+      overview: 'ChatGPT 是OpenAI开发的大型语言模型，基于GPT架构，能够进行自然语言对话，协助用户完成写作、编程、学习、分析等各种任务。它具备强大的理解能力和创作能力，是目前最受欢迎的AI助手之一。',
+      purpose: '为用户提供智能对话服务，协助完成各种文字工作，提高工作效率和学习质量。',
+      target_users: ['学生', '程序员', '作家', '研究人员', '商务人员', '内容创作者']
+    },
+    
+    highlights: {
+      features: [
+        '自然语言对话交互',
+        '多语言支持和翻译',
+        '代码编写和调试',
+        '文档写作和编辑',
+        '数据分析和解释',
+        '创意写作和头脑风暴'
+      ],
+      advantages: [
+        '响应速度快，理解准确',
+        '支持长文本和复杂对话',
+        '持续学习和更新',
+        '界面简洁易用',
+        '支持多种文件格式上传',
+        '强大的推理和逻辑能力'
+      ],
+      unique_selling_points: [
+        '业界领先的GPT-4模型',
+        '支持图像识别和分析',
+        '插件生态系统丰富',
+        '企业级安全和隐私保护'
+      ]
+    },
+    
+    use_cases: {
+      scenarios: [
+        {
+          title: '学术研究助手',
+          description: '协助文献阅读、论文写作、数据分析等学术工作',
+          example: '论文大纲设计、参考文献整理、研究方法建议'
+        },
+        {
+          title: '编程开发助手',
+          description: '代码编写、调试、优化和技术问题解答',
+          example: '代码生成、bug修复、算法优化、技术文档编写'
+        },
+        {
+          title: '内容创作工具',
+          description: '文章写作、创意构思、文案策划',
+          example: '博客文章、营销文案、创意故事、产品描述'
+        }
+      ],
+      industries: ['教育', '科技', '媒体', '咨询', '金融', '医疗'],
+      user_types: ['专业人士', '学生', '创业者', '研究人员']
+    },
+    
+    community_reviews: {
+      pros: [
+        '回答质量高，逻辑性强',
+        '支持中文交流，理解准确',
+        '能处理复杂的多轮对话',
+        '代码生成能力出色',
+        '学习成本低，易于使用',
+        '不断更新和改进功能'
+      ],
+      cons: [
+        '免费版有使用次数限制',
+        '有时会产生不准确的信息',
+        '对实时信息了解有限',
+        '付费版价格相对较高'
+      ],
+      user_feedback: [
+        {
+          rating: 5,
+          comment: '作为程序员，ChatGPT大大提高了我的开发效率，代码质量也有提升。',
+          author: '李开发'
+        },
+        {
+          rating: 5,
+          comment: '写论文的好帮手，能提供很多有价值的建议和思路。',
+          author: '张研究'
+        },
+        {
+          rating: 4,
+          comment: '总体很满意，但偶尔会给出错误信息，需要人工验证。',
+          author: '王编辑'
+        }
+      ],
+      expert_review: {
+        score: 4.7,
+        summary: 'ChatGPT 在AI助手领域表现卓越，特别是在理解能力和内容生成方面领先同行。',
+        detailed_analysis: 'ChatGPT基于先进的GPT-4模型，在语言理解、逻辑推理和创作能力方面表现优秀。其对话质量高，能够处理复杂的多轮对话。在代码生成、文档写作、学习辅导等场景下表现出色。不足在于可能产生错误信息，需要用户具备一定的判断能力。整体而言，是目前市场上最优秀的AI助手之一。'
+      }
+    },
+    
+    access_info: {
+      pricing_plans: [
+        {
+          name: '免费版',
+          price: '￥0/月',
+          features: [
+            'GPT-3.5 模型',
+            '基础对话功能',
+            '有使用次数限制',
+            '标准响应速度'
+          ]
+        },
+        {
+          name: 'ChatGPT Plus',
+          price: '￥145/月',
+          features: [
+            'GPT-4 最新模型',
+            '无使用次数限制',
+            '优先访问权限',
+            '更快响应速度',
+            '图像上传和分析',
+            '插件功能'
+          ],
+          recommended: true
+        },
+        {
+          name: 'ChatGPT Team',
+          price: '￥290/月',
+          features: [
+            '团队管理功能',
+            '更高使用配额',
+            '数据不用于训练',
+            '团队协作工具',
+            '优先客服支持'
+          ]
+        }
+      ],
+      free_trial: {
+        duration: '永久免费',
+        limitations: ['使用GPT-3.5模型', '有使用频率限制']
+      },
+      system_requirements: {
+        platform: ['网页版', 'iOS App', 'Android App'],
+        browser: ['所有主流浏览器'],
+        other: ['稳定的网络连接']
+      }
+    },
+    
+    faq: [
+      {
+        question: '免费版和付费版有什么区别？',
+        answer: '免费版使用GPT-3.5模型，有使用次数限制；付费版使用最新GPT-4模型，无使用限制，响应更快，并支持图像分析等高级功能。',
+        category: '版本区别'
+      },
+      {
+        question: 'ChatGPT的回答是否总是准确的？',
+        answer: 'ChatGPT虽然很强大，但可能会产生不准确或过时的信息。建议对重要信息进行验证，特别是涉及医疗、法律、金融等专业领域。',
+        category: '使用注意'
+      },
+      {
+        question: '是否支持中文使用？',
+        answer: 'ChatGPT完全支持中文对话，理解准确，回答质量高。支持中英文混合使用和翻译功能。',
+        category: '语言支持'
+      },
+      {
+        question: '数据隐私如何保障？',
+        answer: 'OpenAI承诺保护用户隐私，付费用户的数据不会用于模型训练。建议不要输入敏感个人信息。',
+        category: '隐私安全'
+      }
+    ]
+  },
+  
   'nano-banana': {
     id: 'nano-banana',
     title: 'Nano Banana',

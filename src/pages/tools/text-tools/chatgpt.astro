@@ -4,7 +4,7 @@ import ToolDetailSection from '../../../components/ToolDetailSection.astro';
 import StructuredData from '../../../components/StructuredData.astro';
 import { toolDetails } from '../../../data/toolDetails';
 
-const toolData = toolDetails['nano-banana'];
+const toolData = toolDetails['chatgpt'];
 if (!toolData) {
   return Astro.redirect('/404');
 }
@@ -12,11 +12,12 @@ if (!toolData) {
 
 <ToolDetailLayout {...toolData}>
   <!-- Search data attributes for Pagefind -->
-  <div data-pagefind-body data-pagefind-meta="title:{toolData.title}" data-pagefind-meta="category:图像工具" data-pagefind-meta="type:工具详情" style="display: none;">
+  <div data-pagefind-body data-pagefind-meta="title:{toolData.title}" data-pagefind-meta="category:文本工具" data-pagefind-meta="type:工具详情" style="display: none;">
     {toolData.title} {toolData.description} {toolData.tags.join(' ')} 
     {toolData.introduction.overview} {toolData.highlights.features.join(' ')}
-    图像编辑 AI工具 背景处理 智能抠图 Nano Banana
+    对话AI 写作辅助 编程助手 ChatGPT OpenAI GPT-4
   </div>
+  
   <!-- 1. 工具简介 -->
   <ToolDetailSection title="工具简介" icon="📋">
     <div class="space-y-6">
@@ -249,9 +250,9 @@ if (!toolData) {
       {toolData.access_info.free_trial && (
         <div class="bg-blue-50 border border-blue-200 rounded-lg p-6">
           <h3 class="text-lg font-semibold text-gray-900 mb-3">免费试用</h3>
-          <p class="text-gray-600 mb-4">提供 {toolData.access_info.free_trial.duration} 免费试用期</p>
+          <p class="text-gray-600 mb-4">提供 {toolData.access_info.free_trial.duration}</p>
           <div class="space-y-2">
-            <h4 class="font-medium text-gray-900">试用限制：</h4>
+            <h4 class="font-medium text-gray-900">使用限制：</h4>
             {toolData.access_info.free_trial.limitations.map(limitation => (
               <div class="flex items-start space-x-2">
                 <span class="text-blue-500 text-sm">•</span>
@@ -368,7 +369,7 @@ if (!toolData) {
       url: toolData.url,
       rating: toolData.rating,
       reviewCount: toolData.rating_count,
-      price: toolData.pricing === 'free' ? '0' : '29',
+      price: toolData.pricing === 'free' ? '0' : '145',
       operatingSystem: "Web Browser, iOS, Android"
     }} 
   />
@@ -377,8 +378,8 @@ if (!toolData) {
     data={{
       items: [
         { name: "首页", url: "https://fzero1925.github.io/ai-compass/" },
-        { name: "图像工具", url: "https://fzero1925.github.io/ai-compass/tools/image-tools/" },
-        { name: toolData.title, url: `https://fzero1925.github.io/ai-compass/tools/image-tools/nano-banana/` }
+        { name: "文本工具", url: "https://fzero1925.github.io/ai-compass/tools/text-tools/" },
+        { name: toolData.title, url: `https://fzero1925.github.io/ai-compass/tools/text-tools/chatgpt/` }
       ]
     }} 
   />
