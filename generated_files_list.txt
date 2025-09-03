@@ -1,0 +1,7 @@
+content/reviews/claude-comprehensive-review.md
+content/reviews/dall-e-3-comprehensive-review.md
+content/reviews/amazon-codewhisperer-comprehensive-review.md
+content/reviews/grammarly-comprehensive-review.md
+content/reviews/power-bi-comprehensive-review.md
+content/reviews/stable-diffusion-comprehensive-review.md
+content/reviews/codeium-comprehensive-review.md

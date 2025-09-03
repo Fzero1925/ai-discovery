@@ -144,11 +144,12 @@ class AIToolContentGenerator:
     def _initialize_ai_tool_database(self) -> Dict[str, AIToolReview]:
         """Initialize database of AI tools for content generation"""
         return {
+            # Content Creation Tools
             "ChatGPT": AIToolReview(
                 tool_name="ChatGPT",
                 category="content_creation",
                 rating=4.5,
-                pricing="$20/month for Plus",
+                pricing="Free, Plus $20/month",
                 key_features=["Natural language processing", "Code generation", "Creative writing", "Analysis"],
                 pros=["Versatile", "User-friendly", "Constantly updated", "Large knowledge base"],
                 cons=["Usage limits", "Can be inaccurate", "Internet cutoff date", "High demand"],
@@ -157,6 +158,47 @@ class AIToolContentGenerator:
                 website_url="https://chat.openai.com",
                 free_tier=True
             ),
+            "Claude": AIToolReview(
+                tool_name="Claude",
+                category="content_creation", 
+                rating=4.4,
+                pricing="Free, Pro $20/month",
+                key_features=["Long context window", "Ethical reasoning", "Code analysis", "Document processing"],
+                pros=["High accuracy", "Long conversations", "Ethical guidelines", "Technical expertise"],
+                cons=["Limited availability", "Usage caps", "Less creative", "Newer platform"],
+                use_cases=["Technical writing", "Code review", "Analysis", "Research"],
+                alternatives=["ChatGPT", "Bard", "Perplexity"],
+                website_url="https://claude.ai",
+                free_tier=True
+            ),
+            "Jasper AI": AIToolReview(
+                tool_name="Jasper AI",
+                category="content_creation",
+                rating=4.2,
+                pricing="$39-125/month",
+                key_features=["Marketing copy", "Brand voice", "Template library", "Team collaboration"],
+                pros=["Marketing focused", "Brand consistency", "Template variety", "Team features"],
+                cons=["Expensive", "Learning curve", "Limited free tier", "Specific use case"],
+                use_cases=["Marketing copy", "Blog posts", "Social media", "Email campaigns"],
+                alternatives=["Copy.ai", "Writesonic", "ChatGPT"],
+                website_url="https://jasper.ai",
+                free_tier=False
+            ),
+            "Copy.ai": AIToolReview(
+                tool_name="Copy.ai",
+                category="content_creation",
+                rating=4.0,
+                pricing="Free, Pro $36/month",
+                key_features=["Marketing templates", "Workflow automation", "Brand voice", "Multi-language"],
+                pros=["Template variety", "User-friendly", "Good free tier", "Marketing focus"],
+                cons=["Quality varies", "Limited customization", "Repetitive output", "Template dependency"],
+                use_cases=["Marketing copy", "Social media", "Product descriptions", "Email"],
+                alternatives=["Jasper AI", "Writesonic", "ChatGPT"],
+                website_url="https://copy.ai",
+                free_tier=True
+            ),
+
+            # Image Generation Tools
             "Midjourney": AIToolReview(
                 tool_name="Midjourney",
                 category="image_generation",
@@ -170,18 +212,180 @@ class AIToolContentGenerator:
                 website_url="https://midjourney.com",
                 free_tier=False
             ),
+            "DALL-E 3": AIToolReview(
+                tool_name="DALL-E 3",
+                category="image_generation",
+                rating=4.6,
+                pricing="$20/month (ChatGPT Plus)",
+                key_features=["Text-to-image", "ChatGPT integration", "High resolution", "Safety filtering"],
+                pros=["ChatGPT integration", "High quality", "Safety focused", "Easy to use"],
+                cons=["Requires ChatGPT Plus", "Limited styles", "Content restrictions", "Queue times"],
+                use_cases=["Creative projects", "Marketing", "Illustrations", "Concept art"],
+                alternatives=["Midjourney", "Stable Diffusion", "Adobe Firefly"],
+                website_url="https://openai.com/dall-e-3",
+                free_tier=False
+            ),
+            "Stable Diffusion": AIToolReview(
+                tool_name="Stable Diffusion",
+                category="image_generation",
+                rating=4.3,
+                pricing="Free, Cloud services $9-50/month",
+                key_features=["Open source", "Local deployment", "Custom models", "API access"],
+                pros=["Free", "Customizable", "No restrictions", "Community models"],
+                cons=["Technical setup", "Hardware requirements", "Learning curve", "Quality varies"],
+                use_cases=["Art creation", "Custom models", "Research", "Commercial use"],
+                alternatives=["Midjourney", "DALL-E", "Adobe Firefly"],
+                website_url="https://stability.ai",
+                free_tier=True
+            ),
+            "Adobe Firefly": AIToolReview(
+                tool_name="Adobe Firefly",
+                category="image_generation",
+                rating=4.2,
+                pricing="Free tier, $4.99-22.99/month",
+                key_features=["Adobe integration", "Commercial safe", "Style matching", "Text effects"],
+                pros=["Adobe integration", "Commercial license", "Professional tools", "Style consistency"],
+                cons=["Limited compared to competitors", "Adobe ecosystem", "Newer platform", "Less community"],
+                use_cases=["Commercial design", "Adobe workflows", "Brand consistency", "Text effects"],
+                alternatives=["Midjourney", "DALL-E", "Stable Diffusion"],
+                website_url="https://firefly.adobe.com",
+                free_tier=True
+            ),
+
+            # Code Assistance Tools
             "GitHub Copilot": AIToolReview(
                 tool_name="GitHub Copilot",
                 category="code_assistance",
-                rating=4.3,
-                pricing="$10/month",
+                rating=4.5,
+                pricing="$10/month, $19/month for business",
                 key_features=["Code completion", "Multiple languages", "Context awareness", "IDE integration"],
-                pros=["Excellent suggestions", "Time-saving", "Multiple IDE support", "Learning capability"],
+                pros=["Excellent suggestions", "Time-saving", "Multiple IDE support", "GitHub integration"],
                 cons=["Subscription cost", "Occasional errors", "Security concerns", "Dependency risk"],
                 use_cases=["Software development", "Code review", "Learning", "Prototyping"],
                 alternatives=["CodeWhisperer", "Tabnine", "Codeium"],
                 website_url="https://github.com/features/copilot",
                 free_tier=False
+            ),
+            "Amazon CodeWhisperer": AIToolReview(
+                tool_name="Amazon CodeWhisperer",
+                category="code_assistance",
+                rating=4.2,
+                pricing="Free for individual, $19/month Professional",
+                key_features=["AWS integration", "Security scanning", "Multiple IDEs", "Real-time suggestions"],
+                pros=["AWS integration", "Security focus", "Free tier", "Professional features"],
+                cons=["AWS ecosystem", "Less mature", "Limited languages", "Learning curve"],
+                use_cases=["AWS development", "Security-focused coding", "Enterprise", "Cloud development"],
+                alternatives=["GitHub Copilot", "Tabnine", "Codeium"],
+                website_url="https://aws.amazon.com/codewhisperer",
+                free_tier=True
+            ),
+            "Tabnine": AIToolReview(
+                tool_name="Tabnine",
+                category="code_assistance",
+                rating=4.1,
+                pricing="Free, Pro $12/month",
+                key_features=["Privacy focused", "On-premise deployment", "Team training", "Multiple IDEs"],
+                pros=["Privacy focused", "Customizable", "Local deployment", "Team features"],
+                cons=["Less accurate", "Expensive for teams", "Learning curve", "Limited free tier"],
+                use_cases=["Privacy-sensitive projects", "Custom models", "Team development", "Enterprise"],
+                alternatives=["GitHub Copilot", "CodeWhisperer", "Codeium"],
+                website_url="https://tabnine.com",
+                free_tier=True
+            ),
+            "Codeium": AIToolReview(
+                tool_name="Codeium",
+                category="code_assistance",
+                rating=4.0,
+                pricing="Free for individual, Team plans available",
+                key_features=["Free tier", "Multiple languages", "Chat interface", "IDE integration"],
+                pros=["Generous free tier", "Multiple languages", "Chat feature", "Growing community"],
+                cons=["Newer platform", "Less mature", "Limited enterprise", "Smaller user base"],
+                use_cases=["Individual development", "Learning", "Side projects", "Cost-conscious teams"],
+                alternatives=["GitHub Copilot", "CodeWhisperer", "Tabnine"],
+                website_url="https://codeium.com",
+                free_tier=True
+            ),
+
+            # Productivity Tools
+            "Notion AI": AIToolReview(
+                tool_name="Notion AI",
+                category="productivity",
+                rating=4.3,
+                pricing="$10/month (add-on to Notion)",
+                key_features=["Writing assistance", "Content generation", "Notion integration", "Template creation"],
+                pros=["Seamless integration", "Writing help", "Template generation", "Workflow optimization"],
+                cons=["Requires Notion", "Limited features", "Additional cost", "Learning curve"],
+                use_cases=["Note-taking", "Documentation", "Project management", "Content planning"],
+                alternatives=["ChatGPT", "Grammarly", "Todoist"],
+                website_url="https://notion.so/ai",
+                free_tier=False
+            ),
+            "Grammarly": AIToolReview(
+                tool_name="Grammarly",
+                category="productivity",
+                rating=4.4,
+                pricing="Free, Premium $12/month",
+                key_features=["Grammar checking", "Style suggestions", "Plagiarism detection", "Tone analysis"],
+                pros=["Accurate corrections", "Writing improvement", "Multiple platforms", "Good free tier"],
+                cons=["Limited creativity", "Subscription for full features", "Privacy concerns", "Overly formal"],
+                use_cases=["Writing improvement", "Professional communication", "Academic writing", "Email"],
+                alternatives=["ProWritingAid", "Hemingway", "ChatGPT"],
+                website_url="https://grammarly.com",
+                free_tier=True
+            ),
+            "Zapier": AIToolReview(
+                tool_name="Zapier",
+                category="productivity",
+                rating=4.2,
+                pricing="Free, Starter $19.99/month",
+                key_features=["Workflow automation", "App integrations", "AI-powered suggestions", "No-code platform"],
+                pros=["Extensive integrations", "No-code automation", "Time-saving", "AI suggestions"],
+                cons=["Complex pricing", "Learning curve", "Limited free tier", "Execution delays"],
+                use_cases=["Workflow automation", "Data synchronization", "Marketing automation", "Productivity"],
+                alternatives=["Make.com", "Microsoft Power Automate", "IFTTT"],
+                website_url="https://zapier.com",
+                free_tier=True
+            ),
+
+            # Data Analysis Tools
+            "DataRobot": AIToolReview(
+                tool_name="DataRobot",
+                category="data_analysis",
+                rating=4.3,
+                pricing="Enterprise pricing, Free trial",
+                key_features=["AutoML platform", "Model deployment", "Feature engineering", "Model monitoring"],
+                pros=["Automated ML", "Enterprise features", "Model governance", "Scalable"],
+                cons=["Enterprise focused", "Expensive", "Steep learning curve", "Overkill for simple tasks"],
+                use_cases=["Enterprise ML", "Predictive analytics", "Model deployment", "Data science teams"],
+                alternatives=["H2O.ai", "AutoML services", "Traditional ML tools"],
+                website_url="https://datarobot.com",
+                free_tier=False
+            ),
+            "Tableau": AIToolReview(
+                tool_name="Tableau",
+                category="data_analysis",
+                rating=4.4,
+                pricing="$70-150/month per user",
+                key_features=["Data visualization", "AI insights", "Dashboard creation", "Enterprise integration"],
+                pros=["Powerful visualization", "AI-powered insights", "Enterprise ready", "Large community"],
+                cons=["Expensive", "Learning curve", "Resource intensive", "Complex for beginners"],
+                use_cases=["Business intelligence", "Data visualization", "Executive dashboards", "Analytics"],
+                alternatives=["Power BI", "Looker", "Qlik Sense"],
+                website_url="https://tableau.com",
+                free_tier=False
+            ),
+            "Power BI": AIToolReview(
+                tool_name="Power BI",
+                category="data_analysis",
+                rating=4.2,
+                pricing="$10-20/month per user",
+                key_features=["Microsoft integration", "AI visuals", "Self-service BI", "Cloud and on-premise"],
+                pros=["Microsoft ecosystem", "Cost-effective", "AI features", "Good performance"],
+                cons=["Microsoft dependency", "Learning curve", "Limited customization", "Complex licensing"],
+                use_cases=["Business intelligence", "Microsoft environments", "Self-service analytics", "Reporting"],
+                alternatives=["Tableau", "Looker", "Qlik Sense"],
+                website_url="https://powerbi.microsoft.com",
+                free_tier=True
             )
         }
     
