@@ -50,7 +50,10 @@
       "Read(D:\\Users\\Fzero\\project\\ai-smarthome\\ai-smarthome/**)",
       "Read(D:\\Users\\Fzero\\project\\ai-smarthome\\ai-smarthome/**)",
       "Read(D:\\Users\\Fzero\\project\\ai-smarthome\\ai-smarthome/**)",
-      "Bash(git reset:*)"
+      "Bash(git reset:*)",
+      "Bash(pip install:*)",
+      "Bash(python test:*)",
+      "Bash(python:*)"
     ],
     "deny": [],
     "ask": [],
