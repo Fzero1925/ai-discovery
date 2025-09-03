@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="{{ site.Language.Lang | default "en" }}">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    
+    {{ $title := cond .IsHome site.Title (printf "%s | %s" .Title site.Title) }}
+    <title>{{ $title }}</title>
+    
+    {{ if .Description }}
+    <meta name="description" content="{{ .Description }}">
+    {{ else if .IsHome }}
+    <meta name="description" content="{{ site.Params.description }}">
+    {{ else }}
+    <meta name="description" content="{{ .Summary | truncate 155 }}">
+    {{ end }}
+    
+    <meta name="keywords" content="{{ if .Params.tags }}{{ delimit .Params.tags ", " }}{{ else }}{{ site.Params.keywords }}{{ end }}">
+    <meta name="author" content="{{ site.Params.author }}">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="{{ if .IsHome }}website{{ else }}article{{ end }}">
+    <meta property="og:url" content="{{ .Permalink }}">
+    <meta property="og:title" content="{{ $title }}">
+    <meta property="og:description" content="{{ if .Description }}{{ .Description }}{{ else }}{{ .Summary | truncate 155 }}{{ end }}">
+    {{ if .Params.featured_image }}
+    <meta property="og:image" content="{{ absURL .Params.featured_image }}">
+    {{ else }}
+    <meta property="og:image" content="{{ absURL "/images/ai-discovery-og.jpg" }}">
+    {{ end }}
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="{{ .Permalink }}">
+    <meta property="twitter:title" content="{{ $title }}">
+    <meta property="twitter:description" content="{{ if .Description }}{{ .Description }}{{ else }}{{ .Summary | truncate 155 }}{{ end }}">
+    {{ if .Params.featured_image }}
+    <meta property="twitter:image" content="{{ absURL .Params.featured_image }}">
+    {{ else }}
+    <meta property="twitter:image" content="{{ absURL "/images/ai-discovery-og.jpg" }}">
+    {{ end }}
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="{{ .Permalink }}">
+    
+    <!-- RSS Feed -->
+    {{ with .OutputFormats.Get "RSS" }}
+    <link rel="alternate" type="application/rss+xml" title="{{ site.Title }}" href="{{ .Permalink }}">
+    {{ end }}
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="{{ "css/main.css" | absURL }}">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Schema.org structured data -->
+    {{ if .IsHome }}
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "{{ site.Title }}",
+        "url": "{{ site.BaseURL }}",
+        "description": "{{ site.Params.description }}",
+        "sameAs": []
+    }
+    </script>
+    {{ else if eq .Type "articles" }}
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Review",
+        "name": "{{ .Title }}",
+        "reviewBody": "{{ .Summary | truncate 200 }}",
+        "datePublished": "{{ .Date.Format "2006-01-02" }}",
+        "author": {
+            "@type": "Organization",
+            "name": "{{ site.Params.author }}"
+        },
+        "publisher": {
+            "@type": "Organization",
+            "name": "{{ site.Title }}"
+        }
+    }
+    </script>
+    {{ end }}
+    
+    <!-- Google Analytics -->
+    {{ if site.Params.google_analytics_id }}
+    <script async src="https://www.googletagmanager.com/gtag/js?id={{ site.Params.google_analytics_id }}"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', '{{ site.Params.google_analytics_id }}');
+    </script>
+    {{ end }}
+</head>
+
+<body class="{{ .Type }} {{ if .IsHome }}home{{ end }}">
+    <header class="site-header">
+        <nav class="navbar">
+            <div class="nav-container">
+                <div class="nav-brand">
+                    <a href="/" class="brand-link">
+                        <img src="/images/logo.svg" alt="AI Discovery" class="brand-logo">
+                        <span class="brand-text">AI Discovery</span>
+                    </a>
+                </div>
+                
+                <div class="nav-menu" id="nav-menu">
+                    {{ range site.Menus.main }}
+                    <a href="{{ .URL }}" class="nav-link {{ if $.IsMenuCurrent "main" . }}active{{ end }}">
+                        {{ .Name }}
+                    </a>
+                    {{ end }}
+                    <a href="/search/" class="nav-link search-link">
+                        <span class="search-icon">🔍</span>
+                        Search
+                    </a>
+                </div>
+                
+                <div class="nav-toggle" id="nav-toggle">
+                    <span class="toggle-line"></span>
+                    <span class="toggle-line"></span>
+                    <span class="toggle-line"></span>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="site-main">
+        {{ block "main" . }}{{ end }}
+    </main>
+
+    <footer class="site-footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>AI Discovery</h3>
+                <p>Your trusted source for AI tool reviews, comparisons, and guides. Helping professionals make informed decisions about artificial intelligence software.</p>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Categories</h3>
+                <ul class="footer-links">
+                    <li><a href="/categories/content-creation/">Content Creation</a></li>
+                    <li><a href="/categories/image-generation/">Image Generation</a></li>
+                    <li><a href="/categories/code-assistance/">Code Assistance</a></li>
+                    <li><a href="/categories/productivity/">Productivity</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Resources</h3>
+                <ul class="footer-links">
+                    <li><a href="/about/">About Us</a></li>
+                    <li><a href="/contact/">Contact</a></li>
+                    <li><a href="/privacy-policy/">Privacy Policy</a></li>
+                    <li><a href="/terms-of-service/">Terms of Service</a></li>
+                    <li><a href="/affiliate-disclosure/">Affiliate Disclosure</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Newsletter</h3>
+                <p>Get weekly AI tool insights and exclusive reviews.</p>
+                <form class="footer-newsletter" action="#" method="post">
+                    <input type="email" placeholder="Your email" required>
+                    <button type="submit">Subscribe</button>
+                </form>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <div class="footer-bottom-content">
+                <p>&copy; {{ now.Format "2006" }} {{ site.Title }}. All rights reserved.</p>
+                <p class="footer-disclaimer">
+                    We may earn affiliate commissions from qualifying purchases at no extra cost to you.
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- AdSense Auto Ads -->
+    {{ if site.Params.google_adsense_id }}
+    {{ partial "adsense" . }}
+    {{ end }}
+
+    <!-- JavaScript -->
+    <script src="{{ "js/main.js" | absURL }}" defer></script>
+</body>
+</html>

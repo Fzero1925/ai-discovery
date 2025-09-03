@@ -1,0 +1,109 @@
+{{ define "main" }}
+<div class="hero-section">
+    <div class="hero-content">
+        <h1 class="hero-title">Discover the Best AI Tools for Your Needs</h1>
+        <p class="hero-description">
+            Comprehensive reviews, expert analysis, and practical guides to help you navigate 
+            the ever-evolving world of artificial intelligence tools and software.
+        </p>
+        <div class="hero-stats">
+            <div class="stat">
+                <span class="stat-number">500+</span>
+                <span class="stat-label">AI Tools Reviewed</span>
+            </div>
+            <div class="stat">
+                <span class="stat-number">50K+</span>
+                <span class="stat-label">Monthly Readers</span>
+            </div>
+            <div class="stat">
+                <span class="stat-number">4.8★</span>
+                <span class="stat-label">User Rating</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<section class="categories-section">
+    <div class="container">
+        <h2>Explore AI Tool Categories</h2>
+        <div class="categories-grid">
+            <div class="category-card">
+                <div class="category-icon">✍️</div>
+                <h3>Content Creation</h3>
+                <p>AI writing assistants, copywriting tools, and content generators for marketers and creators.</p>
+                <a href="/categories/content-creation/" class="category-link">Explore Tools →</a>
+            </div>
+            
+            <div class="category-card">
+                <div class="category-icon">🎨</div>
+                <h3>Image Generation</h3>
+                <p>Text-to-image AI, art generators, and visual design tools for creative professionals.</p>
+                <a href="/categories/image-generation/" class="category-link">Explore Tools →</a>
+            </div>
+            
+            <div class="category-card">
+                <div class="category-icon">💻</div>
+                <h3>Code Assistance</h3>
+                <p>AI-powered coding assistants, code completion, and development productivity tools.</p>
+                <a href="/categories/code-assistance/" class="category-link">Explore Tools →</a>
+            </div>
+            
+            <div class="category-card">
+                <div class="category-icon">⚡</div>
+                <h3>Productivity</h3>
+                <p>Task automation, workflow optimization, and AI-powered business productivity solutions.</p>
+                <a href="/categories/productivity/" class="category-link">Explore Tools →</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="featured-reviews">
+    <div class="container">
+        <h2>Latest AI Tool Reviews</h2>
+        <div class="reviews-grid">
+            {{ range first 6 (where site.RegularPages "Section" "articles") }}
+            <article class="review-card">
+                <div class="review-image">
+                    {{ if .Params.featured_image }}
+                    <img src="{{ .Params.featured_image }}" alt="{{ .Title }}" loading="lazy">
+                    {{ else }}
+                    <img src="/images/default-ai-tool.jpg" alt="{{ .Title }}" loading="lazy">
+                    {{ end }}
+                </div>
+                <div class="review-content">
+                    <div class="review-category">
+                        {{ range .Params.categories }}
+                        <span class="category-tag">{{ . | title }}</span>
+                        {{ end }}
+                    </div>
+                    <h3><a href="{{ .Permalink }}">{{ .Title }}</a></h3>
+                    <p class="review-excerpt">{{ .Description | truncate 120 }}</p>
+                    <div class="review-meta">
+                        <span class="review-date">{{ .Date.Format "Jan 2, 2006" }}</span>
+                        <span class="reading-time">{{ .ReadingTime }} min read</span>
+                    </div>
+                </div>
+            </article>
+            {{ end }}
+        </div>
+        <div class="view-all">
+            <a href="/articles/" class="btn-primary">View All Reviews</a>
+        </div>
+    </div>
+</section>
+
+<section class="newsletter-signup">
+    <div class="container">
+        <div class="newsletter-content">
+            <h2>Stay Updated with AI Innovation</h2>
+            <p>Get weekly insights on the latest AI tools, reviews, and industry trends delivered to your inbox.</p>
+            <form class="newsletter-form" action="#" method="post">
+                <input type="email" placeholder="Enter your email address" required>
+                <button type="submit" class="btn-secondary">Subscribe</button>
+            </form>
+            <p class="newsletter-privacy">No spam, unsubscribe at any time.</p>
+        </div>
+    </div>
+</section>
+{{ end }}

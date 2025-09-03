@@ -1,0 +1,218 @@
+{{ define "main" }}
+<article class="article-single">
+    <!-- Article Header -->
+    <header class="article-header">
+        <div class="article-header-content">
+            <div class="article-meta">
+                {{ range .Params.categories }}
+                <span class="article-category">{{ . | title }}</span>
+                {{ end }}
+                <time class="article-date" datetime="{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}">
+                    {{ .Date.Format "January 2, 2006" }}
+                </time>
+                <span class="reading-time">{{ .ReadingTime }} min read</span>
+            </div>
+            
+            <h1 class="article-title">{{ .Title }}</h1>
+            
+            {{ if .Description }}
+            <p class="article-description">{{ .Description }}</p>
+            {{ end }}
+            
+            <!-- Rating Display (if available) -->
+            {{ if .Params.rating }}
+            <div class="article-rating">
+                <div class="rating-stars">
+                    {{ range seq 5 }}
+                    {{ if le . ($.Params.rating | int) }}
+                    <span class="star filled">★</span>
+                    {{ else }}
+                    <span class="star">☆</span>
+                    {{ end }}
+                    {{ end }}
+                </div>
+                <span class="rating-text">{{ .Params.rating }}/5 Rating</span>
+            </div>
+            {{ end }}
+        </div>
+        
+        {{ if .Params.featured_image }}
+        <div class="article-image">
+            <img src="{{ .Params.featured_image }}" alt="{{ .Title }}" loading="eager">
+        </div>
+        {{ end }}
+    </header>
+
+    <!-- Table of Contents -->
+    <div class="table-of-contents">
+        <h3>Table of Contents</h3>
+        <nav class="toc-nav">
+            <ol>
+                <li><a href="#tool-introduction">Tool Introduction</a></li>
+                <li><a href="#core-features-highlights">Core Features & Highlights</a></li>
+                <li><a href="#use-cases-applications">Use Cases & Applications</a></li>
+                <li><a href="#community-reviews-expert-analysis">Community Reviews & Expert Analysis</a></li>
+                <li><a href="#pricing-access-information">Pricing & Access Information</a></li>
+                <li><a href="#faq-important-considerations">FAQ & Important Considerations</a></li>
+            </ol>
+        </nav>
+    </div>
+
+    <!-- Article Content -->
+    <div class="article-content">
+        {{ .Content }}
+    </div>
+
+    <!-- Tool Summary Box -->
+    {{ if or .Params.tool_website .Params.pricing .Params.free_trial }}
+    <div class="tool-summary-box">
+        <h3>{{ .Params.tool_name | default (index (split .Title " ") 0) }} Quick Summary</h3>
+        <div class="summary-grid">
+            {{ if .Params.tool_website }}
+            <div class="summary-item">
+                <strong>Official Website:</strong>
+                <a href="{{ .Params.tool_website }}" target="_blank" rel="noopener">Visit Website →</a>
+            </div>
+            {{ end }}
+            
+            {{ if .Params.pricing }}
+            <div class="summary-item">
+                <strong>Pricing:</strong>
+                <span>{{ .Params.pricing }}</span>
+            </div>
+            {{ end }}
+            
+            {{ if .Params.free_trial }}
+            <div class="summary-item">
+                <strong>Free Trial:</strong>
+                <span class="free-trial">{{ if .Params.free_trial }}✅ Available{{ else }}❌ Not Available{{ end }}</span>
+            </div>
+            {{ end }}
+            
+            {{ if .Params.rating }}
+            <div class="summary-item">
+                <strong>Our Rating:</strong>
+                <span class="rating">{{ .Params.rating }}/5 ⭐</span>
+            </div>
+            {{ end }}
+        </div>
+    </div>
+    {{ end }}
+
+    <!-- Pros and Cons (if available) -->
+    {{ if or .Params.pros .Params.cons }}
+    <div class="pros-cons-section">
+        <div class="pros-cons-grid">
+            {{ if .Params.pros }}
+            <div class="pros-section">
+                <h3>✅ Pros</h3>
+                <ul>
+                    {{ range .Params.pros }}
+                    <li>{{ . }}</li>
+                    {{ end }}
+                </ul>
+            </div>
+            {{ end }}
+            
+            {{ if .Params.cons }}
+            <div class="cons-section">
+                <h3>❌ Cons</h3>
+                <ul>
+                    {{ range .Params.cons }}
+                    <li>{{ . }}</li>
+                    {{ end }}
+                </ul>
+            </div>
+            {{ end }}
+        </div>
+    </div>
+    {{ end }}
+
+    <!-- Article Tags -->
+    {{ if .Params.tags }}
+    <div class="article-tags">
+        <h3>Related Topics</h3>
+        <div class="tags-list">
+            {{ range .Params.tags }}
+            <a href="/tags/{{ . | urlize }}/" class="tag">{{ . }}</a>
+            {{ end }}
+        </div>
+    </div>
+    {{ end }}
+
+    <!-- Social Sharing -->
+    <div class="social-sharing">
+        <h3>Share This Review</h3>
+        <div class="sharing-buttons">
+            <a href="https://twitter.com/intent/tweet?url={{ .Permalink }}&text={{ .Title }}" 
+               class="share-btn twitter" target="_blank" rel="noopener">
+                Share on Twitter
+            </a>
+            <a href="https://www.linkedin.com/sharing/share-offsite/?url={{ .Permalink }}" 
+               class="share-btn linkedin" target="_blank" rel="noopener">
+                Share on LinkedIn
+            </a>
+            <a href="https://www.facebook.com/sharer/sharer.php?u={{ .Permalink }}" 
+               class="share-btn facebook" target="_blank" rel="noopener">
+                Share on Facebook
+            </a>
+        </div>
+    </div>
+
+    <!-- Author Bio -->
+    <div class="author-bio">
+        <div class="author-info">
+            <img src="/images/author-avatar.jpg" alt="AI Discovery Team" class="author-avatar">
+            <div class="author-details">
+                <h3>Written by {{ site.Params.author }}</h3>
+                <p>Our team of AI specialists and technology researchers provides comprehensive, unbiased reviews of AI tools and software. We test each tool extensively to help you make informed decisions.</p>
+            </div>
+        </div>
+    </div>
+</article>
+
+<!-- Related Articles -->
+<section class="related-articles">
+    <div class="container">
+        <h2>Related AI Tool Reviews</h2>
+        <div class="related-grid">
+            {{ $related := (where site.RegularPages "Section" .Section) | intersect (where site.RegularPages ".Params.categories" "intersect" .Params.categories) }}
+            {{ $related := $related | complement (slice .) }}
+            {{ range first 3 $related }}
+            <article class="related-card">
+                <div class="related-image">
+                    {{ if .Params.featured_image }}
+                    <img src="{{ .Params.featured_image }}" alt="{{ .Title }}" loading="lazy">
+                    {{ else }}
+                    <img src="/images/default-ai-tool.jpg" alt="{{ .Title }}" loading="lazy">
+                    {{ end }}
+                </div>
+                <div class="related-content">
+                    <h3><a href="{{ .Permalink }}">{{ .Title }}</a></h3>
+                    <p>{{ .Description | truncate 100 }}</p>
+                    <div class="related-meta">
+                        {{ range .Params.categories }}
+                        <span class="category-tag">{{ . }}</span>
+                        {{ end }}
+                    </div>
+                </div>
+            </article>
+            {{ end }}
+        </div>
+    </div>
+</section>
+
+<!-- Newsletter CTA -->
+<section class="newsletter-cta">
+    <div class="container">
+        <div class="cta-content">
+            <h2>Want More AI Tool Insights?</h2>
+            <p>Join 10,000+ professionals getting weekly AI tool reviews and exclusive insights.</p>
+            <form class="newsletter-form" action="#" method="post">
+                <input type="email" placeholder="Enter your email" required>
+                <button type="submit" class="btn-primary">Get Weekly Updates</button>
+            </form>
+        </div>
+    </div>
+</section>
+{{ end }}

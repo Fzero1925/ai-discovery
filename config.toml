@@ -1,0 +1,74 @@
+baseURL = "/"
+title = "AI Discovery - Your Ultimate AI Tools Guide"  
+languageCode = "en-us"
+enableRobotsTXT = true
+enableGitInfo = false
+
+[pagination]
+  pagerSize = 12
+
+[params]
+  description = "Comprehensive reviews and guides for AI tools, productivity software, and intelligent automation solutions."
+  author = "AI Discovery Team"
+  keywords = "AI tools, artificial intelligence, productivity software, content creation AI, image generation, coding assistants"
+  google_adsense_id = "ca-pub-test"
+  google_analytics_id = "G-TEST"
+
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true
+  [markup.highlight]
+    style = "github"
+    lineNos = true
+
+# Multilingual support
+defaultContentLanguage = "en"
+[languages]
+  [languages.en]
+    contentDir = "content"
+    languageName = "English"
+    weight = 1
+    title = "AI Discovery"
+    [languages.en.params]
+      description = "Your ultimate guide to AI tools and intelligent software"
+  
+  [languages.zh]
+    contentDir = "content-zh" 
+    languageName = "中文"
+    weight = 2
+    title = "AI工具发现"
+    [languages.zh.params]
+      description = "AI工具和智能软件的终极指南"
+
+[menu]
+  [[menu.main]]
+    name = "Home"
+    url = "/"
+    weight = 1
+  [[menu.main]]
+    name = "Content Creation"
+    url = "/categories/content-creation/"
+    weight = 2
+  [[menu.main]]
+    name = "Image Generation"
+    url = "/categories/image-generation/"
+    weight = 3
+  [[menu.main]]
+    name = "Code Assistance"
+    url = "/categories/code-assistance/"
+    weight = 4
+  [[menu.main]]
+    name = "Productivity"
+    url = "/categories/productivity/"
+    weight = 5
+
+[sitemap]
+  changefreq = "weekly"
+  priority = 0.5
+  filename = "sitemap.xml"
+
+[outputs]
+  home = ["HTML", "RSS", "JSON"]
+  page = ["HTML"]
+  section = ["HTML", "RSS"]
