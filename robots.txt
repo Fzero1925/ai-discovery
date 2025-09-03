@@ -1,1 +1,42 @@
 User-agent: *
+Allow: /
+
+# Optimize crawling for AI tool review pages
+Allow: /reviews/
+Allow: /categories/
+Allow: /tags/
+
+# Disallow administrative and template files
+Disallow: /admin/
+Disallow: /*_template*
+Disallow: /*_draft*
+Disallow: /search/?*
+
+# Sitemap location
+Sitemap: /sitemap.xml
+
+# Crawl delay to be respectful
+Crawl-delay: 1
+
+# Specific directives for major search engines
+User-agent: Googlebot
+Crawl-delay: 0
+Allow: /
+
+User-agent: Bingbot
+Crawl-delay: 1
+Allow: /
+
+User-agent: Slurp
+Crawl-delay: 1
+Allow: /
+
+# Block common spam bots
+User-agent: SemrushBot
+Disallow: /
+
+User-agent: AhrefsBot
+Disallow: /
+
+User-agent: MJ12bot
+Disallow: /
