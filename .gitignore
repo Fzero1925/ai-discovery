@@ -52,3 +52,7 @@ data/ai_tool_keywords_cache.json
 
 # Generated files tracking
 generated_files.txt
+
+# Project organization folders (not uploaded to GitHub)
+oldfile/
+test/

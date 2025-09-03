@@ -13,7 +13,7 @@ Disallow: /*_draft*
 Disallow: /search/?*
 
 # Sitemap location
-Sitemap: //localhost:1315/sitemap.xml
+Sitemap: {{ site.BaseURL }}sitemap.xml
 
 # Crawl delay to be respectful
 Crawl-delay: 1

@@ -1,0 +1,127 @@
+<!-- Breadcrumb Navigation with Schema.org markup -->
+{{ if not .IsHome }}
+<nav class="breadcrumb-nav" aria-label="Breadcrumb">
+    <div class="breadcrumb-container">
+        <ol class="breadcrumb-list" itemscope itemtype="https://schema.org/BreadcrumbList">
+            <!-- Home -->
+            <li class="breadcrumb-item" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+                <a href="/" itemprop="item" class="breadcrumb-link">
+                    <span itemprop="name">Home</span>
+                </a>
+                <meta itemprop="position" content="1" />
+                <span class="breadcrumb-separator" aria-hidden="true">›</span>
+            </li>
+            
+            <!-- Section (Categories, etc.) -->
+            {{ if .Section }}
+            <li class="breadcrumb-item" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+                <a href="/{{ .Section }}/" itemprop="item" class="breadcrumb-link">
+                    <span itemprop="name">{{ .Section | title }}</span>
+                </a>
+                <meta itemprop="position" content="2" />
+                {{ if ne .Type "section" }}
+                <span class="breadcrumb-separator" aria-hidden="true">›</span>
+                {{ end }}
+            </li>
+            {{ end }}
+            
+            <!-- Category (if exists) -->
+            {{ if .Params.categories }}
+            {{ range first 1 .Params.categories }}
+            <li class="breadcrumb-item" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+                <a href="/categories/{{ . | urlize }}/" itemprop="item" class="breadcrumb-link">
+                    <span itemprop="name">{{ . | title }}</span>
+                </a>
+                <meta itemprop="position" content="{{ if $.Section }}3{{ else }}2{{ end }}" />
+                <span class="breadcrumb-separator" aria-hidden="true">›</span>
+            </li>
+            {{ end }}
+            {{ end }}
+            
+            <!-- Current Page (if not section page) -->
+            {{ if ne .Type "section" }}
+            <li class="breadcrumb-item breadcrumb-current" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+                <span itemprop="item" class="breadcrumb-current-text">
+                    <span itemprop="name">{{ .Title | truncate 50 }}</span>
+                </span>
+                <meta itemprop="position" content="{{ if and .Section .Params.categories }}4{{ else if or .Section .Params.categories }}3{{ else }}2{{ end }}" />
+            </li>
+            {{ end }}
+        </ol>
+    </div>
+</nav>
+
+<!-- Breadcrumb CSS (inline for immediate styling) -->
+<style>
+.breadcrumb-nav {
+    background-color: #f8f9fa;
+    padding: 0.75rem 0;
+    margin-bottom: 1.5rem;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.breadcrumb-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+.breadcrumb-list {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    font-size: 0.875rem;
+}
+
+.breadcrumb-item {
+    display: flex;
+    align-items: center;
+}
+
+.breadcrumb-link {
+    color: #0066cc;
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.breadcrumb-link:hover {
+    color: #004499;
+    text-decoration: underline;
+}
+
+.breadcrumb-current-text {
+    color: #6c757d;
+    font-weight: 500;
+}
+
+.breadcrumb-separator {
+    margin: 0 0.5rem;
+    color: #6c757d;
+    font-weight: bold;
+}
+
+@media (max-width: 768px) {
+    .breadcrumb-nav {
+        padding: 0.5rem 0;
+    }
+    
+    .breadcrumb-list {
+        font-size: 0.8125rem;
+    }
+    
+    .breadcrumb-separator {
+        margin: 0 0.25rem;
+    }
+    
+    .breadcrumb-item span[itemprop="name"] {
+        max-width: 120px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+}
+</style>
+{{ end }}

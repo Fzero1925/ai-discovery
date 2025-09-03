@@ -1,0 +1,281 @@
+<!-- Smart Internal Linking System for SEO -->
+
+<!-- Related Articles by Category -->
+{{ $currentPage := . }}
+{{ $relatedByCategory := (where site.RegularPages "Section" .Section) | intersect (where site.RegularPages ".Params.categories" "intersect" .Params.categories) }}
+{{ $relatedByCategory := $relatedByCategory | complement (slice .) }}
+
+<!-- Related Articles by Tags -->
+{{ $relatedByTags := (where site.RegularPages "Section" .Section) | intersect (where site.RegularPages ".Params.tags" "intersect" .Params.tags) }}
+{{ $relatedByTags := $relatedByTags | complement (slice .) }}
+
+<!-- Combine and deduplicate -->
+{{ $allRelated := $relatedByCategory | union $relatedByTags }}
+{{ $topRelated := first 6 $allRelated }}
+
+{{ if $topRelated }}
+<div class="internal-links-section">
+    <div class="container">
+        <h2 class="internal-links-title">Related AI Tool Reviews</h2>
+        <div class="internal-links-grid">
+            {{ range $topRelated }}
+            <article class="internal-link-card">
+                <div class="link-card-image">
+                    {{ if .Params.featured_image }}
+                    <img src="{{ .Params.featured_image }}" alt="{{ .Title }}" loading="lazy">
+                    {{ else }}
+                    <img src="/images/default-ai-tool.jpg" alt="{{ .Title }}" loading="lazy">
+                    {{ end }}
+                </div>
+                <div class="link-card-content">
+                    <h3 class="link-card-title">
+                        <a href="{{ .Permalink }}" rel="related">{{ .Title }}</a>
+                    </h3>
+                    <p class="link-card-description">{{ .Description | default (.Summary | truncate 100) }}</p>
+                    <div class="link-card-meta">
+                        {{ if .Params.rating }}
+                        <span class="rating">⭐ {{ .Params.rating }}/5</span>
+                        {{ end }}
+                        {{ range first 1 .Params.categories }}
+                        <span class="category-tag">{{ . | title }}</span>
+                        {{ end }}
+                        {{ if .Params.pricing }}
+                        <span class="pricing-tag">{{ .Params.pricing }}</span>
+                        {{ end }}
+                    </div>
+                </div>
+            </article>
+            {{ end }}
+        </div>
+    </div>
+</div>
+
+<!-- Contextual Links Based on Content -->
+{{ $currentCategory := index .Params.categories 0 }}
+{{ $categoryPages := where site.RegularPages ".Params.categories" "intersect" (slice $currentCategory) }}
+{{ $categoryCount := len $categoryPages }}
+
+{{ if gt $categoryCount 3 }}
+<div class="contextual-links">
+    <div class="container">
+        <div class="contextual-links-content">
+            <h3>Explore More {{ $currentCategory | title }} Tools</h3>
+            <p>We've reviewed {{ $categoryCount }} tools in the {{ $currentCategory | title }} category. 
+               <a href="/categories/{{ $currentCategory | urlize }}/" class="category-link">See all {{ $currentCategory | title }} reviews →</a>
+            </p>
+        </div>
+    </div>
+</div>
+{{ end }}
+
+<!-- Popular Articles Cross-Links -->
+{{ $popularArticles := first 3 (where site.RegularPages "Section" "reviews" | shuffle) }}
+{{ if $popularArticles }}
+<div class="popular-links">
+    <div class="container">
+        <h3>Popular AI Tool Reviews</h3>
+        <ul class="popular-links-list">
+            {{ range $popularArticles }}
+            <li class="popular-link-item">
+                <a href="{{ .Permalink }}" class="popular-link">
+                    <span class="popular-link-title">{{ .Title }}</span>
+                    {{ if .Params.rating }}
+                    <span class="popular-link-rating">{{ .Params.rating }}/5 ⭐</span>
+                    {{ end }}
+                </a>
+            </li>
+            {{ end }}
+        </ul>
+    </div>
+</div>
+{{ end }}
+
+<style>
+/* Internal Links Styling */
+.internal-links-section {
+    background-color: #f8f9fa;
+    padding: 2rem 0;
+    margin: 2rem 0;
+    border-radius: 8px;
+}
+
+.internal-links-title {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    color: #333;
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+.internal-links-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.internal-link-card {
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.internal-link-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+}
+
+.link-card-image {
+    height: 150px;
+    overflow: hidden;
+}
+
+.link-card-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.link-card-content {
+    padding: 1rem;
+}
+
+.link-card-title a {
+    color: #333;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1rem;
+    line-height: 1.3;
+}
+
+.link-card-title a:hover {
+    color: #0066cc;
+    text-decoration: underline;
+}
+
+.link-card-description {
+    color: #666;
+    font-size: 0.875rem;
+    margin: 0.5rem 0;
+    line-height: 1.4;
+}
+
+.link-card-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 0.75rem;
+}
+
+.link-card-meta span {
+    font-size: 0.75rem;
+    padding: 0.25rem 0.5rem;
+    border-radius: 12px;
+    background-color: #f0f0f0;
+    color: #666;
+}
+
+.rating {
+    background-color: #fff3cd !important;
+    color: #856404 !important;
+}
+
+.category-tag {
+    background-color: #d4edda !important;
+    color: #155724 !important;
+}
+
+.pricing-tag {
+    background-color: #cce5ff !important;
+    color: #004085 !important;
+}
+
+.contextual-links {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 1.5rem 0;
+    margin: 2rem 0;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.contextual-links h3 {
+    margin-bottom: 0.5rem;
+    font-size: 1.25rem;
+}
+
+.category-link {
+    color: #ffd700;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.category-link:hover {
+    text-decoration: underline;
+}
+
+.popular-links {
+    border-top: 1px solid #e9ecef;
+    padding: 1.5rem 0 0;
+    margin-top: 2rem;
+}
+
+.popular-links h3 {
+    color: #333;
+    margin-bottom: 1rem;
+    font-size: 1.25rem;
+}
+
+.popular-links-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.popular-link-item {
+    margin-bottom: 0.75rem;
+}
+
+.popular-link {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem;
+    background-color: #f8f9fa;
+    border-radius: 6px;
+    text-decoration: none;
+    color: #333;
+    transition: background-color 0.2s ease;
+}
+
+.popular-link:hover {
+    background-color: #e9ecef;
+    text-decoration: none;
+}
+
+.popular-link-rating {
+    color: #666;
+    font-size: 0.875rem;
+}
+
+@media (max-width: 768px) {
+    .internal-links-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    
+    .link-card-image {
+        height: 120px;
+    }
+    
+    .popular-link {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.25rem;
+    }
+}
+</style>
+{{ end }}

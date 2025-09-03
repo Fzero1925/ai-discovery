@@ -1,0 +1,245 @@
+<!-- Enhanced Schema.org structured data for SEO optimization -->
+
+{{ if .IsHome }}
+<!-- Organization Schema for Homepage -->
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "{{ site.Title }}",
+    "url": "{{ site.BaseURL }}",
+    "description": "{{ site.Params.description }}",
+    "logo": "{{ absURL "/images/logo.svg" }}",
+    "foundingDate": "2024",
+    "contactPoint": {
+        "@type": "ContactPoint",
+        "contactType": "Customer Service",
+        "email": "contact@aidiscovery.com"
+    },
+    "sameAs": [
+        "https://twitter.com/aidiscovery",
+        "https://linkedin.com/company/aidiscovery"
+    ]
+}
+</script>
+
+<!-- Website Schema -->
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "{{ site.Title }}",
+    "url": "{{ site.BaseURL }}",
+    "description": "{{ site.Params.description }}",
+    "publisher": {
+        "@type": "Organization",
+        "name": "{{ site.Title }}"
+    },
+    "potentialAction": {
+        "@type": "SearchAction",
+        "target": {
+            "@type": "EntryPoint",
+            "urlTemplate": "{{ site.BaseURL }}search/?q={search_term_string}"
+        },
+        "query-input": "required name=search_term_string"
+    }
+}
+</script>
+
+{{ else if eq .Section "reviews" }}
+<!-- AI Tool Review Schema -->
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "Review",
+    "name": "{{ .Title }}",
+    "author": {
+        "@type": "Organization",
+        "name": "{{ site.Params.author }}",
+        "url": "{{ site.BaseURL }}"
+    },
+    "datePublished": "{{ .Date.Format "2006-01-02" }}",
+    "dateModified": "{{ .Lastmod.Format "2006-01-02" }}",
+    "description": "{{ if .Description }}{{ .Description }}{{ else }}{{ .Summary | truncate 160 }}{{ end }}",
+    "reviewBody": "{{ .Summary | truncate 300 }}",
+    {{ if .Params.rating }}
+    "reviewRating": {
+        "@type": "Rating",
+        "ratingValue": "{{ .Params.rating }}",
+        "bestRating": "5",
+        "worstRating": "1"
+    },
+    {{ end }}
+    "itemReviewed": {
+        "@type": "SoftwareApplication",
+        "name": "{{ .Params.tool_name | default (index (split .Title " ") 0) }}",
+        "description": "{{ if .Description }}{{ .Description }}{{ else }}{{ .Summary | truncate 200 }}{{ end }}",
+        {{ if .Params.tool_website }}
+        "url": "{{ .Params.tool_website }}",
+        {{ end }}
+        "applicationCategory": "{{ range .Params.categories }}{{ . | title }}{{ end }}",
+        {{ if .Params.pricing }}
+        "offers": {
+            "@type": "Offer",
+            "price": "{{ .Params.pricing }}",
+            "priceCurrency": "USD"
+        },
+        {{ end }}
+        {{ if .Params.rating }}
+        "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "{{ .Params.rating }}",
+            "reviewCount": "1",
+            "bestRating": "5",
+            "worstRating": "1"
+        },
+        {{ end }}
+        "operatingSystem": "Web, Windows, macOS, iOS, Android"
+    },
+    "publisher": {
+        "@type": "Organization",
+        "name": "{{ site.Title }}",
+        "logo": {
+            "@type": "ImageObject",
+            "url": "{{ absURL "/images/logo.svg" }}"
+        }
+    },
+    "image": "{{ if .Params.featured_image }}{{ absURL .Params.featured_image }}{{ else }}{{ absURL "/images/ai-discovery-og.jpg" }}{{ end }}"
+}
+</script>
+
+<!-- Article Schema -->
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "{{ .Title }}",
+    "description": "{{ if .Description }}{{ .Description }}{{ else }}{{ .Summary | truncate 160 }}{{ end }}",
+    "author": {
+        "@type": "Organization",
+        "name": "{{ site.Params.author }}",
+        "url": "{{ site.BaseURL }}"
+    },
+    "publisher": {
+        "@type": "Organization",
+        "name": "{{ site.Title }}",
+        "logo": {
+            "@type": "ImageObject",
+            "url": "{{ absURL "/images/logo.svg" }}"
+        }
+    },
+    "datePublished": "{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}",
+    "dateModified": "{{ .Lastmod.Format "2006-01-02T15:04:05Z07:00" }}",
+    "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "{{ .Permalink }}"
+    },
+    "image": "{{ if .Params.featured_image }}{{ absURL .Params.featured_image }}{{ else }}{{ absURL "/images/ai-discovery-og.jpg" }}{{ end }}",
+    "wordCount": "{{ .WordCount }}",
+    "keywords": "{{ if .Params.tags }}{{ delimit .Params.tags ", " }}{{ else }}{{ site.Params.keywords }}{{ end }}"
+}
+</script>
+
+{{ else if eq .Section "categories" }}
+<!-- Category Page Schema -->
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    "name": "{{ .Title }}",
+    "description": "{{ if .Description }}{{ .Description }}{{ else }}{{ .Summary | truncate 160 }}{{ end }}",
+    "url": "{{ .Permalink }}",
+    "publisher": {
+        "@type": "Organization",
+        "name": "{{ site.Title }}"
+    },
+    "mainEntity": {
+        "@type": "ItemList",
+        "numberOfItems": "{{ len (.Paginator.Pages) }}",
+        "itemListElement": [
+            {{ range $index, $page := .Paginator.Pages }}
+            {{ if $index }},{{ end }}
+            {
+                "@type": "ListItem",
+                "position": "{{ add $index 1 }}",
+                "item": {
+                    "@type": "Article",
+                    "name": "{{ $page.Title }}",
+                    "url": "{{ $page.Permalink }}",
+                    "description": "{{ if $page.Description }}{{ $page.Description }}{{ else }}{{ $page.Summary | truncate 100 }}{{ end }}"
+                }
+            }
+            {{ end }}
+        ]
+    }
+}
+</script>
+
+{{ else }}
+<!-- Generic Page Schema -->
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "name": "{{ .Title }}",
+    "description": "{{ if .Description }}{{ .Description }}{{ else }}{{ .Summary | truncate 160 }}{{ end }}",
+    "url": "{{ .Permalink }}",
+    "datePublished": "{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}",
+    "dateModified": "{{ .Lastmod.Format "2006-01-02T15:04:05Z07:00" }}",
+    "publisher": {
+        "@type": "Organization",
+        "name": "{{ site.Title }}"
+    },
+    "breadcrumb": {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+            {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Home",
+                "item": "{{ site.BaseURL }}"
+            }
+            {{ if .Section }}
+            ,{
+                "@type": "ListItem", 
+                "position": 2,
+                "name": "{{ .Section | title }}",
+                "item": "{{ site.BaseURL }}{{ .Section }}/"
+            }
+            {{ end }}
+            {{ if ne .Type "section" }}
+            ,{
+                "@type": "ListItem",
+                "position": {{ if .Section }}3{{ else }}2{{ end }},
+                "name": "{{ .Title }}",
+                "item": "{{ .Permalink }}"
+            }
+            {{ end }}
+        ]
+    }
+}
+</script>
+{{ end }}
+
+<!-- FAQ Schema (if FAQ data exists in front matter) -->
+{{ if .Params.faq }}
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+        {{ range $index, $faq := .Params.faq }}
+        {{ if $index }},{{ end }}
+        {
+            "@type": "Question",
+            "name": "{{ $faq.question }}",
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "{{ $faq.answer }}"
+            }
+        }
+        {{ end }}
+    ]
+}
+</script>
+{{ end }}

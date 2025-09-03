@@ -1,4 +1,7 @@
 {{ define "main" }}
+<!-- Breadcrumb Navigation -->
+{{ partial "breadcrumb" . }}
+
 <article class="article-single">
     <!-- Article Header -->
     <header class="article-header">
@@ -171,36 +174,8 @@
     </div>
 </article>
 
-<!-- Related Articles -->
-<section class="related-articles">
-    <div class="container">
-        <h2>Related AI Tool Reviews</h2>
-        <div class="related-grid">
-            {{ $related := (where site.RegularPages "Section" .Section) | intersect (where site.RegularPages ".Params.categories" "intersect" .Params.categories) }}
-            {{ $related := $related | complement (slice .) }}
-            {{ range first 3 $related }}
-            <article class="related-card">
-                <div class="related-image">
-                    {{ if .Params.featured_image }}
-                    <img src="{{ .Params.featured_image }}" alt="{{ .Title }}" loading="lazy">
-                    {{ else }}
-                    <img src="/images/default-ai-tool.jpg" alt="{{ .Title }}" loading="lazy">
-                    {{ end }}
-                </div>
-                <div class="related-content">
-                    <h3><a href="{{ .Permalink }}">{{ .Title }}</a></h3>
-                    <p>{{ .Description | truncate 100 }}</p>
-                    <div class="related-meta">
-                        {{ range .Params.categories }}
-                        <span class="category-tag">{{ . }}</span>
-                        {{ end }}
-                    </div>
-                </div>
-            </article>
-            {{ end }}
-        </div>
-    </div>
-</section>
+<!-- Enhanced Internal Linking System -->
+{{ partial "internal-links" . }}
 
 <!-- Newsletter CTA -->
 <section class="newsletter-cta">

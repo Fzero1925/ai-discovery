@@ -1,0 +1,144 @@
+<!-- Enhanced SEO Meta Tags -->
+
+<!-- Primary Meta Tags -->
+<meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+<meta name="googlebot" content="index, follow">
+<meta name="bingbot" content="index, follow">
+
+{{ if .Params.tags }}
+<meta name="keywords" content="{{ delimit .Params.tags ", " }}, {{ site.Params.keywords }}">
+{{ else }}
+<meta name="keywords" content="{{ site.Params.keywords }}">
+{{ end }}
+
+<meta name="author" content="{{ site.Params.author }}">
+<meta name="language" content="{{ site.Language.Lang | default "en" }}">
+<meta name="revisit-after" content="7 days">
+
+<!-- Enhanced Open Graph Meta Tags -->
+<meta property="og:locale" content="{{ site.Language.Lang | default "en_US" }}">
+<meta property="og:type" content="{{ if .IsHome }}website{{ else if eq .Section "reviews" }}article{{ else }}website{{ end }}">
+<meta property="og:url" content="{{ .Permalink }}">
+<meta property="og:site_name" content="{{ site.Title }}">
+
+{{ $title := cond .IsHome site.Title (printf "%s | %s" .Title site.Title) }}
+<meta property="og:title" content="{{ $title }}">
+
+{{ if .Description }}
+<meta property="og:description" content="{{ .Description }}">
+{{ else if .IsHome }}
+<meta property="og:description" content="{{ site.Params.description }}">
+{{ else }}
+<meta property="og:description" content="{{ .Summary | truncate 160 }}">
+{{ end }}
+
+{{ if .Params.featured_image }}
+<meta property="og:image" content="{{ absURL .Params.featured_image }}">
+<meta property="og:image:alt" content="{{ .Title }} - AI Tool Review">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:type" content="image/jpeg">
+{{ else }}
+<meta property="og:image" content="{{ absURL "/images/ai-discovery-og.jpg" }}">
+<meta property="og:image:alt" content="{{ site.Title }} - Your Ultimate AI Tools Guide">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:type" content="image/jpeg">
+{{ end }}
+
+{{ if eq .Section "reviews" }}
+<meta property="article:author" content="{{ site.Params.author }}">
+<meta property="article:published_time" content="{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}">
+<meta property="article:modified_time" content="{{ .Lastmod.Format "2006-01-02T15:04:05Z07:00" }}">
+{{ if .Params.categories }}
+{{ range .Params.categories }}
+<meta property="article:section" content="{{ . | title }}">
+{{ end }}
+{{ end }}
+{{ if .Params.tags }}
+{{ range .Params.tags }}
+<meta property="article:tag" content="{{ . }}">
+{{ end }}
+{{ end }}
+{{ end }}
+
+<!-- Enhanced Twitter Card Meta Tags -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@aidiscovery">
+<meta name="twitter:creator" content="@aidiscovery">
+<meta name="twitter:url" content="{{ .Permalink }}">
+<meta name="twitter:title" content="{{ $title }}">
+
+{{ if .Description }}
+<meta name="twitter:description" content="{{ .Description }}">
+{{ else if .IsHome }}
+<meta name="twitter:description" content="{{ site.Params.description }}">
+{{ else }}
+<meta name="twitter:description" content="{{ .Summary | truncate 160 }}">
+{{ end }}
+
+{{ if .Params.featured_image }}
+<meta name="twitter:image" content="{{ absURL .Params.featured_image }}">
+<meta name="twitter:image:alt" content="{{ .Title }} - AI Tool Review">
+{{ else }}
+<meta name="twitter:image" content="{{ absURL "/images/ai-discovery-og.jpg" }}">
+<meta name="twitter:image:alt" content="{{ site.Title }} - Your Ultimate AI Tools Guide">
+{{ end }}
+
+<!-- Additional Meta Tags for AI Tool Reviews -->
+{{ if eq .Section "reviews" }}
+{{ if .Params.tool_name }}
+<meta name="product:name" content="{{ .Params.tool_name }}">
+{{ end }}
+{{ if .Params.tool_website }}
+<meta name="product:url" content="{{ .Params.tool_website }}">
+{{ end }}
+{{ if .Params.pricing }}
+<meta name="product:price" content="{{ .Params.pricing }}">
+<meta name="product:currency" content="USD">
+{{ end }}
+{{ if .Params.rating }}
+<meta name="product:rating" content="{{ .Params.rating }}">
+<meta name="product:rating:scale" content="5">
+{{ end }}
+{{ if .Params.categories }}
+<meta name="product:category" content="{{ index .Params.categories 0 | title }}">
+{{ end }}
+{{ end }}
+
+<!-- Canonical and Alternate URLs -->
+<link rel="canonical" href="{{ .Permalink }}">
+
+<!-- hreflang tags for multilingual -->
+{{ if hugo.IsMultilingual }}
+{{ range site.Languages }}
+{{ if ne .Lang site.Language.Lang }}
+<link rel="alternate" hreflang="{{ .Lang }}" href="{{ $.Permalink | replaceRE "^https?://[^/]+" site.BaseURL }}">
+{{ end }}
+{{ end }}
+<link rel="alternate" hreflang="x-default" href="{{ .Permalink }}">
+{{ end }}
+
+<!-- RSS and JSON Feed -->
+{{ with .OutputFormats.Get "RSS" }}
+<link rel="alternate" type="application/rss+xml" title="{{ site.Title }} RSS Feed" href="{{ .Permalink }}">
+{{ end }}
+{{ with .OutputFormats.Get "JSON" }}
+<link rel="alternate" type="application/json" title="{{ site.Title }} JSON Feed" href="{{ .Permalink }}">
+{{ end }}
+
+<!-- Additional SEO Enhancement Tags -->
+<meta name="format-detection" content="telephone=no">
+<meta name="theme-color" content="#0066cc">
+<meta name="msapplication-TileColor" content="#0066cc">
+
+{{ if .IsHome }}
+<meta name="google-site-verification" content="your-google-verification-code">
+<meta name="msvalidate.01" content="your-bing-verification-code">
+{{ end }}
+
+<!-- Structured Data for Review Snippets -->
+{{ if and (eq .Section "reviews") .Params.rating }}
+<meta name="rating" content="{{ .Params.rating }}">
+<meta name="rating_scale" content="5">
+{{ end }}

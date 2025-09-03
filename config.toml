@@ -13,6 +13,24 @@ enableGitInfo = false
   keywords = "AI tools, artificial intelligence, productivity software, content creation AI, image generation, coding assistants"
   google_adsense_id = "ca-pub-test"
   google_analytics_id = "G-TEST"
+  
+  # SEO enhancements
+  twitter = "@aidiscovery"
+  github = "https://github.com/aidiscovery"
+  linkedin = "https://linkedin.com/company/aidiscovery"
+  email = "contact@aidiscovery.com"
+  
+  # Organization info for structured data
+  organization_type = "Organization"
+  founding_date = "2024"
+  
+  # Default sharing image
+  default_image = "/images/ai-discovery-og.jpg"
+  
+  # Enable/disable features
+  enable_breadcrumbs = true
+  enable_structured_data = true
+  enable_enhanced_seo = true
 
 [markup]
   [markup.goldmark]
@@ -67,6 +85,29 @@ defaultContentLanguage = "en"
   changefreq = "weekly"
   priority = 0.5
   filename = "sitemap.xml"
+
+# SEO and performance optimizations
+[minify]
+  disableCSS = false
+  disableHTML = false
+  disableJS = false
+  disableJSON = false
+  disableSVG = false
+  disableXML = false
+  
+[minify.tdewolff.html]
+  keepEndTags = false
+  keepDefaultAttrVals = false
+  keepDocumentTags = true
+  keepWhitespace = false
+
+[minify.tdewolff.css]
+  keepCSS2 = true
+  precision = 0
+
+[minify.tdewolff.js]
+  keepVarNames = false
+  precision = 0
 
 [outputs]
   home = ["HTML", "RSS", "JSON"]
