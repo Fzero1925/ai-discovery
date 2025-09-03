@@ -1,0 +1,211 @@
+name: AI Discovery - Daily Content Generation
+
+on:
+  schedule:
+    # Run daily at 2:00 AM UTC (10:00 AM Beijing Time)
+    - cron: '0 2 * * *'
+  workflow_dispatch: # Allow manual trigger
+  push:
+    branches: [main]
+    paths:
+      - 'modules/**'
+      - '.github/workflows/**'
+
+env:
+  HUGO_VERSION: "0.149.0"
+
+jobs:
+  generate-content:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pages: write
+      id-token: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install Python dependencies
+        run: |
+          pip install -r requirements.txt
+
+      - name: Setup Hugo
+        uses: peaceiris/actions-hugo@v2
+        with:
+          hugo-version: ${{ env.HUGO_VERSION }}
+          extended: true
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Cache Hugo modules
+        uses: actions/cache@v3
+        with:
+          path: /tmp/hugo_cache
+          key: ${{ runner.os }}-hugomod-${{ hashFiles('**/go.sum') }}
+          restore-keys: |
+            ${{ runner.os }}-hugomod-
+
+      - name: Generate AI tool keywords
+        id: keywords
+        run: |
+          echo "🔍 Analyzing trending AI tools..."
+          python -c "
+          import sys
+          sys.path.append('modules')
+          from keyword_tools.ai_tool_keyword_analyzer import AIToolKeywordAnalyzer
+          
+          analyzer = AIToolKeywordAnalyzer()
+          keywords = analyzer.get_daily_ai_keywords()
+          
+          print(f'Found {len(keywords)} trending keywords')
+          for kw in keywords[:5]:
+              print(f'  - {kw.keyword} (Score: {kw.trend_score})')
+          
+          # Save keywords for content generation
+          import json
+          with open('daily_keywords.json', 'w') as f:
+              json.dump([{
+                  'keyword': kw.keyword,
+                  'category': kw.category,
+                  'trend_score': kw.trend_score,
+                  'related_queries': kw.related_queries
+              } for kw in keywords], f, indent=2)
+          "
+
+      - name: Generate new content
+        id: content
+        run: |
+          echo "📝 Generating AI tool reviews..."
+          python -c "
+          import sys, json, os
+          from datetime import datetime
+          sys.path.append('modules')
+          from content_generator.ai_tool_content_generator import AIToolContentGenerator
+          
+          # Load trending keywords
+          if os.path.exists('daily_keywords.json'):
+              with open('daily_keywords.json', 'r') as f:
+                  keywords = json.load(f)
+          else:
+              keywords = []
+          
+          generator = AIToolContentGenerator()
+          
+          # Generate content for top trending tools
+          generated_files = []
+          for tool_name in generator.ai_tool_database.keys():
+              target_keywords = [tool_name + ' review', 'AI tools 2025', f'best {tool_name} alternative']
+              
+              try:
+                  content = generator.generate_ai_tool_review(tool_name, target_keywords)
+                  
+                  # Create filename
+                  filename = f'content/reviews/{tool_name.lower().replace(\" \", \"-\")}-review-{datetime.now().strftime(\"%Y-%m\")}.md'
+                  
+                  # Ensure directory exists
+                  os.makedirs('content/reviews', exist_ok=True)
+                  
+                  # Skip if file already exists
+                  if not os.path.exists(filename):
+                      with open(filename, 'w', encoding='utf-8') as f:
+                          f.write(content)
+                      generated_files.append(filename)
+                      print(f'Generated: {filename}')
+              except Exception as e:
+                  print(f'Error generating content for {tool_name}: {e}')
+          
+          print(f'Generated {len(generated_files)} new articles')
+          
+          # Set output for next step
+          with open('generated_files.txt', 'w') as f:
+              f.write('\n'.join(generated_files))
+          "
+
+      - name: Build Hugo site
+        run: |
+          echo "🏗️ Building Hugo site..."
+          hugo --minify --environment production
+          
+          # Check if build was successful
+          if [ -d "public" ]; then
+            echo "✅ Hugo build successful"
+            echo "📁 Generated files:"
+            find public -name "*.html" | wc -l
+          else
+            echo "❌ Hugo build failed"
+            exit 1
+          fi
+
+      - name: Commit new content
+        run: |
+          echo "📤 Committing generated content..."
+          git config --local user.email "action@github.com"
+          git config --local user.name "AI Discovery Bot"
+          
+          # Add generated files
+          if [ -f "generated_files.txt" ] && [ -s "generated_files.txt" ]; then
+            while IFS= read -r file; do
+              if [ -f "$file" ]; then
+                git add "$file"
+                echo "Added: $file"
+              fi
+            done < generated_files.txt
+            
+            # Add data files
+            git add data/ || true
+            
+            # Check if there are changes to commit
+            if git diff --staged --quiet; then
+              echo "No new content to commit"
+            else
+              git commit -m "🤖 Auto-generate AI tool reviews - $(date +'%Y-%m-%d %H:%M UTC')
+
+              Generated by AI Discovery automation system
+              
+              🔍 Generated with [Claude Code](https://claude.ai/code)
+              
+              Co-Authored-By: Claude <noreply@anthropic.com>"
+              
+              git push
+              echo "✅ Content committed and pushed"
+            fi
+          else
+            echo "No content generated, skipping commit"
+          fi
+
+      - name: Deploy to GitHub Pages
+        if: github.ref == 'refs/heads/main'
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./public
+          cname: # Will be set when domain is registered
+
+      - name: Performance report
+        run: |
+          echo "📊 Build Performance Report"
+          echo "=========================="
+          echo "Hugo version: $(hugo version)"
+          echo "Build time: $(date)"
+          echo "Generated pages: $(find public -name "*.html" | wc -l)"
+          echo "Total size: $(du -sh public)"
+          echo "=========================="
+
+      - name: Cleanup
+        if: always()
+        run: |
+          # Clean up temporary files
+          rm -f daily_keywords.json generated_files.txt
+          echo "🧹 Cleanup completed"

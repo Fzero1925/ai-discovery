@@ -1,0 +1,176 @@
+name: AI Discovery - Vercel Deployment
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch: # Manual trigger
+
+env:
+  VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+  VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+  HUGO_VERSION: "0.149.0"
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: production
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install Python dependencies
+        run: |
+          pip install -r requirements.txt
+
+      - name: Setup Hugo
+        uses: peaceiris/actions-hugo@v2
+        with:
+          hugo-version: ${{ env.HUGO_VERSION }}
+          extended: true
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install Vercel CLI
+        run: npm i -g vercel@latest
+
+      - name: Generate fresh content (if needed)
+        run: |
+          echo "🔄 Checking for fresh content generation..."
+          # Only generate if it's been more than 12 hours since last generation
+          if [ ! -f "content/reviews/.last-generation" ] || [ $(find content/reviews/.last-generation -mtime +0.5 | wc -l) -gt 0 ]; then
+            echo "📝 Generating fresh AI tool reviews..."
+            python -c "
+            import sys, os
+            from datetime import datetime
+            sys.path.append('modules')
+            from content_generator.ai_tool_content_generator import AIToolContentGenerator
+            
+            generator = AIToolContentGenerator()
+            
+            # Generate content for one tool per deployment
+            tools = list(generator.ai_tool_database.keys())
+            if tools:
+                tool_name = tools[0]  # For demo, just use first tool
+                target_keywords = [tool_name + ' review', 'AI tools guide']
+                
+                try:
+                    content = generator.generate_ai_tool_review(tool_name, target_keywords)
+                    
+                    # Create unique filename to avoid conflicts
+                    filename = f'content/reviews/{tool_name.lower().replace(\" \", \"-\")}-detailed-review.md'
+                    os.makedirs('content/reviews', exist_ok=True)
+                    
+                    with open(filename, 'w', encoding='utf-8') as f:
+                        f.write(content)
+                    print(f'Generated: {filename}')
+                    
+                    # Update timestamp
+                    with open('content/reviews/.last-generation', 'w') as f:
+                        f.write(str(datetime.now()))
+                        
+                except Exception as e:
+                    print(f'Content generation error: {e}')
+            "
+          else
+            echo "✅ Recent content exists, skipping generation"
+          fi
+
+      - name: Build Hugo site
+        run: |
+          echo "🏗️ Building Hugo site for production..."
+          hugo --minify --environment production --destination public
+          
+          # Verify build
+          if [ ! -d "public" ]; then
+            echo "❌ Hugo build failed"
+            exit 1
+          fi
+          
+          echo "✅ Hugo build successful"
+          echo "📊 Build statistics:"
+          echo "   HTML files: $(find public -name "*.html" | wc -l)"
+          echo "   CSS files: $(find public -name "*.css" | wc -l)" 
+          echo "   JS files: $(find public -name "*.js" | wc -l)"
+          echo "   Total size: $(du -sh public | cut -f1)"
+
+      - name: Deploy to Vercel (Preview)
+        if: github.event_name == 'pull_request'
+        run: |
+          echo "🚀 Deploying to Vercel (Preview)..."
+          vercel deploy --token=${{ secrets.VERCEL_TOKEN }} --cwd public > deployment-url.txt
+          echo "preview-url=$(cat deployment-url.txt)" >> $GITHUB_OUTPUT
+
+      - name: Deploy to Vercel (Production)
+        if: github.ref == 'refs/heads/main'
+        run: |
+          echo "🚀 Deploying to Vercel (Production)..."
+          vercel deploy --prod --token=${{ secrets.VERCEL_TOKEN }} --cwd public > deployment-url.txt
+          echo "production-url=$(cat deployment-url.txt)" >> $GITHUB_OUTPUT
+
+      - name: Update deployment status
+        if: always()
+        run: |
+          if [ -f "deployment-url.txt" ]; then
+            URL=$(cat deployment-url.txt)
+            echo "✅ Deployment successful!"
+            echo "🌐 Live URL: $URL"
+            
+            # Comment on PR if it's a pull request
+            if [ "${{ github.event_name }}" = "pull_request" ]; then
+              echo "Preview deployed to: $URL" >> $GITHUB_STEP_SUMMARY
+            else
+              echo "Production deployed to: $URL" >> $GITHUB_STEP_SUMMARY
+            fi
+          else
+            echo "❌ Deployment failed"
+            exit 1
+          fi
+
+      - name: Run basic health check
+        if: success()
+        run: |
+          if [ -f "deployment-url.txt" ]; then
+            URL=$(cat deployment-url.txt)
+            echo "🏥 Running health check on $URL..."
+            
+            # Wait a moment for deployment to be ready
+            sleep 10
+            
+            # Check if site is accessible
+            if curl -f -s "$URL" > /dev/null; then
+              echo "✅ Site is accessible"
+              
+              # Check for key elements
+              if curl -s "$URL" | grep -q "AI Discovery"; then
+                echo "✅ Site content verified"
+              else
+                echo "⚠️ Site accessible but content may be incomplete"
+              fi
+            else
+              echo "❌ Site health check failed"
+            fi
+          fi
+
+      - name: Performance metrics
+        run: |
+          echo "📈 Deployment Metrics"
+          echo "===================="
+          echo "Hugo version: $(hugo version)"
+          echo "Node.js version: $(node --version)"
+          echo "Vercel CLI version: $(vercel --version)"
+          echo "Build timestamp: $(date)"
+          echo "Commit SHA: ${{ github.sha }}"
+          echo "===================="
