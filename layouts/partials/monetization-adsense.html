@@ -1,0 +1,199 @@
+<!-- AdSense自动化广告系统 - 专为AI工具评测优化 -->
+{{ if site.Params.google_adsense_id }}
+
+<!-- AdSense 自动广告脚本 -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client={{ site.Params.google_adsense_id }}"
+     crossorigin="anonymous"></script>
+
+<!-- 文章头部横幅广告 - 高转化位置 -->
+{{ if eq .Section "reviews" }}
+<div class="ad-container ad-article-header">
+    <div class="ad-label">Advertisement</div>
+    <!-- 响应式广告单元 -->
+    <ins class="adsbygoogle"
+         style="display:block"
+         data-ad-client="{{ site.Params.google_adsense_id }}"
+         data-ad-slot="1234567890"
+         data-ad-format="auto"
+         data-full-width-responsive="true"></ins>
+</div>
+{{ end }}
+
+<!-- 文章内容中段广告 - 原生广告 -->
+{{ if and (.IsPage) (eq .Section "reviews") }}
+<div class="ad-container ad-in-article">
+    <div class="ad-label">相关推荐</div>
+    <ins class="adsbygoogle"
+         style="display:block; text-align:center;"
+         data-ad-layout="in-article"
+         data-ad-format="fluid"
+         data-ad-client="{{ site.Params.google_adsense_id }}"
+         data-ad-slot="2345678901"></ins>
+</div>
+{{ end }}
+
+<!-- 侧边栏广告 - 桌面端显示 -->
+<div class="ad-container ad-sidebar desktop-only">
+    <div class="ad-label">推荐工具</div>
+    <ins class="adsbygoogle"
+         style="display:inline-block;width:300px;height:600px"
+         data-ad-client="{{ site.Params.google_adsense_id }}"
+         data-ad-slot="3456789012"></ins>
+</div>
+
+<!-- 移动端横幅广告 -->
+<div class="ad-container ad-mobile-banner mobile-only">
+    <div class="ad-label">Advertisement</div>
+    <ins class="adsbygoogle"
+         style="display:block"
+         data-ad-client="{{ site.Params.google_adsense_id }}"
+         data-ad-slot="4567890123"
+         data-ad-format="rectangle"></ins>
+</div>
+
+<!-- 文章底部推荐广告 -->
+{{ if .IsPage }}
+<div class="ad-container ad-article-footer">
+    <div class="ad-label">为您推荐</div>
+    <ins class="adsbygoogle"
+         style="display:block"
+         data-ad-format="autorelaxed"
+         data-ad-client="{{ site.Params.google_adsense_id }}"
+         data-ad-slot="5678901234"></ins>
+</div>
+{{ end }}
+
+<!-- AdSense广告初始化脚本 -->
+<script>
+(function() {
+    // 延迟加载广告，提升页面性能
+    function loadAds() {
+        try {
+            const ads = document.querySelectorAll('.adsbygoogle');
+            ads.forEach(function(ad) {
+                if (!ad.getAttribute('data-adsbygoogle-status')) {
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                }
+            });
+        } catch (e) {
+            console.log('AdSense loading error:', e);
+        }
+    }
+    
+    // 页面加载完成后初始化广告
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(loadAds, 1000);
+        });
+    } else {
+        setTimeout(loadAds, 1000);
+    }
+    
+    // AdSense性能监控
+    window.adsbygoogle = window.adsbygoogle || [];
+    window.adsbygoogle.push({
+        google_ad_client: "{{ site.Params.google_adsense_id }}",
+        enable_page_level_ads: true,
+        overlays: {bottom: true}
+    });
+})();
+</script>
+
+<!-- AdSense CSS优化 -->
+<style>
+.ad-container {
+    margin: 20px 0;
+    padding: 10px;
+    text-align: center;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    border: 1px solid #e9ecef;
+}
+
+.ad-label {
+    font-size: 12px;
+    color: #6c757d;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.ad-article-header {
+    margin-bottom: 30px;
+}
+
+.ad-in-article {
+    margin: 40px 0;
+    background: transparent;
+    border: none;
+}
+
+.ad-article-footer {
+    margin-top: 40px;
+    margin-bottom: 20px;
+}
+
+.ad-sidebar {
+    position: sticky;
+    top: 20px;
+    margin: 20px 0;
+}
+
+.ad-mobile-banner {
+    margin: 15px 0;
+    padding: 8px;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .desktop-only {
+        display: none !important;
+    }
+    
+    .ad-container {
+        margin: 15px 0;
+        padding: 8px;
+    }
+}
+
+@media (min-width: 769px) {
+    .mobile-only {
+        display: none !important;
+    }
+}
+
+/* AdSense优化 */
+.adsbygoogle {
+    display: block !important;
+}
+
+/* 加载状态 */
+.ad-container.loading {
+    min-height: 200px;
+    background: linear-gradient(90deg, #f0f0f0 25%, transparent 37%, #f0f0f0 63%);
+    background-size: 400% 100%;
+    animation: skeleton 1.5s ease-in-out infinite;
+}
+
+@keyframes skeleton {
+    0% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0 50%;
+    }
+}
+</style>
+
+{{ end }}
+
+<!-- AdSense收益优化提示 -->
+<!-- 
+变现优化建议:
+1. 文章头部广告 - 最高CTR位置
+2. 文章中段原生广告 - 用户参与度高
+3. 侧边栏粘性广告 - 持续曝光
+4. 移动端优化 - 响应式设计
+5. 延迟加载 - 提升页面速度
+6. 性能监控 - 跟踪收益数据
+-->

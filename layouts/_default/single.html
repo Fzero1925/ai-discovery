@@ -66,6 +66,11 @@
         {{ .Content }}
     </div>
 
+    <!-- 联盟营销系统 - AI工具专用 -->
+    {{ if eq .Section "reviews" }}
+    {{ partial "affiliate-marketing" . }}
+    {{ end }}
+
     <!-- Tool Summary Box -->
     {{ if or .Params.tool_website .Params.pricing .Params.free_trial }}
     <div class="tool-summary-box">

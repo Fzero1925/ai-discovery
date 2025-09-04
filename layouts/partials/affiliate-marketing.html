@@ -1,0 +1,479 @@
+<!-- 联盟营销自动化系统 - AI工具专用 -->
+
+<!-- 联盟链接管理数据 -->
+{{ $affiliateData := dict
+  "jasper" (dict "url" "https://jasper.ai/?via=aidiscovery" "commission" "30%" "cookie" "45天")
+  "copy_ai" (dict "url" "https://copy.ai?via=aidiscovery" "commission" "25%" "cookie" "30天")
+  "notion" (dict "url" "https://notion.so?r=aidiscovery" "commission" "20%" "cookie" "180天")
+  "grammarly" (dict "url" "https://grammarly.com/a/aidiscovery" "commission" "20%" "cookie" "90天")
+  "canva" (dict "url" "https://canva.com/p/aidiscovery" "commission" "15%" "cookie" "30天")
+  "midjourney" (dict "url" "https://midjourney.com/?ref=aidiscovery" "commission" "N/A" "cookie" "N/A")
+  "leonardo_ai" (dict "url" "https://leonardo.ai?via=aidiscovery" "commission" "25%" "cookie" "30天")
+  "cursor_ai" (dict "url" "https://cursor.so?ref=aidiscovery" "commission" "30%" "cookie" "60天")
+  "zapier" (dict "url" "https://zapier.com/l/aidiscovery" "commission" "25%" "cookie" "90天")
+}}
+
+<!-- 主要CTA按钮 - 针对当前评测工具 -->
+{{ if and (.Params.tool_name) (.IsPage) (eq .Section "reviews") }}
+  {{ $toolKey := lower (.Params.tool_name | replaceRE "[^a-zA-Z0-9]" "_") }}
+  {{ $affiliateInfo := index $affiliateData $toolKey }}
+  
+  <div class="affiliate-cta-container">
+    <div class="affiliate-main-cta">
+      {{ if $affiliateInfo }}
+        <a href="{{ $affiliateInfo.url }}" 
+           class="btn-affiliate-primary"
+           target="_blank" 
+           rel="nofollow sponsored"
+           data-tool="{{ .Params.tool_name }}"
+           onclick="trackAffiliate('{{ .Params.tool_name }}', 'main_cta')">
+          🚀 开始免费试用 {{ .Params.tool_name }}
+          <span class="affiliate-badge">限时优惠</span>
+        </a>
+        
+        <div class="affiliate-info">
+          <small>
+            ✅ {{ $affiliateInfo.cookie }}免费试用期 | 
+            💰 佣金支持本站运营 ({{ $affiliateInfo.commission }}) |
+            🔒 价格不变，支持内容创作
+          </small>
+        </div>
+      {{ else }}
+        <!-- 通用CTA -->
+        <a href="#" 
+           class="btn-affiliate-primary"
+           onclick="trackAffiliate('{{ .Params.tool_name }}', 'generic_cta')">
+          🔍 查看 {{ .Params.tool_name }} 官方网站
+        </a>
+      {{ end }}
+    </div>
+  </div>
+{{ end }}
+
+<!-- 价格对比表格 - 带联盟链接 -->
+{{ if .Params.pricing_comparison }}
+<div class="affiliate-pricing-table">
+  <h3>💰 价格对比 - 最优惠渠道</h3>
+  <div class="pricing-grid">
+    {{ range .Params.pricing_comparison }}
+    <div class="pricing-card">
+      <div class="pricing-header">
+        <h4>{{ .plan_name }}</h4>
+        <div class="price">{{ .price }}</div>
+      </div>
+      <div class="pricing-features">
+        {{ range .features }}
+        <div class="feature">✅ {{ . }}</div>
+        {{ end }}
+      </div>
+      <div class="pricing-cta">
+        {{ $toolKey := lower ($.Params.tool_name | replaceRE "[^a-zA-Z0-9]" "_") }}
+        {{ $affiliateInfo := index $affiliateData $toolKey }}
+        
+        {{ if $affiliateInfo }}
+        <a href="{{ $affiliateInfo.url }}" 
+           class="btn-affiliate-secondary"
+           target="_blank" 
+           rel="nofollow sponsored"
+           onclick="trackAffiliate('{{ $.Params.tool_name }}', 'pricing_{{ .plan_name }}')">
+          立即订阅
+        </a>
+        {{ else }}
+        <a href="#" class="btn-affiliate-secondary">了解更多</a>
+        {{ end }}
+      </div>
+    </div>
+    {{ end }}
+  </div>
+</div>
+{{ end }}
+
+<!-- 替代工具推荐 - 交叉销售 -->
+<div class="affiliate-alternatives">
+  <h3>🔄 相关AI工具推荐</h3>
+  <div class="alternatives-grid">
+    
+    <!-- 内容创作工具推荐 -->
+    {{ if eq .Params.categories "content-creation" }}
+    <div class="alternative-item">
+      <h4>✍️ Jasper AI</h4>
+      <p>专业级AI写作助手，适合营销团队</p>
+      <a href="{{ (index $affiliateData "jasper").url }}" 
+         target="_blank" 
+         rel="nofollow sponsored"
+         onclick="trackAffiliate('Jasper', 'alternative_recommendation')">
+        免费试用 →
+      </a>
+    </div>
+    
+    <div class="alternative-item">
+      <h4>📝 Copy.ai</h4>
+      <p>快速生成营销文案和社交媒体内容</p>
+      <a href="{{ (index $affiliateData "copy_ai").url }}" 
+         target="_blank" 
+         rel="nofollow sponsored"
+         onclick="trackAffiliate('Copy.ai', 'alternative_recommendation')">
+        免费试用 →
+      </a>
+    </div>
+    {{ end }}
+    
+    <!-- 图像生成工具推荐 -->
+    {{ if eq .Params.categories "image-generation" }}
+    <div class="alternative-item">
+      <h4>🎨 Leonardo AI</h4>
+      <p>高质量AI图像生成，适合设计师</p>
+      <a href="{{ (index $affiliateData "leonardo_ai").url }}" 
+         target="_blank" 
+         rel="nofollow sponsored"
+         onclick="trackAffiliate('Leonardo AI', 'alternative_recommendation')">
+        免费试用 →
+      </a>
+    </div>
+    {{ end }}
+    
+    <!-- 代码辅助工具推荐 -->
+    {{ if eq .Params.categories "code-assistance" }}
+    <div class="alternative-item">
+      <h4>💻 Cursor AI</h4>
+      <p>AI驱动的代码编辑器，提升开发效率</p>
+      <a href="{{ (index $affiliateData "cursor_ai").url }}" 
+         target="_blank" 
+         rel="nofollow sponsored"
+         onclick="trackAffiliate('Cursor AI', 'alternative_recommendation')">
+        免费试用 →
+      </a>
+    </div>
+    {{ end }}
+    
+    <!-- 生产力工具推荐 -->
+    {{ if eq .Params.categories "productivity" }}
+    <div class="alternative-item">
+      <h4>📋 Notion AI</h4>
+      <p>智能笔记和项目管理一体化平台</p>
+      <a href="{{ (index $affiliateData "notion").url }}" 
+         target="_blank" 
+         rel="nofollow sponsored"
+         onclick="trackAffiliate('Notion', 'alternative_recommendation')">
+        免费试用 →
+      </a>
+    </div>
+    {{ end }}
+    
+  </div>
+</div>
+
+<!-- 特殊优惠提醒 -->
+<div class="affiliate-special-offer">
+  <div class="offer-content">
+    <div class="offer-icon">🎉</div>
+    <div class="offer-text">
+      <h4>限时优惠提醒</h4>
+      <p>通过我们的链接注册，享受专属优惠价格，同时支持我们继续提供优质的AI工具评测内容。</p>
+    </div>
+  </div>
+</div>
+
+<!-- 联盟营销披露声明 -->
+<div class="affiliate-disclosure">
+  <h4>💡 联盟营销声明</h4>
+  <p>
+    本文包含联盟营销链接。当您通过我们的链接购买产品时，我们可能会获得少量佣金，但这不会影响您的购买价格。
+    这些佣金帮助我们维护网站运营，继续为您提供免费、客观的AI工具评测内容。
+    我们只推荐经过实际测试和验证的优质工具。
+  </p>
+</div>
+
+<!-- 联盟营销CSS样式 -->
+<style>
+/* 主要CTA样式 */
+.affiliate-cta-container {
+  margin: 30px 0;
+  text-align: center;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 12px;
+  padding: 25px;
+  color: white;
+}
+
+.btn-affiliate-primary {
+  display: inline-block;
+  background: #28a745;
+  color: white;
+  padding: 15px 30px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 18px;
+  transition: all 0.3s ease;
+  position: relative;
+  margin-bottom: 10px;
+}
+
+.btn-affiliate-primary:hover {
+  background: #218838;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(40, 167, 69, 0.3);
+}
+
+.affiliate-badge {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  background: #ff6b6b;
+  color: white;
+  font-size: 10px;
+  padding: 2px 6px;
+  border-radius: 10px;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+}
+
+.affiliate-info {
+  margin-top: 10px;
+  font-size: 13px;
+  opacity: 0.9;
+}
+
+/* 价格对比表格 */
+.affiliate-pricing-table {
+  margin: 40px 0;
+  background: #f8f9fa;
+  border-radius: 12px;
+  padding: 25px;
+}
+
+.pricing-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.pricing-card {
+  background: white;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  transition: transform 0.3s ease;
+}
+
+.pricing-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+}
+
+.pricing-header h4 {
+  margin: 0 0 10px 0;
+  color: #333;
+}
+
+.price {
+  font-size: 24px;
+  font-weight: 700;
+  color: #28a745;
+  margin-bottom: 15px;
+}
+
+.pricing-features {
+  margin-bottom: 20px;
+}
+
+.feature {
+  margin: 8px 0;
+  font-size: 14px;
+}
+
+.btn-affiliate-secondary {
+  display: block;
+  background: #007bff;
+  color: white;
+  padding: 12px 20px;
+  border-radius: 6px;
+  text-decoration: none;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.btn-affiliate-secondary:hover {
+  background: #0056b3;
+  transform: translateY(-1px);
+}
+
+/* 替代工具推荐 */
+.affiliate-alternatives {
+  margin: 40px 0;
+  background: #fff8e1;
+  border-radius: 12px;
+  padding: 25px;
+}
+
+.alternatives-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.alternative-item {
+  background: white;
+  border-radius: 8px;
+  padding: 20px;
+  border-left: 4px solid #ffc107;
+}
+
+.alternative-item h4 {
+  margin: 0 0 10px 0;
+  color: #333;
+}
+
+.alternative-item p {
+  color: #666;
+  margin-bottom: 15px;
+  font-size: 14px;
+}
+
+.alternative-item a {
+  color: #007bff;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.alternative-item a:hover {
+  color: #0056b3;
+}
+
+/* 特殊优惠提醒 */
+.affiliate-special-offer {
+  margin: 30px 0;
+  background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+  border-radius: 12px;
+  padding: 20px;
+}
+
+.offer-content {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.offer-icon {
+  font-size: 32px;
+  flex-shrink: 0;
+}
+
+.offer-text h4 {
+  margin: 0 0 8px 0;
+  color: #333;
+}
+
+.offer-text p {
+  margin: 0;
+  color: #666;
+  font-size: 14px;
+}
+
+/* 联盟营销披露 */
+.affiliate-disclosure {
+  margin: 40px 0;
+  background: #e9ecef;
+  border-radius: 8px;
+  padding: 20px;
+  border-left: 4px solid #6c757d;
+}
+
+.affiliate-disclosure h4 {
+  margin: 0 0 10px 0;
+  color: #495057;
+  font-size: 16px;
+}
+
+.affiliate-disclosure p {
+  margin: 0;
+  color: #6c757d;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .affiliate-cta-container {
+    padding: 20px 15px;
+  }
+  
+  .btn-affiliate-primary {
+    font-size: 16px;
+    padding: 12px 25px;
+  }
+  
+  .pricing-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .alternatives-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .offer-content {
+    flex-direction: column;
+    text-align: center;
+  }
+}
+</style>
+
+<!-- 联盟营销跟踪脚本 -->
+<script>
+function trackAffiliate(toolName, clickType) {
+  // Google Analytics事件跟踪
+  if (typeof gtag !== 'undefined') {
+    gtag('event', 'affiliate_click', {
+      event_category: 'Affiliate Marketing',
+      event_label: toolName + ' - ' + clickType,
+      value: 1
+    });
+  }
+  
+  // 自定义跟踪 (可选)
+  try {
+    fetch('/api/track-affiliate', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        tool: toolName,
+        type: clickType,
+        page: window.location.pathname,
+        timestamp: new Date().toISOString()
+      })
+    }).catch(e => console.log('Tracking failed:', e));
+  } catch(e) {
+    console.log('Affiliate tracking error:', e);
+  }
+}
+
+// 链接点击增强
+document.addEventListener('DOMContentLoaded', function() {
+  // 为所有联盟链接添加额外属性
+  const affiliateLinks = document.querySelectorAll('a[rel*="sponsored"]');
+  affiliateLinks.forEach(link => {
+    // 添加UTM参数用于跟踪
+    const url = new URL(link.href);
+    url.searchParams.set('utm_source', 'aidiscovery');
+    url.searchParams.set('utm_medium', 'affiliate');
+    url.searchParams.set('utm_campaign', 'tool_review');
+    link.href = url.toString();
+    
+    // 添加外链图标
+    if (!link.querySelector('.external-icon')) {
+      const icon = document.createElement('span');
+      icon.innerHTML = ' ↗️';
+      icon.className = 'external-icon';
+      link.appendChild(icon);
+    }
+  });
+});
+</script>

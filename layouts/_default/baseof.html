@@ -41,6 +41,9 @@
     <!-- Enhanced Schema.org Structured Data -->
     {{ partial "seo-structured-data" . }}
     
+    <!-- AdSense自动化广告系统 -->
+    {{ partial "monetization-adsense" . }}
+    
     <!-- Google Analytics -->
     {{ if site.Params.google_analytics_id }}
     <script async src="https://www.googletagmanager.com/gtag/js?id={{ site.Params.google_analytics_id }}"></script>
