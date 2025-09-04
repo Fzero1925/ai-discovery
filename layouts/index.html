@@ -62,7 +62,7 @@
     <div class="container">
         <h2>Latest AI Tool Reviews</h2>
         <div class="reviews-grid">
-            {{ range first 6 (where site.RegularPages "Section" "articles") }}
+            {{ range first 6 (where site.RegularPages "Section" "reviews") }}
             <article class="review-card">
                 <div class="review-image">
                     {{ if .Params.featured_image }}
@@ -88,7 +88,7 @@
             {{ end }}
         </div>
         <div class="view-all">
-            <a href="/articles/" class="btn-primary">View All Reviews</a>
+            <a href="/reviews/" class="btn-primary">View All Reviews</a>
         </div>
     </div>
 </section>
