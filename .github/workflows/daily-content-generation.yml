@@ -2,8 +2,9 @@ name: AI Discovery - Daily Content Generation
 
 on:
   schedule:
-    # Run daily at 2:00 AM UTC (10:00 AM Beijing Time)
-    - cron: '0 2 * * *'
+    # Run twice daily for active content generation
+    - cron: '0 2 * * *'   # 10:00 AM Beijing Time (主要生成时间)
+    - cron: '0 14 * * *'  # 10:00 PM Beijing Time (补充生成时间)
   workflow_dispatch: # Allow manual trigger
   push:
     branches: [main]
