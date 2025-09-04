@@ -148,8 +148,9 @@ jobs:
               f.write('\\n'.join(generated_files))
           
           # Set outputs
-          print(f'generated_count={len(generated_files)}' >> '${GITHUB_OUTPUT}')
-          print(f'skipped_count={len(skipped_files)}' >> '${GITHUB_OUTPUT}')
+          with open('${GITHUB_OUTPUT}', 'a') as f:
+              f.write(f'generated_count={len(generated_files)}\\n')
+              f.write(f'skipped_count={len(skipped_files)}\\n')
           "
 
       - name: Build site with new content

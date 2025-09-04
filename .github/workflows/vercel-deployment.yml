@@ -127,6 +127,33 @@ jobs:
             fi
           fi
 
+      - name: Send Telegram notification
+        if: always()
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: |
+          if [ "${{ secrets.TELEGRAM_BOT_TOKEN }}" != "" ] && [ "${{ secrets.TELEGRAM_CHAT_ID }}" != "" ]; then
+            # Determine environment
+            ENVIRONMENT="production"
+            if [ "${{ github.event_name }}" = "pull_request" ]; then
+              ENVIRONMENT="preview"
+            fi
+            
+            # Determine status
+            STATUS="success"
+            if [ "${{ job.status }}" != "success" ]; then
+              STATUS="failure"
+            fi
+            
+            python scripts/telegram_notify.py \
+              --type deployment \
+              --status "$STATUS" \
+              --environment "$ENVIRONMENT"
+          else
+            echo "⚠️ Telegram credentials not configured, skipping notification"
+          fi
+
       - name: Performance metrics
         run: |
           echo "📈 Deployment Metrics"

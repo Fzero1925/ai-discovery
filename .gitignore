@@ -56,3 +56,5 @@ generated_files.txt
 # Project organization folders (not uploaded to GitHub)
 oldfile/
 test/
+
+.vercel
