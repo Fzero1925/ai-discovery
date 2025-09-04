@@ -1,8 +1,8 @@
-baseURL = "/"
+baseURL = "https://ai-discovery-nu.vercel.app"
 title = "AI Discovery - Your Ultimate AI Tools Guide"  
 languageCode = "en-us"
 enableRobotsTXT = true
-enableGitInfo = false
+enableGitInfo = true
 
 [pagination]
   pagerSize = 12

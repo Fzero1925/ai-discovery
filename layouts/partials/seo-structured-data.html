@@ -58,10 +58,10 @@
         "name": "{{ site.Params.author }}",
         "url": "{{ site.BaseURL }}"
     },
-    "datePublished": "{{ .Date.Format "2006-01-02" }}",
-    "dateModified": "{{ .Lastmod.Format "2006-01-02" }}",
+    "datePublished": "{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}",
+    "dateModified": "{{ .Lastmod.Format "2006-01-02T15:04:05Z07:00" }}",
     "description": "{{ if .Description }}{{ .Description }}{{ else }}{{ .Summary | truncate 160 }}{{ end }}",
-    "reviewBody": "{{ .Summary | truncate 300 }}",
+    "reviewBody": "{{ .Summary | truncate 500 }}",
     {{ if .Params.rating }}
     "reviewRating": {
         "@type": "Rating",
@@ -77,11 +77,23 @@
         {{ if .Params.tool_website }}
         "url": "{{ .Params.tool_website }}",
         {{ end }}
-        "applicationCategory": "{{ range .Params.categories }}{{ . | title }}{{ end }}",
+        "applicationCategory": "Artificial Intelligence Software",
+        "applicationSubCategory": "{{ range .Params.categories }}{{ . | title }}{{ end }}",
+        {{ if .Params.key_features }}
+        "featureList": [
+            {{ range $index, $feature := .Params.key_features }}
+            {{ if $index }},{{ end }}"{{ $feature }}"
+            {{ end }}
+        ],
+        {{ end }}
         {{ if .Params.pricing }}
         "offers": {
             "@type": "Offer",
-            "price": "{{ .Params.pricing }}",
+            "name": "{{ .Params.pricing }}",
+            "description": "{{ .Params.pricing_type | default "subscription" | title }} pricing model",
+            {{ if .Params.free_trial }}
+            "hasTrial": true,
+            {{ end }}
             "priceCurrency": "USD"
         },
         {{ end }}
@@ -94,17 +106,88 @@
             "worstRating": "1"
         },
         {{ end }}
-        "operatingSystem": "Web, Windows, macOS, iOS, Android"
+        "operatingSystem": "Cross-platform",
+        "softwareVersion": "Latest",
+        "releaseNotes": "{{ if .Params.last_updated }}Last updated: {{ .Params.last_updated }}{{ else }}Regularly updated{{ end }}",
+        "screenshot": "{{ if .Params.featured_image }}{{ absURL .Params.featured_image }}{{ end }}"
     },
     "publisher": {
         "@type": "Organization",
         "name": "{{ site.Title }}",
+        "url": "{{ site.BaseURL }}",
         "logo": {
             "@type": "ImageObject",
-            "url": "{{ absURL "/images/logo.svg" }}"
+            "url": "{{ absURL "/images/logo.svg" }}",
+            "width": 300,
+            "height": 60
         }
     },
-    "image": "{{ if .Params.featured_image }}{{ absURL .Params.featured_image }}{{ else }}{{ absURL "/images/ai-discovery-og.jpg" }}{{ end }}"
+    "image": {
+        "@type": "ImageObject", 
+        "url": "{{ if .Params.featured_image }}{{ absURL .Params.featured_image }}{{ else }}{{ absURL "/images/ai-discovery-og.jpg" }}{{ end }}",
+        "width": 1200,
+        "height": 630
+    },
+    "positiveNotes": "{{ if .Params.pros }}{{ range .Params.pros }}{{ . }}. {{ end }}{{ end }}",
+    "negativeNotes": "{{ if .Params.cons }}{{ range .Params.cons }}{{ . }}. {{ end }}{{ end }}"
+}
+</script>
+
+<!-- Product Schema for AI Tool -->
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "Product",
+    "name": "{{ .Params.tool_name | default (index (split .Title " ") 0) }}",
+    "description": "{{ if .Description }}{{ .Description }}{{ else }}{{ .Summary | truncate 200 }}{{ end }}",
+    "brand": {
+        "@type": "Brand", 
+        "name": "{{ .Params.tool_name | default (index (split .Title " ") 0) }}"
+    },
+    "category": "AI Software Tools",
+    {{ if .Params.featured_image }}
+    "image": "{{ absURL .Params.featured_image }}",
+    {{ end }}
+    {{ if .Params.rating }}
+    "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "{{ .Params.rating }}",
+        "bestRating": "5",
+        "worstRating": "1",
+        "ratingCount": "1"
+    },
+    {{ end }}
+    {{ if .Params.pricing }}
+    "offers": {
+        "@type": "Offer",
+        "priceSpecification": {
+            "@type": "PriceSpecification",
+            "name": "{{ .Params.pricing }}",
+            "priceCurrency": "USD"
+        },
+        "availability": "https://schema.org/InStock",
+        {{ if .Params.free_trial }}
+        "hasTrial": true,
+        {{ end }}
+        "seller": {
+            "@type": "Organization",
+            "name": "{{ .Params.tool_name | default (index (split .Title " ") 0) }}"
+        }
+    },
+    {{ end }}
+    "review": {
+        "@type": "Review",
+        "reviewRating": {
+            "@type": "Rating",
+            "ratingValue": "{{ .Params.rating | default 4.5 }}",
+            "bestRating": "5"
+        },
+        "author": {
+            "@type": "Organization",
+            "name": "{{ site.Params.author }}"
+        },
+        "reviewBody": "{{ .Summary | truncate 300 }}"
+    }
 }
 </script>
 
