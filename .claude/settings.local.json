@@ -108,7 +108,10 @@
       "Read(/D:\\Users\\Fzero\\project\\ai-smarthome\\ai-discovery\\.github\\workflows/**)",
       "Read(/D:\\Users\\Fzero\\project\\ai-smarthome\\ai-discovery\\.github\\workflows/**)",
       "Read(/D:\\Users\\Fzero\\project\\ai-smarthome\\ai-discovery\\content\\reviews/**)",
-      "Read(/D:\\Users\\Fzero\\project\\ai-smarthome\\ai-discovery\\.github\\workflows/**)"
+      "Read(/D:\\Users\\Fzero\\project\\ai-smarthome\\ai-discovery\\.github\\workflows/**)",
+      "Read(/D:\\Users\\Fzero\\project\\ai-smarthome\\ai-discovery\\content/**)",
+      "Read(/D:\\Users\\Fzero\\project\\ai-smarthome\\ai-discovery\\layouts\\_default/**)",
+      "Read(/D:\\Users\\Fzero\\project\\ai-smarthome\\ai-discovery/**)"
     ],
     "deny": [],
     "ask": [],

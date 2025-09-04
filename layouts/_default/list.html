@@ -10,7 +10,7 @@
                 <h1 class="list-title">
                     {{ if eq .Section "categories" }}
                     {{ .Title | title }} AI Tools
-                    {{ else if eq .Section "articles" }}
+                    {{ else if or (eq .Section "articles") (eq .Section "reviews") }}
                     All AI Tool Reviews
                     {{ else }}
                     {{ .Title }}
@@ -22,7 +22,7 @@
                     {{ .Description }}
                     {{ else if eq .Section "categories" }}
                     Discover and compare the best {{ .Title | lower }} AI tools. Read detailed reviews, compare features, and find the perfect solution for your needs.
-                    {{ else if eq .Section "articles" }}
+                    {{ else if or (eq .Section "articles") (eq .Section "reviews") }}
                     Browse our comprehensive collection of AI tool reviews, comparisons, and guides to help you make informed decisions.
                     {{ else }}
                     {{ .Summary }}
@@ -33,7 +33,7 @@
                 {{ if eq .Section "categories" }}
                 <div class="category-stats">
                     <div class="stat">
-                        <span class="stat-number">{{ len (where site.RegularPages "Section" "articles") }}</span>
+                        <span class="stat-number">{{ len (where site.RegularPages "Section" "reviews") }}</span>
                         <span class="stat-label">Tools Reviewed</span>
                     </div>
                     <div class="stat">
@@ -51,7 +51,7 @@
     </header>
 
     <!-- Filters and Sorting -->
-    {{ if or (eq .Section "articles") (eq .Section "categories") }}
+    {{ if or (eq .Section "articles") (eq .Section "reviews") (eq .Section "categories") }}
     <section class="filters-section">
         <div class="container">
             <div class="filters-bar">
