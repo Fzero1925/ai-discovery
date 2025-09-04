@@ -100,6 +100,12 @@
       "Read(/D:\\Users\\Fzero\\project\\ai-smarthome\\ai-discovery/**)",
       "Bash(gh workflow:*)",
       "Bash(gh api:*)",
+      "Read(/D:\\Users\\Fzero\\project\\ai-smarthome\\ai-discovery\\.github\\workflows/**)",
+      "Read(/D:\\Users\\Fzero\\project\\ai-smarthome\\ai-discovery\\content\\reviews/**)",
+      "Read(/D:\\Users\\Fzero\\project\\ai-smarthome\\ai-discovery\\content\\reviews/**)",
+      "Read(/D:\\Users\\Fzero\\project\\ai-smarthome\\ai-discovery\\.github\\workflows/**)",
+      "Read(/D:\\Users\\Fzero\\project\\ai-smarthome\\ai-discovery\\.github\\workflows/**)",
+      "Read(/D:\\Users\\Fzero\\project\\ai-smarthome\\ai-discovery\\.github\\workflows/**)",
       "Read(/D:\\Users\\Fzero\\project\\ai-smarthome\\ai-discovery\\.github\\workflows/**)"
     ],
     "deny": [],
