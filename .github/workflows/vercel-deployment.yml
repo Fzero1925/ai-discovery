@@ -73,14 +73,14 @@ jobs:
         if: github.event_name == 'pull_request'
         run: |
           echo "🚀 Deploying to Vercel (Preview)..."
-          vercel deploy --token=${{ secrets.VERCEL_TOKEN }} --cwd public > deployment-url.txt
+          vercel deploy --token=${{ secrets.VERCEL_TOKEN }} > deployment-url.txt
           echo "preview-url=$(cat deployment-url.txt)" >> $GITHUB_OUTPUT
 
       - name: Deploy to Vercel (Production)
         if: github.ref == 'refs/heads/main'
         run: |
           echo "🚀 Deploying to Vercel (Production)..."
-          vercel deploy --prod --token=${{ secrets.VERCEL_TOKEN }} --cwd public > deployment-url.txt
+          vercel deploy --prod --token=${{ secrets.VERCEL_TOKEN }} > deployment-url.txt
           echo "production-url=$(cat deployment-url.txt)" >> $GITHUB_OUTPUT
 
       - name: Update deployment status
