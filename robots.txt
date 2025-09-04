@@ -13,7 +13,7 @@ Disallow: /*_draft*
 Disallow: /search/?*
 
 # Sitemap location
-Sitemap: /sitemap.xml
+Sitemap: https://ai-discovery-nu.vercel.app/sitemap.xml
 
 # Crawl delay to be respectful
 Crawl-delay: 1
