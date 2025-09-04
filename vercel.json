@@ -12,7 +12,6 @@
   "installCommand": "npm install -g hugo-extended@0.149.0",
   "devCommand": "hugo server -D --port 3000 --bind 0.0.0.0",
   "framework": "hugo",
-  "functions": {},
   "headers": [
     {
       "source": "/(.*)",
