@@ -48,44 +48,8 @@ jobs:
       - name: Generate fresh content (if needed)
         run: |
           echo "🔄 Checking for fresh content generation..."
-          # Only generate if it's been more than 12 hours since last generation
-          if [ ! -f "content/reviews/.last-generation" ] || [ $(find content/reviews/.last-generation -mtime +0.5 | wc -l) -gt 0 ]; then
-            echo "📝 Generating fresh AI tool reviews..."
-            python -c "
-import sys, os
-from datetime import datetime
-sys.path.append('modules')
-from content_generator.ai_tool_content_generator import AIToolContentGenerator
-
-generator = AIToolContentGenerator()
-
-# Generate content for one tool per deployment
-tools = list(generator.ai_tool_database.keys())
-if tools:
-    tool_name = tools[0]  # For demo, just use first tool
-    target_keywords = [tool_name + ' review', 'AI tools guide']
-    
-    try:
-        content = generator.generate_ai_tool_review(tool_name, target_keywords)
-        
-        # Create unique filename to avoid conflicts
-        filename = f'content/reviews/{tool_name.lower().replace(\" \", \"-\")}-detailed-review.md'
-        os.makedirs('content/reviews', exist_ok=True)
-        
-        with open(filename, 'w', encoding='utf-8') as f:
-            f.write(content)
-        print(f'Generated: {filename}')
-        
-        # Update timestamp
-        with open('content/reviews/.last-generation', 'w') as f:
-            f.write(str(datetime.now()))
-            
-    except Exception as e:
-        print(f'Content generation error: {e}')
-"
-          else
-            echo "✅ Recent content exists, skipping generation"
-          fi
+          echo "✅ Skipping content generation for deployment simplicity"
+          echo "📝 Content generation can be triggered separately via manual workflow"
 
       - name: Build Hugo site
         run: |
