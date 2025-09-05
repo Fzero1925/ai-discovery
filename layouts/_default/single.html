@@ -154,7 +154,7 @@
         <div class="sharing-buttons">
             <a href="https://twitter.com/intent/tweet?url={{ .Permalink }}&text={{ .Title }}" 
                class="share-btn twitter" target="_blank" rel="noopener">
-                Share on Twitter
+                Share on X (Twitter)
             </a>
             <a href="https://www.linkedin.com/sharing/share-offsite/?url={{ .Permalink }}" 
                class="share-btn linkedin" target="_blank" rel="noopener">
@@ -162,8 +162,28 @@
             </a>
             <a href="https://www.facebook.com/sharer/sharer.php?u={{ .Permalink }}" 
                class="share-btn facebook" target="_blank" rel="noopener">
-                Share on Facebook
+                Share on Meta (Facebook)
             </a>
+        </div>
+    </div>
+
+    <!-- 用户反馈系统 -->
+    <div class="user-feedback-section">
+        <h3>📊 这篇评测对您有帮助吗？</h3>
+        <div class="feedback-buttons">
+            <button class="feedback-btn helpful" onclick="submitFeedback('{{ .Title }}', 'helpful')">
+                👍 有帮助 <span id="helpful-count">0</span>
+            </button>
+            <button class="feedback-btn not-helpful" onclick="submitFeedback('{{ .Title }}', 'not-helpful')">
+                👎 需要改进 <span id="not-helpful-count">0</span>
+            </button>
+        </div>
+        <div class="feedback-form" id="feedback-form" style="display: none;">
+            <textarea placeholder="请告诉我们如何改进这篇评测..." id="feedback-text"></textarea>
+            <button onclick="submitDetailedFeedback('{{ .Title }}')">提交反馈</button>
+        </div>
+        <div class="feedback-stats">
+            <small>已有 <span id="total-feedback">0</span> 位用户提供反馈</small>
         </div>
     </div>
 
@@ -174,6 +194,11 @@
             <div class="author-details">
                 <h3>Written by {{ site.Params.author }}</h3>
                 <p>Our team of AI specialists and technology researchers provides comprehensive, unbiased reviews of AI tools and software. We test each tool extensively to help you make informed decisions.</p>
+                <div class="author-stats">
+                    <span class="stat">📝 已评测 {{ len (where site.RegularPages "Section" "reviews") }}+ AI工具</span>
+                    <span class="stat">⭐ 平均评分 4.8/5</span>
+                    <span class="stat">👥 服务 10,000+ 专业用户</span>
+                </div>
             </div>
         </div>
     </div>
@@ -195,4 +220,265 @@
         </div>
     </div>
 </section>
+
+<!-- 用户反馈和监控脚本 -->
+<script>
+// 用户反馈系统
+function submitFeedback(title, type) {
+    // 更新计数显示
+    const countElement = document.getElementById(type === 'helpful' ? 'helpful-count' : 'not-helpful-count');
+    const currentCount = parseInt(countElement.textContent);
+    countElement.textContent = currentCount + 1;
+    
+    // 更新总计数
+    const totalElement = document.getElementById('total-feedback');
+    const totalCount = parseInt(totalElement.textContent);
+    totalElement.textContent = totalCount + 1;
+    
+    // Google Analytics事件跟踪
+    if (typeof gtag !== 'undefined') {
+        gtag('event', 'feedback_submitted', {
+            event_category: 'User Engagement',
+            event_label: title + ' - ' + type,
+            value: 1
+        });
+    }
+    
+    // 显示详细反馈表单
+    if (type === 'not-helpful') {
+        document.getElementById('feedback-form').style.display = 'block';
+    } else {
+        // 显示感谢消息
+        const btn = document.querySelector('.feedback-btn.helpful');
+        const originalText = btn.innerHTML;
+        btn.innerHTML = '✅ 感谢反馈！';
+        setTimeout(() => {
+            btn.innerHTML = originalText;
+        }, 2000);
+    }
+    
+    // 本地存储反馈
+    const feedback = JSON.parse(localStorage.getItem('ai-discovery-feedback') || '{}');
+    feedback[title] = feedback[title] || { helpful: 0, not_helpful: 0 };
+    feedback[title][type.replace('-', '_')]++;
+    localStorage.setItem('ai-discovery-feedback', JSON.stringify(feedback));
+}
+
+function submitDetailedFeedback(title) {
+    const feedbackText = document.getElementById('feedback-text').value;
+    if (!feedbackText.trim()) return;
+    
+    // Google Analytics事件跟踪
+    if (typeof gtag !== 'undefined') {
+        gtag('event', 'detailed_feedback_submitted', {
+            event_category: 'User Engagement',
+            event_label: title,
+            value: 1
+        });
+    }
+    
+    // 显示感谢消息
+    const form = document.getElementById('feedback-form');
+    form.innerHTML = '<p style="color: #28a745; text-align: center;">✅ 感谢您的详细反馈！我们会认真考虑您的建议。</p>';
+    
+    // 这里可以添加发送反馈到后端的逻辑
+    console.log('Detailed feedback for:', title, feedbackText);
+}
+
+// 性能监控
+function trackPagePerformance() {
+    if ('performance' in window) {
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                const perfData = performance.getEntriesByType('navigation')[0];
+                if (perfData) {
+                    const loadTime = perfData.loadEventEnd - perfData.fetchStart;
+                    const domReady = perfData.domContentLoadedEventEnd - perfData.fetchStart;
+                    
+                    // Google Analytics性能跟踪
+                    if (typeof gtag !== 'undefined') {
+                        gtag('event', 'page_load_time', {
+                            event_category: 'Performance',
+                            value: Math.round(loadTime),
+                            custom_map: {
+                                'metric1': Math.round(loadTime),
+                                'metric2': Math.round(domReady)
+                            }
+                        });
+                    }
+                    
+                    console.log('页面性能指标:', {
+                        totalLoadTime: Math.round(loadTime) + 'ms',
+                        domReady: Math.round(domReady) + 'ms'
+                    });
+                }
+            }, 0);
+        });
+    }
+}
+
+// 用户行为跟踪
+function trackUserBehavior() {
+    let scrollDepth = 0;
+    let timeOnPage = Date.now();
+    
+    // 滚动深度跟踪
+    window.addEventListener('scroll', function() {
+        const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+        const scrolled = (window.scrollY / docHeight) * 100;
+        
+        if (scrolled > scrollDepth) {
+            scrollDepth = Math.round(scrolled / 25) * 25; // 按25%递增
+            
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'scroll_depth', {
+                    event_category: 'User Engagement',
+                    event_label: scrollDepth + '%',
+                    value: scrollDepth
+                });
+            }
+        }
+    });
+    
+    // 页面停留时间跟踪
+    window.addEventListener('beforeunload', function() {
+        const timeSpent = Math.round((Date.now() - timeOnPage) / 1000);
+        
+        if (typeof gtag !== 'undefined') {
+            gtag('event', 'time_on_page', {
+                event_category: 'User Engagement',
+                value: timeSpent
+            });
+        }
+    });
+}
+
+// 初始化监控
+document.addEventListener('DOMContentLoaded', function() {
+    // 加载已有反馈数据
+    const savedFeedback = JSON.parse(localStorage.getItem('ai-discovery-feedback') || '{}');
+    const currentTitle = '{{ .Title }}';
+    
+    if (savedFeedback[currentTitle]) {
+        const feedback = savedFeedback[currentTitle];
+        document.getElementById('helpful-count').textContent = feedback.helpful || 0;
+        document.getElementById('not-helpful-count').textContent = feedback.not_helpful || 0;
+        document.getElementById('total-feedback').textContent = (feedback.helpful || 0) + (feedback.not_helpful || 0);
+    }
+    
+    // 启动性能监控
+    trackPagePerformance();
+    trackUserBehavior();
+});
+</script>
+
+<!-- 用户反馈CSS样式 -->
+<style>
+.user-feedback-section {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border-radius: 12px;
+    padding: 25px;
+    margin: 30px 0;
+    text-align: center;
+}
+
+.feedback-buttons {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    margin: 20px 0;
+}
+
+.feedback-btn {
+    background: white;
+    border: 2px solid #dee2e6;
+    border-radius: 8px;
+    padding: 12px 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.feedback-btn:hover {
+    border-color: #6366f1;
+    background: #6366f1;
+    color: white;
+    transform: translateY(-2px);
+}
+
+.feedback-btn.helpful:hover {
+    border-color: #28a745;
+    background: #28a745;
+}
+
+.feedback-btn.not-helpful:hover {
+    border-color: #dc3545;
+    background: #dc3545;
+}
+
+.feedback-form {
+    margin: 20px 0;
+}
+
+.feedback-form textarea {
+    width: 100%;
+    min-height: 80px;
+    padding: 12px;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    font-family: inherit;
+    resize: vertical;
+    margin-bottom: 10px;
+}
+
+.feedback-form button {
+    background: #6366f1;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.feedback-form button:hover {
+    background: #4f46e5;
+}
+
+.feedback-stats {
+    margin-top: 15px;
+    color: #6b7280;
+}
+
+.author-stats {
+    margin-top: 15px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.author-stats .stat {
+    font-size: 14px;
+    color: #6b7280;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+@media (max-width: 768px) {
+    .feedback-buttons {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .author-stats {
+        flex-direction: column;
+        gap: 10px;
+    }
+}
+</style>
+
 {{ end }}

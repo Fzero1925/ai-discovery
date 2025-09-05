@@ -94,68 +94,178 @@
   <div class="alternatives-grid">
     
     <!-- 内容创作工具推荐 -->
-    {{ if eq .Params.categories "content-creation" }}
+    {{ if or (eq .Params.categories "content-creation") (eq .Params.categories "content_creation") }}
     <div class="alternative-item">
       <h4>✍️ Jasper AI</h4>
-      <p>专业级AI写作助手，适合营销团队</p>
+      <p>专业级AI写作助手，支持50+语言，适合营销团队和内容创作者</p>
+      <div class="item-features">
+        <span class="feature-tag">🎯 营销文案</span>
+        <span class="feature-tag">📊 SEO优化</span>
+      </div>
       <a href="{{ (index $affiliateData "jasper").url }}" 
          target="_blank" 
          rel="nofollow sponsored"
          onclick="trackAffiliate('Jasper', 'alternative_recommendation')">
-        免费试用 →
+        免费试用 → (7天试用)
       </a>
     </div>
     
     <div class="alternative-item">
       <h4>📝 Copy.ai</h4>
-      <p>快速生成营销文案和社交媒体内容</p>
+      <p>快速生成营销文案和社交媒体内容，90+文案模板，支持多场景应用</p>
+      <div class="item-features">
+        <span class="feature-tag">⚡ 快速生成</span>
+        <span class="feature-tag">📱 社媒内容</span>
+      </div>
       <a href="{{ (index $affiliateData "copy_ai").url }}" 
          target="_blank" 
          rel="nofollow sponsored"
          onclick="trackAffiliate('Copy.ai', 'alternative_recommendation')">
-        免费试用 →
+        免费试用 → (永久免费版)
+      </a>
+    </div>
+    
+    <div class="alternative-item">
+      <h4>📖 Grammarly</h4>
+      <p>智能语法检查和写作助手，提升英文写作质量和专业性</p>
+      <div class="item-features">
+        <span class="feature-tag">✏️ 语法检查</span>
+        <span class="feature-tag">🎯 风格优化</span>
+      </div>
+      <a href="{{ (index $affiliateData "grammarly").url }}" 
+         target="_blank" 
+         rel="nofollow sponsored"
+         onclick="trackAffiliate('Grammarly', 'alternative_recommendation')">
+        免费试用 → (基础版免费)
       </a>
     </div>
     {{ end }}
     
     <!-- 图像生成工具推荐 -->
-    {{ if eq .Params.categories "image-generation" }}
+    {{ if or (eq .Params.categories "image-generation") (eq .Params.categories "image_generation") }}
     <div class="alternative-item">
       <h4>🎨 Leonardo AI</h4>
-      <p>高质量AI图像生成，适合设计师</p>
+      <p>专业级AI图像生成，支持多种艺术风格，适合设计师和创作者</p>
+      <div class="item-features">
+        <span class="feature-tag">🖼️ 高品质</span>
+        <span class="feature-tag">🎭 多风格</span>
+      </div>
       <a href="{{ (index $affiliateData "leonardo_ai").url }}" 
          target="_blank" 
          rel="nofollow sponsored"
          onclick="trackAffiliate('Leonardo AI', 'alternative_recommendation')">
-        免费试用 →
+        免费试用 → (150积分/天)
+      </a>
+    </div>
+    
+    <div class="alternative-item">
+      <h4>🖌️ Midjourney</h4>
+      <p>顶级AI艺术生成工具，社区活跃，作品质量极高</p>
+      <div class="item-features">
+        <span class="feature-tag">🏆 顶级质量</span>
+        <span class="feature-tag">👥 活跃社区</span>
+      </div>
+      <a href="{{ (index $affiliateData "midjourney").url }}" 
+         target="_blank" 
+         rel="nofollow sponsored"
+         onclick="trackAffiliate('Midjourney', 'alternative_recommendation')">
+        了解详情 → (Discord体验)
+      </a>
+    </div>
+    
+    <div class="alternative-item">
+      <h4>🎪 Canva AI</h4>
+      <p>设计小白友好的AI设计平台，模板丰富，操作简单</p>
+      <div class="item-features">
+        <span class="feature-tag">🎨 海量模板</span>
+        <span class="feature-tag">👶 零门槛</span>
+      </div>
+      <a href="{{ (index $affiliateData "canva").url }}" 
+         target="_blank" 
+         rel="nofollow sponsored"
+         onclick="trackAffiliate('Canva', 'alternative_recommendation')">
+        免费使用 → (基础版免费)
       </a>
     </div>
     {{ end }}
     
     <!-- 代码辅助工具推荐 -->
-    {{ if eq .Params.categories "code-assistance" }}
+    {{ if or (eq .Params.categories "code-assistance") (eq .Params.categories "code_assistance") }}
     <div class="alternative-item">
       <h4>💻 Cursor AI</h4>
-      <p>AI驱动的代码编辑器，提升开发效率</p>
+      <p>基于Claude的AI代码编辑器，智能补全和代码生成，开发者必备</p>
+      <div class="item-features">
+        <span class="feature-tag">🚀 智能补全</span>
+        <span class="feature-tag">🔍 代码解析</span>
+      </div>
       <a href="{{ (index $affiliateData "cursor_ai").url }}" 
          target="_blank" 
          rel="nofollow sponsored"
          onclick="trackAffiliate('Cursor AI', 'alternative_recommendation')">
-        免费试用 →
+        免费下载 → (免费版可用)
+      </a>
+    </div>
+    
+    <div class="alternative-item">
+      <h4>🤖 GitHub Copilot</h4>
+      <p>微软出品的AI编程助手，支持多种编程语言，集成度极高</p>
+      <div class="item-features">
+        <span class="feature-tag">🔧 多语言</span>
+        <span class="feature-tag">💼 企业级</span>
+      </div>
+      <a href="https://github.com/features/copilot" 
+         target="_blank" 
+         rel="nofollow"
+         onclick="trackAffiliate('GitHub Copilot', 'alternative_recommendation')">
+        免费试用 → (60天试用)
+      </a>
+    </div>
+    
+    <div class="alternative-item">
+      <h4>⚡ Codeium</h4>
+      <p>免费的AI代码助手，支持70+编程语言，个人用户完全免费</p>
+      <div class="item-features">
+        <span class="feature-tag">🆓 完全免费</span>
+        <span class="feature-tag">🌐 70+语言</span>
+      </div>
+      <a href="https://codeium.com" 
+         target="_blank" 
+         rel="nofollow"
+         onclick="trackAffiliate('Codeium', 'alternative_recommendation')">
+        免费使用 → (个人免费)
       </a>
     </div>
     {{ end }}
     
     <!-- 生产力工具推荐 -->
-    {{ if eq .Params.categories "productivity" }}
+    {{ if or (eq .Params.categories "productivity") (eq .Params.categories "data-analytics") }}
     <div class="alternative-item">
       <h4>📋 Notion AI</h4>
-      <p>智能笔记和项目管理一体化平台</p>
+      <p>智能笔记和项目管理一体化平台，AI辅助写作和数据分析</p>
+      <div class="item-features">
+        <span class="feature-tag">📝 智能写作</span>
+        <span class="feature-tag">📊 数据整理</span>
+      </div>
       <a href="{{ (index $affiliateData "notion").url }}" 
          target="_blank" 
          rel="nofollow sponsored"
          onclick="trackAffiliate('Notion', 'alternative_recommendation')">
-        免费试用 →
+        免费试用 → (个人版免费)
+      </a>
+    </div>
+    
+    <div class="alternative-item">
+      <h4>🔄 Zapier AI</h4>
+      <p>工作流自动化平台，连接5000+应用，AI智能配置自动化任务</p>
+      <div class="item-features">
+        <span class="feature-tag">🔗 5000+集成</span>
+        <span class="feature-tag">⚡ 自动化</span>
+      </div>
+      <a href="{{ (index $affiliateData "zapier").url }}" 
+         target="_blank" 
+         rel="nofollow sponsored"
+         onclick="trackAffiliate('Zapier', 'alternative_recommendation')">
+        免费试用 → (100次/月免费)
       </a>
     </div>
     {{ end }}
@@ -346,6 +456,25 @@
 
 .alternative-item a:hover {
   color: #0056b3;
+}
+
+/* Feature tags styling */
+.item-features {
+  margin: 10px 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.feature-tag {
+  display: inline-block;
+  background: #f8f9fa;
+  color: #495057;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 500;
+  border: 1px solid #dee2e6;
 }
 
 /* 特殊优惠提醒 */
