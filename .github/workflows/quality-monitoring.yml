@@ -266,7 +266,7 @@ jobs:
           cat quality-report.md >> $GITHUB_STEP_SUMMARY
 
       - name: Archive quality report
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: quality-report-${{ github.sha }}
           path: quality-report.md
