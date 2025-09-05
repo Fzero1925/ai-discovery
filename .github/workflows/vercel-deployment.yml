@@ -52,8 +52,11 @@ jobs:
           echo "📝 Content generation can be triggered separately via manual workflow"
 
       - name: Build Hugo site
+        env:
+          HUGO_PARAMS_GOOGLE_ANALYTICS_ID: ${{ secrets.GOOGLE_ANALYTICS_ID }}
         run: |
           echo "🏗️ Building Hugo site for production..."
+          echo "📊 Google Analytics ID: ${HUGO_PARAMS_GOOGLE_ANALYTICS_ID:0:8}***"
           hugo --minify --environment production --destination public
           
           # Verify build

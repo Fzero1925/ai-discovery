@@ -1,0 +1,29 @@
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://ai-discovery-nu.vercel.app/sitemap.xml
+
+# 优化爬虫抓取
+Crawl-delay: 1
+
+# 禁止抓取的路径
+Disallow: /admin/
+Disallow: /private/
+Disallow: /*.json$
+Disallow: /api/
+
+# 允许重要页面
+Allow: /reviews/
+Allow: /categories/
+Allow: /images/
+
+# SEO优化指令
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: Baiduspider
+Allow: /

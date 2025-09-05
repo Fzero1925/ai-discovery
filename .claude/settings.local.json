@@ -127,7 +127,9 @@
       "Read(/D:\\Users\\Fzero\\project\\ai-smarthome\\ai-smarthome\\scripts/**)",
       "Read(/D:\\Users\\Fzero\\project\\ai-smarthome\\ai-smarthome\\.github\\workflows/**)",
       "Read(/D:\\Users\\Fzero\\project\\ai-smarthome\\ai-smarthome\\.github\\workflows/**)",
-      "Read(/D:\\Users\\Fzero\\project\\ai-smarthome\\ai-smarthome\\scripts/**)"
+      "Read(/D:\\Users\\Fzero\\project\\ai-smarthome\\ai-smarthome\\scripts/**)",
+      "Bash(gh auth:*)",
+      "Bash(gh secret set:*)"
     ],
     "deny": [],
     "ask": [],

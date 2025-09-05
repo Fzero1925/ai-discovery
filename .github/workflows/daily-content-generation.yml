@@ -135,8 +135,11 @@ jobs:
           "
 
       - name: Build Hugo site
+        env:
+          HUGO_PARAMS_GOOGLE_ANALYTICS_ID: ${{ secrets.GOOGLE_ANALYTICS_ID }}
         run: |
           echo "🏗️ Building Hugo site..."
+          echo "📊 Google Analytics ID: ${HUGO_PARAMS_GOOGLE_ANALYTICS_ID:0:8}***"
           hugo --minify --environment production
           
           # Check if build was successful

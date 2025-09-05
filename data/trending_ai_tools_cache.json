@@ -1,0 +1,74 @@
+[
+  {
+    "keyword": "claude ai review",
+    "category": "content_creation",
+    "trend_score": 0.95,
+    "competition_score": 0.6,
+    "commercial_intent": 0.94,
+    "search_volume": 25000,
+    "difficulty": "Medium",
+    "affiliate_potential": "High",
+    "monthly_revenue_estimate": "$150-300",
+    "reason": "Claude AI爆火，高转化率AI助手类工具，联盟佣金丰厚"
+  },
+  {
+    "keyword": "midjourney alternatives",
+    "category": "image_generation",
+    "trend_score": 0.92,
+    "competition_score": 0.55,
+    "commercial_intent": 0.96,
+    "search_volume": 35000,
+    "difficulty": "Low-Medium",
+    "affiliate_potential": "Very High",
+    "monthly_revenue_estimate": "$200-400",
+    "reason": "Midjourney付费门槛高，用户急需替代方案，转化率极高"
+  },
+  {
+    "keyword": "github copilot review",
+    "category": "code_assistance",
+    "trend_score": 0.88,
+    "competition_score": 0.65,
+    "commercial_intent": 0.91,
+    "search_volume": 18000,
+    "difficulty": "Medium",
+    "affiliate_potential": "High",
+    "monthly_revenue_estimate": "$100-250",
+    "reason": "开发者工具需求旺盛，B端付费意愿强，长期价值高"
+  },
+  {
+    "keyword": "notion ai features",
+    "category": "productivity",
+    "trend_score": 0.85,
+    "competition_score": 0.58,
+    "commercial_intent": 0.89,
+    "search_volume": 22000,
+    "difficulty": "Low-Medium",
+    "affiliate_potential": "High",
+    "monthly_revenue_estimate": "$120-280",
+    "reason": "Notion付费升级需求大，生产力工具转化率高"
+  },
+  {
+    "keyword": "chatgpt plus worth it",
+    "category": "content_creation",
+    "trend_score": 0.9,
+    "competition_score": 0.7,
+    "commercial_intent": 0.93,
+    "search_volume": 40000,
+    "difficulty": "Medium-High",
+    "affiliate_potential": "Medium",
+    "monthly_revenue_estimate": "$80-180",
+    "reason": "付费决策关键词，用户购买意图明确，点击价值高"
+  },
+  {
+    "keyword": "leonardo ai vs midjourney",
+    "category": "image_generation",
+    "trend_score": 0.87,
+    "competition_score": 0.52,
+    "commercial_intent": 0.95,
+    "search_volume": 15000,
+    "difficulty": "Low",
+    "affiliate_potential": "Very High",
+    "monthly_revenue_estimate": "$180-350",
+    "reason": "对比类关键词转化率最高，两个工具都有联盟项目"
+  }
+]

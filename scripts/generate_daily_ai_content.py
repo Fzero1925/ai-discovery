@@ -666,6 +666,16 @@ def get_free_version_info(keyword): return f"{keyword} offers a limited free tri
 def get_support_quality_info(category): return "Customer support is responsive with average response times of 4-6 hours"
 def get_cancellation_info(keyword): return f"Yes, {keyword} allows cancellation at any time with no penalties"
 
+def get_detailed_description(keyword, category):
+    """Generate detailed description for AI tool"""
+    descriptions = {
+        'content_creation': f"This AI-powered platform uses advanced machine learning to help users create high-quality written content efficiently. With its intuitive interface and powerful algorithms, {keyword} streamlines the content creation process for professionals.",
+        'image_generation': f"Using cutting-edge diffusion models and neural networks, {keyword} transforms text prompts into stunning visual content. The platform offers professional-grade image generation capabilities with customizable parameters.",
+        'code_assistance': f"Built on transformer architecture, {keyword} provides intelligent code completion, debugging assistance, and development workflow optimization. It integrates seamlessly with popular IDEs and supports multiple programming languages.",
+        'productivity': f"Leveraging AI automation and smart workflows, {keyword} helps teams and individuals optimize their daily operations. The platform combines task management, automation, and intelligent suggestions to boost productivity."
+    }
+    return descriptions.get(category, f"This innovative AI tool leverages advanced technology to deliver powerful {category.replace('_', ' ')} capabilities, helping users achieve better results with less effort.")
+
 def create_hugo_review_file(article_data, output_dir):
     """Create Hugo markdown file for AI tool review"""
     keyword = article_data['metadata']['tags'][0]
