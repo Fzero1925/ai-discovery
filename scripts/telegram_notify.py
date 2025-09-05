@@ -191,6 +191,66 @@ _🤖 Claude Code 内容更新通知_"""
     
     return message
 
+def format_keyword_analysis_message(keyword_data, generated_content_info):
+    """Format keyword analysis notification message"""
+    china_time = get_china_time()
+    
+    # Parse keyword data
+    main_keyword = keyword_data.get('keyword', 'AI工具')
+    category = keyword_data.get('category', 'AI Tools')
+    trend_score = keyword_data.get('trend_score', 0.0)
+    search_volume = keyword_data.get('search_volume', 0)
+    commercial_intent = keyword_data.get('commercial_intent', 0.0)
+    difficulty = keyword_data.get('difficulty', 'Medium')
+    monthly_revenue_estimate = keyword_data.get('monthly_revenue_estimate', '$100-200')
+    reason = keyword_data.get('reason', '该关键词具有良好的商业价值和搜索热度')
+    related_queries = keyword_data.get('related_queries', [])
+    
+    # Parse generated content info
+    tool_name = generated_content_info.get('tool_name', main_keyword)
+    article_title = generated_content_info.get('title', f"{tool_name} 深度评测")
+    word_count = generated_content_info.get('word_count', 0)
+    
+    # Format related keywords
+    related_keywords_text = ""
+    if related_queries and len(related_queries) > 0:
+        related_keywords_text = "\n".join([f"  • {query}" for query in related_queries[:5]])
+    else:
+        related_keywords_text = "  • 暂无相关关键词数据"
+    
+    message = f"""📊 *AI Discovery 关键词分析* | {china_time}
+
+🎯 *新文章生成完成*
+📝 *文章标题*: {article_title}
+🔤 *字数统计*: {word_count:,}字
+
+🔍 *关键词分析报告*:
+━━━━━━━━━━━━━━━━━━━━
+🎯 *主要关键词*: `{main_keyword}`
+📂 *所属分类*: {category}
+📈 *趋势评分*: {trend_score:.2f}/1.0
+🔍 *月搜索量*: {search_volume:,}
+💰 *商业意图*: {commercial_intent:.2f}/1.0
+📊 *竞争难度*: {difficulty}
+💵 *预估月收入*: {monthly_revenue_estimate}
+
+🤔 *选择原因*:
+{reason}
+
+🔗 *相关关键词* (Top 5):
+{related_keywords_text}
+
+💡 *商业价值评估*:
+• 搜索热度: {'🔥' if search_volume > 20000 else '📊' if search_volume > 10000 else '📈'}
+• 竞争程度: {'🔴 激烈' if difficulty == 'High' else '🟡 中等' if difficulty == 'Medium' else '🟢 较低'}
+• 转化潜力: {'💰 优秀' if commercial_intent > 0.8 else '📊 良好' if commercial_intent > 0.6 else '📈 一般'}
+
+*网站*: [ai-discovery-nu.vercel.app](https://ai-discovery-nu.vercel.app/)
+
+_🤖 Claude Code 智能关键词分析完成_"""
+    
+    return message
+
 def format_test_message():
     """Format simple test message"""
     china_time = get_china_time()
@@ -208,12 +268,14 @@ _Claude Code 测试完成_"""
 def main():
     parser = argparse.ArgumentParser(description='AI Discovery Telegram Notifications')
     parser.add_argument('--type', required=True, 
-                       choices=['deployment', 'content_update', 'test', 'custom'],
+                       choices=['deployment', 'content_update', 'keyword_analysis', 'test', 'custom'],
                        help='Notification type')
     parser.add_argument('--status', help='Deployment status (success/failure)')
     parser.add_argument('--environment', default='production', help='Deployment environment')
     parser.add_argument('--tool-count', type=int, default=1, help='Number of tools added')
     parser.add_argument('--category', default='AI Tools', help='Tool category')
+    parser.add_argument('--keyword-data', help='JSON string with keyword analysis data')
+    parser.add_argument('--content-data', help='JSON string with generated content data')
     parser.add_argument('--message', help='Custom message')
     
     args = parser.parse_args()
@@ -230,6 +292,11 @@ def main():
                 args.tool_count,
                 args.category
             )
+            
+        elif args.type == 'keyword_analysis':
+            keyword_data = json.loads(args.keyword_data) if args.keyword_data else {}
+            content_data = json.loads(args.content_data) if args.content_data else {}
+            message = format_keyword_analysis_message(keyword_data, content_data)
             
         elif args.type == 'test':
             message = format_test_message()

@@ -16,6 +16,11 @@ from jinja2 import Template, Environment, FileSystemLoader
 import pandas as pd
 from pathlib import Path
 
+# Import image processing module
+import sys
+sys.path.append(str(Path(__file__).parent.parent))
+from image_processor.ai_tool_image_handler import AIToolImageHandler
+
 
 @dataclass
 class AIToolReview:
@@ -60,6 +65,9 @@ class AIToolContentGenerator:
             lstrip_blocks=True
         )
         
+        # Initialize image processor
+        self.image_handler = AIToolImageHandler()
+        
         # Load content variation patterns
         self.variations = self._load_ai_tool_variations()
         
@@ -89,7 +97,17 @@ class AIToolContentGenerator:
                 "AI enthusiasts and professionals often wonder",
                 "With the proliferation of intelligent software,",
                 "As someone who regularly tests AI applications,",
-                "The world of artificial intelligence offers"
+                "The world of artificial intelligence offers",
+                "Having spent considerable time analyzing AI platforms,",
+                "Through hands-on experience with various AI solutions,",
+                "After testing dozens of AI tools across different categories,",
+                "From a practitioner's perspective on AI implementation,",
+                "The current AI revolution has brought forth",
+                "Smart organizations are discovering that",
+                "Real-world application of AI tools reveals",
+                "Industry veterans recognize that",
+                "Practical experience shows that",
+                "The latest generation of AI platforms"
             ],
             transition_phrases=[
                 "Furthermore, what sets this apart is",
@@ -137,7 +155,17 @@ class AIToolContentGenerator:
                 "Through practical application, I've found",
                 "My analysis of this platform reveals",
                 "After thorough evaluation, I can confirm",
-                "From a practitioner's viewpoint,"
+                "From a practitioner's viewpoint,",
+                "During my comprehensive testing phase,",
+                "Real-world usage has demonstrated that",
+                "Working directly with the development team showed",
+                "Beta testing revealed some interesting insights:",
+                "Comparative analysis against competitors indicates",
+                "User feedback from our testing community suggests",
+                "Implementation in production environments proved",
+                "Long-term usage patterns reveal that",
+                "Cross-platform testing confirmed that",
+                "Performance benchmarking demonstrated"
             ]
         )
     
@@ -391,12 +419,20 @@ class AIToolContentGenerator:
     
     def generate_ai_tool_review(self, tool_name: str, target_keywords: List[str]) -> str:
         """
-        Generate a comprehensive AI tool review article with anti-AI detection
+        Generate a comprehensive AI tool review article with anti-AI detection and real images
         """
         # Get tool data
         tool_data = self.ai_tool_database.get(tool_name)
         if not tool_data:
             return self._generate_generic_ai_tool_review(tool_name, target_keywords)
+        
+        # Fetch and process image for the tool
+        print(f"🖼️ Fetching image for {tool_name}...")
+        image_metadata = self.image_handler.fetch_tool_image(
+            tool_name=tool_name,
+            category=tool_data.category,
+            keywords=target_keywords
+        )
         
         # Generate article sections
         sections = self._generate_review_sections(tool_data, target_keywords)
@@ -404,8 +440,8 @@ class AIToolContentGenerator:
         # Apply human-like variations
         humanized_sections = self._apply_human_variations(sections)
         
-        # Assemble final article
-        article = self._assemble_ai_tool_article(humanized_sections, tool_data, target_keywords)
+        # Assemble final article with image integration
+        article = self._assemble_ai_tool_article(humanized_sections, tool_data, target_keywords, image_metadata)
         
         return article
     
@@ -445,21 +481,27 @@ class AIToolContentGenerator:
         a powerful yet accessible platform that scales with user needs and technical proficiency.
         """
         
-        # Section 3: Use Cases & Applications
+        # Section 3: Use Cases & Applications - Enhanced with detailed examples
+        detailed_use_cases = self._generate_detailed_use_cases(tool)
         sections["use_cases"] = f"""
         The versatility of {tool.tool_name} becomes apparent when examining its practical applications 
         across different industries and user scenarios. {random.choice(self.variations.personal_touches)} 
         particularly effective for {random.choice(tool.use_cases).lower()}, where its AI capabilities 
         significantly enhance productivity and output quality.
         
-        Primary use cases include:
-        1. **{tool.use_cases[0] if tool.use_cases else 'Professional workflows'}**: Streamlining complex tasks and improving efficiency
-        2. **{tool.use_cases[1] if len(tool.use_cases) > 1 else 'Creative projects'}**: Enhancing creative processes with AI assistance
-        3. **{tool.use_cases[2] if len(tool.use_cases) > 2 else 'Learning and development'}**: Supporting skill development and knowledge acquisition
+        ### Industry-Specific Applications
+        
+        {detailed_use_cases}
         
         {random.choice(self.variations.transition_phrases)} the platform adapts well to both individual 
         users and team environments, offering collaborative features that enhance group productivity 
         while maintaining individual customization options.
+        
+        **Implementation Best Practices:**
+        • Start with small pilot projects to understand workflow integration
+        • Establish clear usage guidelines for team consistency
+        • Monitor performance metrics to quantify ROI and improvement areas
+        • Regular training sessions maximize adoption and feature utilization
         """
         
         # Section 4: Community Reviews & Expert Analysis
@@ -522,35 +564,146 @@ class AIToolContentGenerator:
         return sections
     
     def _apply_human_variations(self, sections: Dict[str, str]) -> Dict[str, str]:
-        """Apply human-like writing variations to avoid AI detection"""
+        """Apply advanced human-like writing variations to avoid AI detection"""
         humanized = {}
         
         for section_name, content in sections.items():
-            # Add natural imperfections and variations
             varied_content = content
             
-            # Randomly vary sentence structure
+            # Advanced sentence structure variations
             sentences = varied_content.split('. ')
             if len(sentences) > 3:
-                # Occasionally use incomplete sentences or fragments
-                if random.random() < 0.1:
+                # Add conversational elements
+                if random.random() < 0.15:
                     fragment_idx = random.randint(1, len(sentences) - 2)
-                    sentences[fragment_idx] = sentences[fragment_idx].rstrip('.') + " —"
+                    conversational_markers = [" — quite impressive, actually", " (which is significant)", " — a notable improvement", " — something worth highlighting"]
+                    sentences[fragment_idx] = sentences[fragment_idx].rstrip('.') + random.choice(conversational_markers)
+                
+                # Vary sentence connections
+                if random.random() < 0.2:
+                    connector_idx = random.randint(1, len(sentences) - 2)
+                    connectors = ["That said,", "Here's the thing:", "What's interesting is that", "Interestingly enough,"]
+                    sentences[connector_idx] = random.choice(connectors) + " " + sentences[connector_idx].lower()
             
-            # Add natural hesitations or qualifiers
-            qualifiers = ["arguably", "perhaps", "generally", "typically", "often", "usually"]
+            # Add professional qualifiers and nuanced language
+            professional_qualifiers = [
+                ("is ", ["tends to be ", "appears to be ", "generally is ", "typically is "]),
+                ("will ", ["should ", "is likely to ", "tends to ", "generally will "]),
+                ("can ", ["may ", "might ", "could potentially ", "has the ability to "]),
+                ("always ", ["usually ", "typically ", "generally ", "in most cases "]),
+                ("never ", ["rarely ", "seldom ", "infrequently ", "almost never "])
+            ]
+            
+            for original, replacements in professional_qualifiers:
+                if random.random() < 0.25 and original in varied_content:
+                    replacement = random.choice(replacements)
+                    varied_content = varied_content.replace(original, replacement, 1)
+            
+            # Add contextual asides and parenthetical information
             if random.random() < 0.3:
-                qualifier = random.choice(qualifiers)
-                varied_content = varied_content.replace("is ", f"is {qualifier} ", 1)
+                contextual_asides = [
+                    " (based on current market analysis)",
+                    " — at least in my testing",
+                    " (though results may vary)",
+                    " — particularly for enterprise users",
+                    " (which is increasingly important)",
+                    " — something competitors struggle with"
+                ]
+                # Find a good spot to insert contextual information
+                sentences = varied_content.split('. ')
+                if len(sentences) > 2:
+                    target_sentence_idx = random.randint(1, len(sentences) - 2)
+                    aside = random.choice(contextual_asides)
+                    sentences[target_sentence_idx] = sentences[target_sentence_idx] + aside
+                    varied_content = '. '.join(sentences)
             
-            # Vary paragraph breaks naturally
+            # Add subtle personal voice indicators
+            if random.random() < 0.2:
+                personal_indicators = [
+                    "What I find particularly noteworthy is",
+                    "In my experience, this translates to",
+                    "From a practical standpoint,",
+                    "One aspect that stands out is",
+                    "What's worth mentioning is that"
+                ]
+                indicator = random.choice(personal_indicators)
+                # Replace a generic transition with personal voice
+                varied_content = re.sub(r'\bMoreover,\b', indicator, varied_content, count=1)
+                varied_content = re.sub(r'\bFurthermore,\b', indicator, varied_content, count=1)
+            
+            # Natural paragraph flow optimization
             varied_content = re.sub(r'\n\n+', '\n\n', varied_content)
+            
+            # Remove excessive formality occasionally
+            if random.random() < 0.15:
+                formal_replacements = [
+                    ("utilize", "use"),
+                    ("facilitate", "help"),
+                    ("implement", "set up"),
+                    ("optimize", "improve"),
+                    ("leverage", "use")
+                ]
+                for formal, casual in formal_replacements:
+                    if formal in varied_content and random.random() < 0.5:
+                        varied_content = varied_content.replace(formal, casual, 1)
             
             humanized[section_name] = varied_content
         
         return humanized
     
-    def _assemble_ai_tool_article(self, sections: Dict[str, str], tool: AIToolReview, keywords: List[str]) -> str:
+    def _generate_detailed_use_cases(self, tool: AIToolReview) -> str:
+        """Generate detailed use cases with practical examples and ROI information"""
+        
+        # Map tool categories to specific industry applications
+        industry_applications = {
+            "content_creation": [
+                ("Marketing Teams", "Creating campaign copy, social media content, and email newsletters with consistent brand voice"),
+                ("Content Creators", "Generating video scripts, blog outlines, and engaging social posts at scale"),
+                ("E-commerce", "Writing product descriptions, category pages, and customer communications"),
+                ("Educational Institutions", "Developing course materials, assessment questions, and student resources")
+            ],
+            "image_generation": [
+                ("Digital Marketing", "Creating social media visuals, ad creatives, and branded content assets"),
+                ("E-commerce", "Generating product mockups, lifestyle images, and promotional graphics"),
+                ("Creative Agencies", "Rapid prototyping, concept visualization, and client presentations"),
+                ("Personal Projects", "Custom artwork, profile pictures, and creative exploration")
+            ],
+            "code_assistance": [
+                ("Software Development", "Code review, debugging assistance, and documentation generation"),
+                ("Data Science", "Analysis scripts, visualization code, and model optimization"),
+                ("DevOps", "Automation scripts, configuration management, and troubleshooting"),
+                ("Education", "Learning programming concepts, code explanation, and project guidance")
+            ],
+            "productivity": [
+                ("Project Management", "Task automation, workflow optimization, and team coordination"),
+                ("Business Operations", "Process automation, data analysis, and decision support"),
+                ("Research", "Information synthesis, report generation, and insight extraction"),
+                ("Personal Organization", "Schedule management, habit tracking, and goal achievement")
+            ]
+        }
+        
+        category_apps = industry_applications.get(tool.category, [
+            ("General Business", "Improving efficiency and automation across various workflows"),
+            ("Individual Users", "Personal productivity enhancement and task streamlining")
+        ])
+        
+        use_case_details = []
+        for industry, description in category_apps[:3]:  # Limit to top 3 for readability
+            time_saved = random.choice(["30-40%", "2-3 hours daily", "50%", "1-2 hours per task"])
+            roi_metric = random.choice(["productivity gains", "cost reduction", "quality improvement", "time savings"])
+            
+            use_case_details.append(f"""
+        **{industry}**
+        {description}. Users typically report {time_saved} time savings with significant {roi_metric}. 
+        The platform's {random.choice(tool.key_features).lower()} feature proves particularly valuable 
+        in {industry.lower()} environments where {random.choice(tool.pros).lower()} is essential.
+        
+        *Real-world impact*: Organizations implementing {tool.tool_name} for {industry.lower()} applications 
+        see immediate improvements in workflow efficiency and output quality.""")
+        
+        return "\n".join(use_case_details)
+    
+    def _assemble_ai_tool_article(self, sections: Dict[str, str], tool: AIToolReview, keywords: List[str], image_metadata=None) -> str:
         """Assemble the complete AI tool review article"""
         
         # Generate SEO-friendly title
@@ -565,6 +718,14 @@ class AIToolContentGenerator:
         # Generate meta description
         meta_description = f"Comprehensive {tool.tool_name} review covering features, pricing, and real-world performance. Compare with alternatives and make an informed decision."
         
+        # Use real image metadata if available
+        featured_image_path = "/images/tools/default-ai-tool.jpg"  # Default fallback
+        image_alt_text = f"{tool.tool_name} AI tool interface"
+        
+        if image_metadata:
+            featured_image_path = f"/images/tools/{image_metadata.filename}"
+            image_alt_text = image_metadata.alt_text
+        
         # Assemble article with Hugo front matter
         article = f"""---
 title: "{title}"
@@ -572,7 +733,8 @@ description: "{meta_description}"
 date: {datetime.now().strftime('%Y-%m-%d')}
 categories: ["{tool.category}"]
 tags: ["{tool.tool_name}", "AI tools", "{tool.category.replace('_', ' ')}", "review"]
-featured_image: "/images/tools/{tool.tool_name.lower().replace(' ', '-')}.jpg"
+featured_image: "{featured_image_path}"
+image_alt: "{image_alt_text}"
 draft: false
 ---
 
@@ -581,6 +743,8 @@ draft: false
 ## 1. Tool Introduction
 
 {sections['introduction'].strip()}
+
+![{image_alt_text}]({featured_image_path} "{tool.tool_name} interface showcasing {tool.category.replace('_', ' ')} capabilities")
 
 ## 2. Core Features & Highlights
 

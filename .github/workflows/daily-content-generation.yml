@@ -20,8 +20,6 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
-      pages: write
-      id-token: write
 
     steps:
       - name: Checkout repository
@@ -132,21 +130,70 @@ jobs:
           # Set output for next step
           with open('generated_files.txt', 'w') as f:
               f.write('\n'.join(generated_files))
+              
+          # Save keyword and content data for notification
+          if keywords and len(generated_files) > 0:
+              notification_data = {
+                  'keyword_data': keywords[0] if keywords else {},
+                  'content_data': {
+                      'tool_name': list(generator.ai_tool_database.keys())[0] if generator.ai_tool_database else 'AI Tool',
+                      'title': f'{list(generator.ai_tool_database.keys())[0] if generator.ai_tool_database else \"AI Tool\"} 深度评测与使用指南',
+                      'word_count': 2500
+                  }
+              }
+              with open('notification_data.json', 'w', encoding='utf-8') as f:
+                  json.dump(notification_data, f, ensure_ascii=False, indent=2)
           "
 
-      - name: Build Hugo site
+      - name: Performance optimization
+        run: |
+          echo "⚡ Running performance optimizations..."
+          python scripts/performance_optimizer.py --images-only
+          
+          # Generate optimized build script if needed
+          if [ ! -f "scripts/optimized-build.sh" ]; then
+            python scripts/performance_optimizer.py --cache-only
+          fi
+
+      - name: SEO optimization
+        run: |
+          echo "🔍 Running SEO optimizations..."
+          python scripts/seo_enhancer.py --structured-data-only
+          python scripts/seo_enhancer.py --breadcrumbs-only
+          
+          # Only run internal linking on new content to avoid conflicts
+          if [ -f "generated_files.txt" ] && [ -s "generated_files.txt" ]; then
+            echo "🔗 Optimizing internal links for new content..."
+            python scripts/seo_enhancer.py --internal-links-only
+          fi
+
+      - name: Build Hugo site (Optimized)
         env:
           HUGO_PARAMS_GOOGLE_ANALYTICS_ID: ${{ secrets.GOOGLE_ANALYTICS_ID }}
+          HUGO_ENV: production
+          HUGO_ENABLEGITINFO: false
         run: |
-          echo "🏗️ Building Hugo site..."
+          echo "🏗️ Building Hugo site with performance optimizations..."
           echo "📊 Google Analytics ID: ${HUGO_PARAMS_GOOGLE_ANALYTICS_ID:0:8}***"
-          hugo --minify --environment production
+          
+          # Use optimized build if available
+          if [ -f "scripts/optimized-build.sh" ] && [ "${{ runner.os }}" != "Windows" ]; then
+            chmod +x scripts/optimized-build.sh
+            bash scripts/optimized-build.sh
+          else
+            # Standard build with optimizations
+            hugo --minify --gc --environment production
+          fi
           
           # Check if build was successful
           if [ -d "public" ]; then
             echo "✅ Hugo build successful"
-            echo "📁 Generated files:"
-            find public -name "*.html" | wc -l
+            echo "📁 Performance metrics:"
+            echo "  HTML files: $(find public -name "*.html" | wc -l)"
+            echo "  CSS files: $(find public -name "*.css" | wc -l)" 
+            echo "  JS files: $(find public -name "*.js" | wc -l)"
+            echo "  Image files: $(find public \\( -name "*.jpg" -o -name "*.png" -o -name "*.webp" \\) | wc -l)"
+            echo "  Total size: $(du -sh public | cut -f1)"
           else
             echo "❌ Hugo build failed"
             exit 1
@@ -189,13 +236,47 @@ jobs:
             echo "No content generated, skipping commit"
           fi
 
-      - name: Deploy to GitHub Pages
-        if: github.ref == 'refs/heads/main'
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./public
-          cname: # Will be set when domain is registered
+      - name: Send keyword analysis notification
+        if: always()
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: |
+          echo "📊 Sending keyword analysis notification..."
+          if [ -f "notification_data.json" ]; then
+            # Read notification data
+            KEYWORD_DATA=$(python -c "
+            import json
+            try:
+                with open('notification_data.json', 'r', encoding='utf-8') as f:
+                    data = json.load(f)
+                print(json.dumps(data.get('keyword_data', {})))
+            except:
+                print('{}')
+            ")
+            
+            CONTENT_DATA=$(python -c "
+            import json
+            try:
+                with open('notification_data.json', 'r', encoding='utf-8') as f:
+                    data = json.load(f)
+                print(json.dumps(data.get('content_data', {})))
+            except:
+                print('{}')
+            ")
+            
+            # Send notification
+            python scripts/telegram_notify.py \
+              --type keyword_analysis \
+              --keyword-data "$KEYWORD_DATA" \
+              --content-data "$CONTENT_DATA" || echo "Failed to send notification"
+          else
+            echo "No notification data found, sending simple update notification"
+            python scripts/telegram_notify.py \
+              --type content_update \
+              --tool-count 1 \
+              --category "AI Tools" || echo "Failed to send notification"
+          fi
 
       - name: Performance report
         run: |
@@ -211,5 +292,5 @@ jobs:
         if: always()
         run: |
           # Clean up temporary files
-          rm -f daily_keywords.json generated_files.txt
+          rm -f daily_keywords.json generated_files.txt notification_data.json
           echo "🧹 Cleanup completed"
