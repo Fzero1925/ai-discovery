@@ -102,6 +102,30 @@ def load_trending_ai_tools():
             "affiliate_potential": "Very High",
             "monthly_revenue_estimate": "$180-350",
             "reason": "对比类关键词转化率最高，两个工具都有联盟项目"
+        },
+        {
+            "keyword": "nano banana ai tool",
+            "category": "productivity",
+            "trend_score": 0.92,
+            "competition_score": 0.45,
+            "commercial_intent": 0.88,
+            "search_volume": 12000,
+            "difficulty": "Low",
+            "affiliate_potential": "High",
+            "monthly_revenue_estimate": "$150-280",
+            "reason": "最新热门AI生产力工具，搜索量激增，竞争度低，变现潜力大"
+        },
+        {
+            "keyword": "lovart ai platform",
+            "category": "image_generation", 
+            "trend_score": 0.89,
+            "competition_score": 0.48,
+            "commercial_intent": 0.91,
+            "search_volume": 18000,
+            "difficulty": "Low-Medium",
+            "affiliate_potential": "Very High",
+            "monthly_revenue_estimate": "$200-380",
+            "reason": "新兴AI艺术创作平台，用户付费意愿强，联盟佣金丰厚"
         }
     ]
     
@@ -122,59 +146,69 @@ def load_trending_ai_tools():
     return fallback_data
 
 def get_ai_tool_images(keyword, category):
-    """获取AI工具相关的产品图片路径 - 优化商业转化"""
-    base_url = "/images/ai-tools/"
-    
-    # AI工具分类图片映射 - 专业化视觉提升转化率
-    image_mapping = {
-        "content_creation": {
-            "hero_image": f"{base_url}content-creation/claude-ai-interface.jpg",
-            "product_1": f"{base_url}content-creation/chatgpt-plus-features.jpg",
-            "product_2": f"{base_url}content-creation/jasper-ai-dashboard.jpg",
-            "product_3": f"{base_url}content-creation/copy-ai-templates.jpg",
-            "comparison": f"{base_url}content-creation/ai-writing-comparison.jpg",
-            "pricing": f"{base_url}content-creation/pricing-comparison.jpg"
-        },
-        "image_generation": {
-            "hero_image": f"{base_url}image-generation/midjourney-showcase.jpg",
-            "product_1": f"{base_url}image-generation/leonardo-ai-gallery.jpg",
-            "product_2": f"{base_url}image-generation/stable-diffusion-results.jpg",
-            "product_3": f"{base_url}image-generation/dall-e-creations.jpg",
-            "comparison": f"{base_url}image-generation/ai-art-comparison.jpg",
-            "pricing": f"{base_url}image-generation/pricing-plans.jpg"
-        },
-        "code_assistance": {
-            "hero_image": f"{base_url}code-assistance/github-copilot-demo.jpg",
-            "product_1": f"{base_url}code-assistance/cursor-ai-editor.jpg",
-            "product_2": f"{base_url}code-assistance/tabnine-suggestions.jpg",
-            "comparison": f"{base_url}code-assistance/coding-ai-comparison.jpg",
-            "pricing": f"{base_url}code-assistance/developer-pricing.jpg"
-        },
-        "productivity": {
-            "hero_image": f"{base_url}productivity/notion-ai-workspace.jpg",
-            "product_1": f"{base_url}productivity/todoist-ai-features.jpg",
-            "product_2": f"{base_url}productivity/grammarly-suggestions.jpg",
-            "comparison": f"{base_url}productivity/productivity-ai-comparison.jpg",
-            "pricing": f"{base_url}productivity/subscription-plans.jpg"
+    """获取AI工具相关的真实产品图片 - 使用API获取相关图片"""
+    try:
+        # Import image handler
+        sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'modules'))
+        from image_processor.ai_tool_image_handler import AIToolImageHandler
+        
+        # API keys
+        unsplash_key = "fU_RSdecKs7yCLkwfietuN_An8Y4pDAARPjbGuWlyKQ"
+        pexels_key = "GEIG80uBUWAZYPkdLvhqSxLatgJ5Gyiu7DWxTy3veJTMGMVVkMuSWdrg"
+        pixabay_key = "52152560-87d638059f34cdb71e8341171"
+        
+        # Initialize image handler with API keys
+        handler = AIToolImageHandler(
+            unsplash_access_key=unsplash_key,
+            pexels_api_key=pexels_key,
+            pixabay_api_key=pixabay_key
+        )
+        
+        # Extract tool name from keyword
+        tool_name = keyword.replace(" review", "").replace(" guide", "").replace(" tutorial", "")
+        
+        # Fetch real image
+        image_metadata = handler.fetch_tool_image(tool_name, category, [tool_name, "AI tool", category.replace("_", " ")])
+        
+        if image_metadata:
+            # Return real image path
+            image_path = f"/images/tools/{image_metadata.filename}"
+            print(f"SUCCESS: Using real image for {tool_name}: {image_path}")
+            
+            # Return all expected keys with the same image
+            return {
+                "hero_image": image_path,
+                "featured_image": image_path,
+                "main_image": image_path,
+                "product_1": image_path,
+                "product_2": image_path,
+                "product_3": image_path,
+                "comparison": image_path,
+                "pricing": image_path
+            }
+        else:
+            print(f"WARNING: Failed to fetch real image for {tool_name}, using fallback")
+            raise Exception("No real image available")
+            
+    except Exception as e:
+        print(f"ERROR: Image fetch failed for {keyword}: {e}")
+        
+        # Fallback to placeholder only if API completely fails
+        base_url = "/images/tools/"
+        tool_slug = keyword.lower().replace(" ", "-").replace("ai", "").strip("-")
+        placeholder_filename = f"{tool_slug}-placeholder.jpg"
+        
+        # Return all expected keys with placeholder
+        return {
+            "hero_image": f"{base_url}{placeholder_filename}",
+            "featured_image": f"{base_url}{placeholder_filename}",
+            "main_image": f"{base_url}{placeholder_filename}",
+            "product_1": f"{base_url}{placeholder_filename}",
+            "product_2": f"{base_url}{placeholder_filename}",
+            "product_3": f"{base_url}{placeholder_filename}",
+            "comparison": f"{base_url}{placeholder_filename}",
+            "pricing": f"{base_url}{placeholder_filename}"
         }
-    }
-    
-    # 默认AI工具图片
-    default_images = {
-        "hero_image": f"{base_url}default-ai-tool-review.jpg",
-        "product_1": f"{base_url}default-ai-interface.jpg",
-        "product_2": f"{base_url}default-ai-features.jpg",
-        "product_3": f"{base_url}default-ai-comparison.jpg",
-        "comparison": f"{base_url}default-comparison-chart.jpg",
-        "pricing": f"{base_url}default-pricing-table.jpg"
-    }
-    
-    # 关键词匹配到图片集合
-    for key_pattern, images in image_mapping.items():
-        if key_pattern in category or key_pattern in keyword.lower():
-            return images
-    
-    return default_images
 
 def generate_ai_tool_review(keyword, category, tool_data):
     """生成专为变现优化的AI工具评测内容 - 2500+字，高转化率"""

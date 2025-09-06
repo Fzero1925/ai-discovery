@@ -1,0 +1,34 @@
+[
+  {
+    "keyword": "claude ai review",
+    "category": "content_creation",
+    "trend_score": 0.95,
+    "competition_score": 0.6,
+    "commercial_intent": 0.94,
+    "search_volume": 25000,
+    "difficulty": "Medium",
+    "affiliate_potential": "High",
+    "monthly_revenue_estimate": "$150-300",
+    "reason": "Claude AI爆火，高转化率AI助手类工具，联盟佣金丰厚",
+    "priority": 1,
+    "filepath": "content/reviews\\claude-review-20250906.md",
+    "word_count": 1349,
+    "rating": 4.2
+  },
+  {
+    "keyword": "midjourney alternatives",
+    "category": "image_generation",
+    "trend_score": 0.92,
+    "competition_score": 0.55,
+    "commercial_intent": 0.96,
+    "search_volume": 35000,
+    "difficulty": "Low-Medium",
+    "affiliate_potential": "Very High",
+    "monthly_revenue_estimate": "$200-400",
+    "reason": "Midjourney付费门槛高，用户急需替代方案，转化率极高",
+    "priority": 2,
+    "filepath": "content/reviews\\midjourney-review-20250906.md",
+    "word_count": 1328,
+    "rating": 4.2
+  }
+]

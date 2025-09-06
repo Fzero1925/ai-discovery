@@ -5,7 +5,7 @@ date: 2025-09-03
 description: Comprehensive Grammarly guide covering features, pricing, and real-world
   performance. Compare with alternatives and make an informed decision.
 draft: false
-featured_image: /images/tools/grammarly-placeholder.jpg
+featured_image: /images/tools/grammarly-pexels-6345304.jpg
 image_alt: Grammarly AI tool interface placeholder
 tags:
 - Grammarly
@@ -30,7 +30,7 @@ Industry veterans recognize that Grammarly has emerged as a leading solution in 
         Whether you're looking to enhance productivity, creative output, or technical capabilities, 
         Grammarly offers a robust solution that adapts to various use cases and skill levels.
 
-![Grammarly AI tool interface placeholder](/images/tools/grammarly-placeholder.jpg "Grammarly interface showcasing productivity capabilities")
+![Grammarly AI tool interface placeholder](/images/tools/grammarly-pexels-6345304.jpg "Grammarly interface showcasing productivity capabilities")
 
 ## 2. Core Features & Highlights
 

@@ -60,7 +60,7 @@ The versatility of Stable Diffusion becomes apparent when examining its practica
         **Digital Marketing**
         Creating social media visuals, ad creatives, and branded content assets. Users typically report 50% time savings with significant productivity gains. 
         The platform's open source feature proves particularly valuable 
-        in digital marketing environments where community models appears to be essential.
+        in digital marketing environments where community models are essential.
         
         *Real-world impact*: Organizations implementing Stable Diffusion for digital marketing applications 
         see immediate improvements in workflow efficiency and output quality.
@@ -68,7 +68,7 @@ The versatility of Stable Diffusion becomes apparent when examining its practica
         **E-commerce**
         Generating product mockups, lifestyle images, and promotional graphics. Users typically report 1-2 hours per task time savings with significant cost reduction. 
         The platform's local deployment feature proves particularly valuable 
-        in e-commerce environments where customizable is essential.
+        in e-commerce environments where customization is essential.
         
         *Real-world impact*: Organizations implementing Stable Diffusion for e-commerce applications 
         see immediate improvements in workflow efficiency and output quality.

@@ -146,7 +146,9 @@
       "Bash(set PEXELS_API_KEY=GEIG80uBUWAZYPkdLvhqSxLatgJ5Gyiu7DWxTy3veJTMGMVVkMuSWdrg)",
       "Bash(set PIXABAY_API_KEY=52152560-87d638059f34cdb71e8341171)",
       "Bash(find:*)",
-      "Bash(timeout:*)"
+      "Bash(timeout:*)",
+      "Bash(git checkout:*)",
+      "Bash(export UNSPLASH_ACCESS_KEY=\"fU_RSdecKs7yCLkwfietuN_An8Y4pDAARPjbGuWlyKQ\")"
     ],
     "deny": [],
     "ask": [],

@@ -60,7 +60,7 @@ The versatility of Stable Diffusion becomes apparent when examining its practica
         **Digital Marketing**
         Creating social media visuals, ad creatives, and branded content assets. Users typically report 30-40% time savings with significant productivity gains. 
         The platform's api access feature proves particularly valuable 
-        in digital marketing environments where customizable is essential.
+        in digital marketing environments where customization is essential.
         
         *Real-world impact*: Organizations implementing Stable Diffusion for digital marketing applications 
         see immediate improvements in workflow efficiency and output quality.

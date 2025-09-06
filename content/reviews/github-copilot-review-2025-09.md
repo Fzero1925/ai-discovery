@@ -5,7 +5,7 @@ date: 2025-09-03
 description: Comprehensive GitHub Copilot guide covering features, pricing, and real-world
   performance. Compare with alternatives and make an informed decision.
 draft: false
-featured_image: /images/tools/github-copilot-placeholder.jpg
+featured_image: /images/tools/github-copilot-pexels-3861969.jpg
 image_alt: GitHub Copilot AI tool interface placeholder
 tags:
 - GitHub Copilot
@@ -30,7 +30,7 @@ For professionals seeking intelligent automation solutions, GitHub Copilot has e
         Whether you're looking to enhance productivity, creative output, or technical capabilities, 
         GitHub Copilot offers a robust solution that adapts to various use cases and skill levels.
 
-![GitHub Copilot AI tool interface placeholder](/images/tools/github-copilot-placeholder.jpg "GitHub Copilot interface showcasing code assistance capabilities")
+![GitHub Copilot AI tool interface placeholder](/images/tools/github-copilot-pexels-3861969.jpg "GitHub Copilot interface showcasing code assistance capabilities")
 
 ## 2. Core Features & Highlights
 
