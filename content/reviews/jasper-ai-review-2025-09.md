@@ -1,6 +1,6 @@
 ---
 categories:
-- content_creation
+- content-creation
 date: 2025-09-03
 description: Comprehensive Jasper AI guide covering features, pricing, and real-world
   performance. Compare with alternatives and make an informed decision.

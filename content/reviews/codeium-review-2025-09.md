@@ -1,6 +1,6 @@
 ---
 categories:
-- code_assistance
+- code-assistance
 date: 2025-09-03
 description: Comprehensive Codeium guide covering features, pricing, and real-world
   performance. Compare with alternatives and make an informed decision.

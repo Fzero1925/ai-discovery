@@ -1,6 +1,6 @@
 ---
 categories:
-- image_generation
+- image-generation
 date: 2025-09-03
 description: Comprehensive Adobe Firefly guide covering features, pricing, and real-world
   performance. Compare with alternatives and make an informed decision.

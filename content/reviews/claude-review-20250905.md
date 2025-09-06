@@ -1,6 +1,6 @@
 ---
 categories:
-- content_creation
+- content-creation
 date: 2025-09-05 21:43:15.628618+00:00
 description: Comprehensive Claude guide covering features, pricing, and real-world
   performance. Compare with alternatives and make an informed decision.

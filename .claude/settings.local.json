@@ -135,7 +135,12 @@
       "Read(/D:\\Users\\Fzero\\project\\ai-smarthome\\ai-smarthome/**)",
       "Read(/D:\\Users\\Fzero\\project\\ai-smarthome\\ai-smarthome\\scripts/**)",
       "Read(/D:\\Users\\Fzero\\project\\ai-smarthome\\ai-smarthome\\scripts/**)",
-      "Bash(del:*)"
+      "Bash(del:*)",
+      "Bash(grep:*)",
+      "Bash(sed:*)",
+      "Bash(for:*)",
+      "Bash(do sed -i 's/content_creation/content-creation/g; s/image_generation/image-generation/g; s/code_assistance/code-assistance/g' \"$file\")",
+      "Bash(done)"
     ],
     "deny": [],
     "ask": [],
