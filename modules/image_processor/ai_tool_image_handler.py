@@ -68,6 +68,11 @@ class AIToolImageHandler:
         self.images_dir = Path("static/images/tools")
         self.images_dir.mkdir(parents=True, exist_ok=True)
         
+        # Image deduplication tracking
+        self.used_image_hashes = set()
+        self.tool_image_cache = {}
+        self._load_existing_images()
+        
         # Image quality settings
         self.image_settings = {
             'max_width': 1200,
@@ -122,6 +127,47 @@ class AIToolImageHandler:
             
         return available
     
+    def _load_existing_images(self):
+        """Load existing images to prevent duplicates"""
+        if not self.images_dir.exists():
+            return
+            
+        for img_file in self.images_dir.glob("*.jpg"):
+            try:
+                img_hash = self._get_image_hash(img_file)
+                self.used_image_hashes.add(img_hash)
+                
+                # Extract tool name from filename
+                tool_name = img_file.stem.split('-')[0]
+                if tool_name not in self.tool_image_cache:
+                    self.tool_image_cache[tool_name] = []
+                self.tool_image_cache[tool_name].append(str(img_file))
+            except Exception:
+                continue
+    
+    def _get_image_hash(self, image_path: Path) -> str:
+        """Generate MD5 hash for image file"""
+        hash_md5 = hashlib.md5()
+        try:
+            with open(image_path, "rb") as f:
+                for chunk in iter(lambda: f.read(4096), b""):
+                    hash_md5.update(chunk)
+            return hash_md5.hexdigest()
+        except Exception:
+            return ""
+    
+    def _is_image_duplicate(self, image_data: bytes) -> bool:
+        """Check if image is duplicate based on content hash"""
+        hash_md5 = hashlib.md5()
+        hash_md5.update(image_data)
+        img_hash = hash_md5.hexdigest()
+        
+        if img_hash in self.used_image_hashes:
+            return True
+        
+        self.used_image_hashes.add(img_hash)
+        return False
+    
     def fetch_tool_image(self, tool_name: str, category: str, keywords: List[str] = None) -> Optional[ImageMetadata]:
         """
         Fetch a relevant image for an AI tool using intelligent API rotation
@@ -156,14 +202,34 @@ class AIToolImageHandler:
                     print(f"No images found on {api_name.title()} for {tool_name}. Trying next API...")
                     continue
                 
-                # Select best image
-                selected_image = self._select_best_image_multi_api(images, tool_name, category, api_name)
-                
-                # Download and process image
-                image_metadata = self._download_and_process_image_multi_api(selected_image, tool_name, category, api_name)
-                
-                print(f"SUCCESS: Processed image for {tool_name} using {api_name.title()}")
-                return image_metadata
+                # Try multiple images to avoid duplicates
+                for attempt in range(min(3, len(images))):  # Try up to 3 images
+                    try:
+                        # Select best available image
+                        if attempt == 0:
+                            selected_image = self._select_best_image_multi_api(images, tool_name, category, api_name)
+                        else:
+                            # Try next best image
+                            scored_images = [(img, self._score_image_for_api(img, api_name)) for img in images]
+                            scored_images.sort(key=lambda x: x[1], reverse=True)
+                            if attempt < len(scored_images):
+                                selected_image = scored_images[attempt][0]
+                            else:
+                                break
+                        
+                        # Download and process image
+                        image_metadata = self._download_and_process_image_multi_api(selected_image, tool_name, category, api_name)
+                        
+                        print(f"SUCCESS: Processed image for {tool_name} using {api_name.title()}")
+                        return image_metadata
+                        
+                    except Exception as e:
+                        if "Duplicate image" in str(e):
+                            print(f"Duplicate detected, trying next image (attempt {attempt + 1})...")
+                            continue
+                        else:
+                            print(f"ERROR: Failed attempt {attempt + 1}: {e}")
+                            break
                 
             except Exception as e:
                 print(f"ERROR: {api_name.title()} API failed for {tool_name}: {e}")
@@ -174,29 +240,61 @@ class AIToolImageHandler:
         return self._generate_placeholder_image(tool_name, category)
     
     def _build_search_query(self, tool_name: str, category: str, keywords: List[str] = None) -> str:
-        """Build optimized search query for Unsplash"""
+        """Build optimized search query with tool-specific keywords"""
         
-        # Get category-specific keywords
-        category_terms = self.category_keywords.get(category, ['technology', 'digital workspace'])
+        # Tool-specific keyword mapping for better relevance and uniqueness
+        tool_specific_keywords = {
+            'chatgpt': ['chat conversation interface', 'conversational AI dashboard', 'OpenAI assistant'],
+            'claude': ['Anthropic AI interface', 'Claude conversation', 'AI reasoning assistant'],
+            'dall-e': ['OpenAI image generation', 'DALL-E artistic interface', 'AI image creator'],
+            'dall-e-3': ['DALL-E 3 interface', 'advanced AI art generation', 'OpenAI creative tool'],
+            'midjourney': ['Discord AI art bot', 'Midjourney artistic style', 'AI art generation Discord'], 
+            'github-copilot': ['VSCode programming assistant', 'GitHub coding interface', 'AI code completion'],
+            'copyai': ['Copy.ai writing dashboard', 'marketing copy generation', 'AI copywriting tool'],
+            'jasper': ['Jasper AI writing interface', 'content marketing AI', 'professional writing assistant'],
+            'grammarly': ['grammar checking interface', 'writing enhancement tool', 'text proofreading'],
+            'notion': ['Notion AI workspace', 'smart note organization', 'productivity dashboard'],
+            'zapier': ['workflow automation interface', 'app integration platform', 'business automation'],
+            'stable-diffusion': ['open source AI art', 'Stability AI interface', 'diffusion model art'],
+            'adobe-firefly': ['Adobe creative AI', 'Firefly generative art', 'Adobe AI design tool'],
+            'tabnine': ['AI code completion', 'Tabnine programming assistant', 'intelligent coding'],
+            'codeium': ['free coding assistant', 'Codeium AI programming', 'code intelligence tool'],
+            'power-bi': ['Microsoft analytics dashboard', 'business intelligence interface', 'data visualization'],
+            'tableau': ['Tableau analytics interface', 'data visualization dashboard', 'business analytics'],
+            'amazon-codewhisperer': ['AWS coding assistant', 'Amazon AI programming', 'CodeWhisperer interface'],
+            'datarobot': ['automated machine learning', 'DataRobot AI platform', 'ML automation interface']
+        }
         
-        # Build query components
         query_parts = []
         
-        # Add category keywords
-        query_parts.extend(category_terms[:2])  # Use top 2 category keywords
+        # Add tool-specific keywords if available
+        tool_key = tool_name.lower().replace(' ', '-').replace('_', '-')
+        if tool_key in tool_specific_keywords:
+            query_parts.extend(tool_specific_keywords[tool_key][:2])
+        else:
+            # Fallback to category keywords
+            category_terms = self.category_keywords.get(category, ['technology interface'])
+            query_parts.extend(category_terms[:2])
         
-        # Add generic AI/tech terms
-        tech_terms = ['technology', 'digital', 'modern', 'professional']
-        query_parts.extend(tech_terms[:1])
+        # Add category-specific terms
+        category_map = {
+            'content_creation': 'writing workspace',
+            'image_generation': 'creative design',
+            'code_assistance': 'programming interface', 
+            'productivity': 'business workspace'
+        }
+        
+        if category in category_map:
+            query_parts.append(category_map[category])
         
         # Add custom keywords if provided
         if keywords:
-            query_parts.extend(keywords[:2])
+            query_parts.extend(keywords[:1])
         
-        # Join with OR operator for broader results
-        search_query = ' OR '.join(query_parts)
+        # Join terms for more targeted search
+        search_query = ' '.join(query_parts[:4])  # Limit to 4 most relevant terms
         
-        return search_query[:100]  # Limit query length
+        return search_query[:100]
     
     def _search_unsplash_images(self, query: str, per_page: int = 10) -> List[Dict]:
         """Search Unsplash for images"""
@@ -361,6 +459,51 @@ class AIToolImageHandler:
         # Return the best image
         return scored_images[0][0] if scored_images else images[0]
     
+    def _score_image_for_api(self, img: Dict, api_name: str) -> float:
+        """Score individual image for API-specific ranking"""
+        score = 0.0
+        
+        # Get dimensions based on API
+        if api_name == 'unsplash':
+            width = img.get('width', 0)
+            height = img.get('height', 0)
+        elif api_name == 'pexels':
+            width = img.get('width', 0)
+            height = img.get('height', 0)
+        elif api_name == 'pixabay':
+            width = img.get('webformatWidth', 0)
+            height = img.get('webformatHeight', 0)
+        else:
+            width = height = 0
+        
+        # Resolution score
+        if width >= 1920 and height >= 1080:
+            score += 2.0
+        elif width >= 1200 and height >= 800:
+            score += 1.5
+        elif width >= 800 and height >= 600:
+            score += 1.0
+        
+        # API-specific engagement metrics
+        if api_name == 'unsplash':
+            likes = img.get('likes', 0)
+            downloads = img.get('downloads', 0)
+            score += min(likes / 1000, 2.0)
+            score += min(downloads / 10000, 1.0)
+        elif api_name == 'pexels':
+            photographer = img.get('photographer', '')
+            if photographer:
+                score += 0.5
+        elif api_name == 'pixabay':
+            likes = img.get('likes', 0)
+            downloads = img.get('downloads', 0)
+            views = img.get('views', 0)
+            score += min(likes / 100, 2.0)
+            score += min(downloads / 1000, 1.0)
+            score += min(views / 10000, 0.5)
+        
+        return score
+    
     def _download_and_process_image_multi_api(self, image_data: Dict, tool_name: str, category: str, api_name: str) -> ImageMetadata:
         """Download and process the selected image from any API"""
         
@@ -403,6 +546,11 @@ class AIToolImageHandler:
         # Download actual image
         img_response = requests.get(download_url, timeout=30)
         img_response.raise_for_status()
+        
+        # Check for duplicate before processing
+        if self._is_image_duplicate(img_response.content):
+            print(f"WARNING: Duplicate image detected for {tool_name}, skipping...")
+            raise Exception("Duplicate image detected")
         
         # Process and optimize image
         with Image.open(requests.get(download_url, stream=True).raw) as img:

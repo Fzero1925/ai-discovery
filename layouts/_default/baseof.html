@@ -46,6 +46,9 @@
     
     <!-- Enhanced Google Analytics 4 -->
     {{ partial "analytics-enhanced" . }}
+    
+    <!-- Intelligent Lazy Loading System -->
+    {{ partial "lazy-loading" . }}
 </head>
 
 <body class="{{ .Type }} {{ if .IsHome }}home{{ end }}">
@@ -146,6 +149,9 @@
 
     <!-- JavaScript -->
     <script src="{{ "js/main.js" | absURL }}" defer></script>
+    
+    <!-- Performance Optimization Suite -->
+    <script src="{{ "js/performance-optimizer.js" | absURL }}" defer></script>
     
     <!-- 返回顶部功能脚本 -->
     <script>

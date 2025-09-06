@@ -41,7 +41,7 @@
         
         {{ if .Params.featured_image }}
         <div class="article-image">
-            <img src="{{ .Params.featured_image }}" alt="{{ .Title }}" loading="eager">
+            <img src="{{ .Params.featured_image }}" alt="{{ .Title }} - Complete Guide and Review" loading="eager" width="1200" height="630">
         </div>
         {{ end }}
     </header>
@@ -205,7 +205,8 @@
 </article>
 
 <!-- Enhanced Internal Linking System -->
-{{ partial "internal-links" . }}
+<!-- Temporarily disabled due to template issues -->
+<!-- {{ partial "smart-internal-links" . }} -->
 
 <!-- Newsletter CTA -->
 <section class="newsletter-cta">

@@ -144,7 +144,9 @@
       "WebFetch(domain:ai-discovery-nu.vercel.app)",
       "Bash(gh secret:*)",
       "Bash(set PEXELS_API_KEY=GEIG80uBUWAZYPkdLvhqSxLatgJ5Gyiu7DWxTy3veJTMGMVVkMuSWdrg)",
-      "Bash(set PIXABAY_API_KEY=52152560-87d638059f34cdb71e8341171)"
+      "Bash(set PIXABAY_API_KEY=52152560-87d638059f34cdb71e8341171)",
+      "Bash(find:*)",
+      "Bash(timeout:*)"
     ],
     "deny": [],
     "ask": [],

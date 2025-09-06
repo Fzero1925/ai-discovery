@@ -12,6 +12,15 @@ import codecs
 from datetime import datetime
 from pathlib import Path
 
+# Import keyword analysis notifier
+sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'modules'))
+try:
+    from monitoring.keyword_analysis_notifier import KeywordAnalysisNotifier, ContentGenerationReport, KeywordAnalysis
+    NOTIFICATIONS_AVAILABLE = True
+except ImportError as e:
+    print(f"⚠️ Notification system not available: {e}")
+    NOTIFICATIONS_AVAILABLE = False
+
 # 解决Windows编码问题
 if sys.platform == "win32":
     sys.stdout = codecs.getwriter("utf-8")(sys.stdout.detach())
@@ -773,6 +782,45 @@ def main():
             
             print(f"✅ 已生成: {filepath}")
             print(f"📊 字数: {tool_info['word_count']} | 评分: {tool_info['rating']}/5")
+            
+            # Send immediate keyword analysis notification
+            if NOTIFICATIONS_AVAILABLE:
+                try:
+                    notifier = KeywordAnalysisNotifier()
+                    
+                    # Create keyword analysis object
+                    keyword_analysis = KeywordAnalysis(
+                        primary_keyword=keyword,
+                        search_volume=tool.get('search_volume', 2000),
+                        competition_score=tool.get('competition_score', 0.6),
+                        commercial_intent=tool.get('commercial_intent', 0.8),
+                        cpc_estimate=tool.get('cpc_estimate', 2.0),
+                        trend_score=tool.get('trend_score', 0.75),
+                        monthly_revenue_estimate=float(tool.get('monthly_revenue_estimate', '$50').replace('$', '').split('-')[0] or 50),
+                        selection_reason=tool.get('reason', f'High-value {category.replace("_", " ")} keyword with strong commercial intent'),
+                        alternative_keywords=tool.get('alternative_keywords', [])
+                    )
+                    
+                    # Create content generation report
+                    report = ContentGenerationReport(
+                        tool_name=keyword.title(),
+                        article_title=article_data['title'],
+                        category=category,
+                        keyword_analysis=keyword_analysis,
+                        generation_timestamp=datetime.now().strftime("%Y-%m-%d %H:%M UTC"),
+                        article_word_count=tool_info['word_count'],
+                        seo_score_estimate=float(tool_info['rating'])
+                    )
+                    
+                    # Send notification immediately
+                    success = notifier.send_content_generation_notification(report)
+                    if success:
+                        print(f"📱 Telegram通知已发送: {keyword}")
+                    else:
+                        print(f"⚠️ Telegram通知发送失败: {keyword}")
+                        
+                except Exception as notify_error:
+                    print(f"⚠️ 通知系统错误: {notify_error}")
             
         except Exception as e:
             print(f"❌ 生成失败 {keyword}: {e}")
