@@ -131,7 +131,11 @@
       "Bash(gh auth:*)",
       "Bash(gh secret set:*)",
       "Bash(set UNSPLASH_ACCESS_KEY=fU_RSdecKs7yCLkwfietuN_An8Y4pDAARPjbGuWlyKQ)",
-      "Bash(chcp 65001)"
+      "Bash(chcp 65001)",
+      "Read(/D:\\Users\\Fzero\\project\\ai-smarthome\\ai-smarthome/**)",
+      "Read(/D:\\Users\\Fzero\\project\\ai-smarthome\\ai-smarthome\\scripts/**)",
+      "Read(/D:\\Users\\Fzero\\project\\ai-smarthome\\ai-smarthome\\scripts/**)",
+      "Bash(del:*)"
     ],
     "deny": [],
     "ask": [],

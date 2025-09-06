@@ -16,7 +16,7 @@
 {{ if $topRelated }}
 <div class="internal-links-section">
     <div class="container">
-        <h2 class="internal-links-title">Related AI Tool Reviews</h2>
+        <h2 class="internal-links-title">Related AI Tool Guides</h2>
         <div class="internal-links-grid">
             {{ range $topRelated }}
             <article class="internal-link-card">
@@ -60,8 +60,8 @@
     <div class="container">
         <div class="contextual-links-content">
             <h3>Explore More {{ $currentCategory | title }} Tools</h3>
-            <p>We've reviewed {{ $categoryCount }} tools in the {{ $currentCategory | title }} category. 
-               <a href="/categories/{{ $currentCategory | urlize }}/" class="category-link">See all {{ $currentCategory | title }} reviews →</a>
+            <p>We've guideed {{ $categoryCount }} tools in the {{ $currentCategory | title }} category. 
+               <a href="/categories/{{ $currentCategory | urlize }}/" class="category-link">See all {{ $currentCategory | title }} guides →</a>
             </p>
         </div>
     </div>
@@ -69,11 +69,11 @@
 {{ end }}
 
 <!-- Popular Articles Cross-Links -->
-{{ $popularArticles := first 3 (where site.RegularPages "Section" "reviews" | shuffle) }}
+{{ $popularArticles := first 3 (where site.RegularPages "Section" "guides" | shuffle) }}
 {{ if $popularArticles }}
 <div class="popular-links">
     <div class="container">
-        <h3>Popular AI Tool Reviews</h3>
+        <h3>Popular AI Tool Guides</h3>
         <ul class="popular-links-list">
             {{ range $popularArticles }}
             <li class="popular-link-item">

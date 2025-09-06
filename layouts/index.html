@@ -3,13 +3,13 @@
     <div class="hero-content">
         <h1 class="hero-title">Discover the Best AI Tools for Your Needs</h1>
         <p class="hero-description">
-            Comprehensive reviews, expert analysis, and practical guides to help you navigate 
+            Comprehensive guides, expert analysis, and practical guides to help you navigate 
             the ever-evolving world of artificial intelligence tools and software.
         </p>
         <div class="hero-stats">
             <div class="stat">
                 <span class="stat-number">500+</span>
-                <span class="stat-label">AI Tools Reviewed</span>
+                <span class="stat-label">AI Tools Guideed</span>
             </div>
             <div class="stat">
                 <span class="stat-number">50K+</span>
@@ -58,29 +58,29 @@
     </div>
 </section>
 
-<section class="featured-reviews">
+<section class="featured-guides">
     <div class="container">
-        <h2>Latest AI Tool Reviews</h2>
-        <div class="reviews-grid">
-            {{ range first 6 (where site.RegularPages "Section" "reviews") }}
-            <article class="review-card">
-                <div class="review-image">
+        <h2>Latest AI Tool Guides</h2>
+        <div class="guides-grid">
+            {{ range first 6 (where site.RegularPages "Section" "guides") }}
+            <article class="guide-card">
+                <div class="guide-image">
                     {{ if .Params.featured_image }}
                     <img src="{{ .Params.featured_image }}" alt="{{ .Title }}" loading="lazy">
                     {{ else }}
                     <img src="/images/default-ai-tool.jpg" alt="{{ .Title }}" loading="lazy">
                     {{ end }}
                 </div>
-                <div class="review-content">
-                    <div class="review-category">
+                <div class="guide-content">
+                    <div class="guide-category">
                         {{ range .Params.categories }}
                         <span class="category-tag">{{ . | title }}</span>
                         {{ end }}
                     </div>
                     <h3><a href="{{ .Permalink }}">{{ .Title }}</a></h3>
-                    <p class="review-excerpt">{{ .Description | truncate 120 }}</p>
-                    <div class="review-meta">
-                        <span class="review-date">{{ .Date.Format "Jan 2, 2006" }}</span>
+                    <p class="guide-excerpt">{{ .Description | truncate 120 }}</p>
+                    <div class="guide-meta">
+                        <span class="guide-date">{{ .Date.Format "Jan 2, 2006" }}</span>
                         <span class="reading-time">{{ .ReadingTime }} min read</span>
                     </div>
                 </div>
@@ -88,7 +88,7 @@
             {{ end }}
         </div>
         <div class="view-all">
-            <a href="/reviews/" class="btn-primary">View All Reviews</a>
+            <a href="/guides/" class="btn-primary">View All Guides</a>
         </div>
     </div>
 </section>
@@ -97,7 +97,7 @@
     <div class="container">
         <div class="newsletter-content">
             <h2>Stay Updated with AI Innovation</h2>
-            <p>Get weekly insights on the latest AI tools, reviews, and industry trends delivered to your inbox.</p>
+            <p>Get weekly insights on the latest AI tools, guides, and industry trends delivered to your inbox.</p>
             <form class="newsletter-form" action="#" method="post">
                 <input type="email" placeholder="Enter your email address" required>
                 <button type="submit" class="btn-secondary">Subscribe</button>

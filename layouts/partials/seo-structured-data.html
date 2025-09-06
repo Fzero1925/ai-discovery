@@ -46,12 +46,12 @@
 }
 </script>
 
-{{ else if eq .Section "reviews" }}
-<!-- AI Tool Review Schema -->
+{{ else if eq .Section "guides" }}
+<!-- AI Tool Guide Schema -->
 <script type="application/ld+json">
 {
     "@context": "https://schema.org",
-    "@type": "Review",
+    "@type": "Guide",
     "name": "{{ .Title }}",
     "author": {
         "@type": "Organization",
@@ -61,16 +61,16 @@
     "datePublished": "{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}",
     "dateModified": "{{ .Lastmod.Format "2006-01-02T15:04:05Z07:00" }}",
     "description": "{{ if .Description }}{{ .Description }}{{ else }}{{ .Summary | truncate 160 }}{{ end }}",
-    "reviewBody": "{{ .Summary | truncate 500 }}",
+    "guideBody": "{{ .Summary | truncate 500 }}",
     {{ if .Params.rating }}
-    "reviewRating": {
+    "guideRating": {
         "@type": "Rating",
         "ratingValue": "{{ .Params.rating }}",
         "bestRating": "5",
         "worstRating": "1"
     },
     {{ end }}
-    "itemReviewed": {
+    "itemGuideed": {
         "@type": "SoftwareApplication",
         "name": "{{ .Params.tool_name | default (index (split .Title " ") 0) }}",
         "description": "{{ if .Description }}{{ .Description }}{{ else }}{{ .Summary | truncate 200 }}{{ end }}",
@@ -101,7 +101,7 @@
         "aggregateRating": {
             "@type": "AggregateRating",
             "ratingValue": "{{ .Params.rating }}",
-            "reviewCount": "1",
+            "guideCount": "1",
             "bestRating": "5",
             "worstRating": "1"
         },
@@ -175,9 +175,9 @@
         }
     },
     {{ end }}
-    "review": {
-        "@type": "Review",
-        "reviewRating": {
+    "guide": {
+        "@type": "Guide",
+        "guideRating": {
             "@type": "Rating",
             "ratingValue": "{{ .Params.rating | default 4.5 }}",
             "bestRating": "5"
@@ -186,7 +186,7 @@
             "@type": "Organization",
             "name": "{{ site.Params.author }}"
         },
-        "reviewBody": "{{ .Summary | truncate 300 }}"
+        "guideBody": "{{ .Summary | truncate 300 }}"
     }
 }
 </script>

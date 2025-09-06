@@ -19,9 +19,9 @@
     });
 
     // 跟踪AI工具评测页面的特定事件
-    {{ if eq .Type "reviews" }}
+    {{ if eq .Type "guides" }}
     gtag('event', 'page_view', {
-        'page_category': 'AI Tool Review',
+        'page_category': 'AI Tool Guide',
         'ai_tool_name': '{{ .Params.title }}',
         'tool_category': '{{ index .Params.categories 0 }}',
         'rating': '{{ .Params.rating }}',

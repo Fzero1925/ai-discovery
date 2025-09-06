@@ -10,8 +10,8 @@
                 <h1 class="list-title">
                     {{ if eq .Section "categories" }}
                     {{ .Title | title }} AI Tools
-                    {{ else if or (eq .Section "articles") (eq .Section "reviews") }}
-                    All AI Tool Reviews
+                    {{ else if or (eq .Section "articles") (eq .Section "guides") }}
+                    All AI Tool Guides
                     {{ else }}
                     {{ .Title }}
                     {{ end }}
@@ -21,9 +21,9 @@
                     {{ if .Description }}
                     {{ .Description }}
                     {{ else if eq .Section "categories" }}
-                    Discover and compare the best {{ .Title | lower }} AI tools. Read detailed reviews, compare features, and find the perfect solution for your needs.
-                    {{ else if or (eq .Section "articles") (eq .Section "reviews") }}
-                    Browse our comprehensive collection of AI tool reviews, comparisons, and guides to help you make informed decisions.
+                    Discover and compare the best {{ .Title | lower }} AI tools. Read detailed guides, compare features, and find the perfect solution for your needs.
+                    {{ else if or (eq .Section "articles") (eq .Section "guides") }}
+                    Browse our comprehensive collection of AI tool guides, comparisons, and guides to help you make informed decisions.
                     {{ else }}
                     {{ .Summary }}
                     {{ end }}
@@ -33,8 +33,8 @@
                 {{ if eq .Section "categories" }}
                 <div class="category-stats">
                     <div class="stat">
-                        <span class="stat-number">{{ len (where site.RegularPages "Section" "reviews") }}</span>
-                        <span class="stat-label">Tools Reviewed</span>
+                        <span class="stat-number">{{ len (where site.RegularPages "Section" "guides") }}</span>
+                        <span class="stat-label">Tools Guideed</span>
                     </div>
                     <div class="stat">
                         <span class="stat-number">4.6★</span>
@@ -51,7 +51,7 @@
     </header>
 
     <!-- Filters and Sorting -->
-    {{ if or (eq .Section "articles") (eq .Section "reviews") (eq .Section "categories") }}
+    {{ if or (eq .Section "articles") (eq .Section "guides") (eq .Section "categories") }}
     <section class="filters-section">
         <div class="container">
             <div class="filters-bar">
@@ -165,7 +165,7 @@
                             </div>
                             
                             <div class="tool-actions">
-                                <a href="{{ .Permalink }}" class="btn-primary">Read Review</a>
+                                <a href="{{ .Permalink }}" class="btn-primary">Read Guide</a>
                                 {{ if .Params.tool_website }}
                                 <a href="{{ .Params.tool_website }}" class="btn-secondary" target="_blank" rel="noopener">
                                     Visit Site
@@ -175,7 +175,7 @@
                         </div>
                         
                         <div class="tool-stats">
-                            <span class="review-date">{{ .Date.Format "Jan 2, 2006" }}</span>
+                            <span class="guide-date">{{ .Date.Format "Jan 2, 2006" }}</span>
                             <span class="reading-time">{{ .ReadingTime }} min read</span>
                         </div>
                     </div>
@@ -230,8 +230,8 @@
         <div class="container">
             <div class="cta-content">
                 <h2>Can't Find the Right Tool?</h2>
-                <p>Let us know what you're looking for and we'll research and review it for you.</p>
-                <a href="/contact/" class="btn-primary">Request a Review</a>
+                <p>Let us know what you're looking for and we'll research and guide it for you.</p>
+                <a href="/contact/" class="btn-primary">Request a Guide</a>
             </div>
         </div>
     </section>
@@ -241,8 +241,8 @@
     <section class="newsletter-signup">
         <div class="container">
             <div class="newsletter-content">
-                <h2>Stay Updated with New Reviews</h2>
-                <p>Get notified when we publish new AI tool reviews and comparisons.</p>
+                <h2>Stay Updated with New Guides</h2>
+                <p>Get notified when we publish new AI tool guides and comparisons.</p>
                 <form class="newsletter-form" action="#" method="post">
                     <input type="email" placeholder="Enter your email address" required>
                     <button type="submit" class="btn-secondary">Subscribe</button>

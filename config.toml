@@ -8,7 +8,7 @@ enableGitInfo = false
   pagerSize = 12
 
 [params]
-  description = "Comprehensive reviews and guides for AI tools, productivity software, and intelligent automation solutions."
+  description = "Comprehensive guides and analysis for AI tools, productivity software, and intelligent automation solutions."
   author = "AI Discovery Team"
   keywords = "AI tools, artificial intelligence, productivity software, content creation AI, image generation, coding assistants"
   google_adsense_id = "ca-pub-test"
@@ -40,24 +40,8 @@ enableGitInfo = false
     style = "github"
     lineNos = true
 
-# Multilingual support
+# Single language (English) focused on high-value markets
 defaultContentLanguage = "en"
-[languages]
-  [languages.en]
-    contentDir = "content"
-    languageName = "English"
-    weight = 1
-    title = "AI Discovery"
-    [languages.en.params]
-      description = "Your ultimate guide to AI tools and intelligent software"
-  
-  [languages.zh]
-    contentDir = "content-zh" 
-    languageName = "中文"
-    weight = 2
-    title = "AI工具发现"
-    [languages.zh.params]
-      description = "AI工具和智能软件的终极指南"
 
 [menu]
   [[menu.main]]

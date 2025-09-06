@@ -1,6 +1,6 @@
 ---
-title: "All AI Tool Reviews"
-description: "Comprehensive reviews and detailed analysis of the latest AI tools across all categories. Expert evaluations, real-world testing, and practical insights to help you choose the perfect AI solution."
+title: "All AI Tools Directory"
+description: "Comprehensive analysis and detailed guides of the latest AI tools across all categories. Expert evaluations, real-world testing, and practical insights to help you choose the perfect AI solution."
 date: 2025-09-04
 layout: list
 type: reviews
@@ -16,11 +16,11 @@ cascade:
   layout: single
 schema:
   type: CollectionPage
-  name: "AI Tool Reviews"
-  description: "Expert reviews and analysis of artificial intelligence tools and software"
+  name: "AI Tools Directory"
+  description: "Expert analysis and guides of artificial intelligence tools and software"
   mainEntity:
     type: ItemList
-    name: "AI Tool Reviews Collection"
+    name: "AI Tools Directory Collection"
 meta:
   robots: "index, follow"
   canonical: "https://ai-discovery-nu.vercel.app/reviews/"
@@ -28,9 +28,9 @@ meta:
   twitter_card: "summary_large_image"
 ---
 
-# All AI Tool Reviews
+# All AI Tools Directory
 
-Welcome to our comprehensive collection of AI tool reviews. We provide in-depth analysis, real-world testing, and expert insights across all categories of artificial intelligence tools.
+Welcome to our comprehensive collection of AI tool guides. We provide in-depth analysis, real-world testing, and expert insights across all categories of artificial intelligence tools.
 
 ## What You'll Find Here
 
@@ -50,7 +50,7 @@ Welcome to our comprehensive collection of AI tool reviews. We provide in-depth 
 - Market positioning and competitive analysis
 
 ### 🚀 Latest Updates
-- Regular reviews of new AI tools and features
+- Regular guides for new AI tools and features
 - Updated pricing and availability information
 - Community feedback and user experience reports
 
@@ -65,4 +65,4 @@ Welcome to our comprehensive collection of AI tool reviews. We provide in-depth 
 
 ---
 
-*All reviews are based on hands-on testing and expert analysis. We maintain editorial independence and provide unbiased assessments to help you make informed decisions.*
+*All guides are based on hands-on testing and expert analysis. We maintain editorial independence and provide unbiased assessments to help you make informed decisions.*

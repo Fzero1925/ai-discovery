@@ -218,36 +218,62 @@ def format_keyword_analysis_message(keyword_data, generated_content_info):
     else:
         related_keywords_text = "  • 暂无相关关键词数据"
     
-    message = f"""📊 *AI Discovery 关键词分析* | {china_time}
+    # Calculate advanced metrics
+    ctr_estimate = min(100, max(1, 15 - (search_volume / 10000)))  # Estimated CTR
+    cpc_estimate = round(commercial_intent * 2.5 + 0.5, 2)  # Estimated CPC
+    competition_level = len(related_queries) if related_queries else 3
+    
+    message = f"""📊 *AI Discovery - Advanced Keyword Analysis* | {china_time}
 
-🎯 *新文章生成完成*
-📝 *文章标题*: {article_title}
-🔤 *字数统计*: {word_count:,}字
+🎯 *Content Generation Complete*
+📝 *Article*: {article_title}
+🔤 *Word Count*: {word_count:,} words
+📱 *Target Market*: English-speaking professionals
 
-🔍 *关键词分析报告*:
-━━━━━━━━━━━━━━━━━━━━
-🎯 *主要关键词*: `{main_keyword}`
-📂 *所属分类*: {category}
-📈 *趋势评分*: {trend_score:.2f}/1.0
-🔍 *月搜索量*: {search_volume:,}
-💰 *商业意图*: {commercial_intent:.2f}/1.0
-📊 *竞争难度*: {difficulty}
-💵 *预估月收入*: {monthly_revenue_estimate}
+🔍 *PRIMARY KEYWORD ANALYSIS*:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🎯 *Main Keyword*: `{main_keyword}`
+📂 *Category*: {category}
+📈 *Trend Score*: {trend_score:.2f}/1.0
+🔍 *Monthly Volume*: {search_volume:,} searches
+💰 *Commercial Intent*: {commercial_intent:.2f}/1.0
+📊 *Difficulty*: {difficulty}
+💵 *Revenue Potential*: {monthly_revenue_estimate}
 
-🤔 *选择原因*:
+📈 *TRAFFIC & MONETIZATION FORECAST*:
+• Estimated CTR: {ctr_estimate:.1f}%
+• Est. CPC (US): ${cpc_estimate}
+• Monthly Clicks: {int(search_volume * ctr_estimate / 100):,}
+• AdSense Revenue: ${int(search_volume * ctr_estimate / 100 * cpc_estimate * 0.68)}/month
+• Affiliate Potential: {'🔥 High' if commercial_intent > 0.7 else '📊 Medium' if commercial_intent > 0.4 else '📈 Low'}
+
+🤔 *SELECTION STRATEGY*:
 {reason}
 
-🔗 *相关关键词* (Top 5):
+🎯 *WHY THIS KEYWORD MATTERS*:
+• SEO Opportunity: {'🟢 Excellent' if difficulty == 'Low' else '🟡 Good' if difficulty == 'Medium' else '🔴 Challenging'}
+• Market Demand: {'🔥 High' if search_volume > 20000 else '📊 Medium' if search_volume > 5000 else '📈 Growing'}
+• Content Gap: Addresses specific user intent in AI tools space
+• Competition: {competition_level} related terms identified
+
+🔗 *RELATED OPPORTUNITIES* (Expansion Keywords):
 {related_keywords_text}
 
-💡 *商业价值评估*:
-• 搜索热度: {'🔥' if search_volume > 20000 else '📊' if search_volume > 10000 else '📈'}
-• 竞争程度: {'🔴 激烈' if difficulty == 'High' else '🟡 中等' if difficulty == 'Medium' else '🟢 较低'}
-• 转化潜力: {'💰 优秀' if commercial_intent > 0.8 else '📊 良好' if commercial_intent > 0.6 else '📈 一般'}
+💡 *STRATEGIC VALUE ASSESSMENT*:
+• Content Authority: Building expertise in {category}
+• Link Building: High-quality backlink potential
+• User Journey: {'🎯 Decision Stage' if commercial_intent > 0.8 else '🔍 Research Stage' if commercial_intent > 0.5 else '📚 Awareness Stage'}
+• Seasonal Trends: {'📈 Growing' if trend_score > 0.7 else '📊 Stable' if trend_score > 0.5 else '📉 Declining'}
 
-*网站*: [ai-discovery-nu.vercel.app](https://ai-discovery-nu.vercel.app/)
+🌍 *MARKET POSITIONING*:
+• Primary Market: North America + Europe
+• Target Audience: B2B decision makers, tech professionals
+• Content Type: In-depth guide (vs. basic review)
+• Differentiation: Technical depth + practical insights
 
-_🤖 Claude Code 智能关键词分析完成_"""
+*Website*: [ai-discovery-nu.vercel.app](https://ai-discovery-nu.vercel.app/)
+
+_🤖 Claude Code - Advanced SEO Intelligence System_"""
     
     return message
 

@@ -14,7 +14,7 @@
 }}
 
 <!-- 主要CTA按钮 - 针对当前评测工具 -->
-{{ if and (.Params.tool_name) (.IsPage) (eq .Section "reviews") }}
+{{ if and (.Params.tool_name) (.IsPage) (eq .Section "guides") }}
   {{ $toolKey := lower (.Params.tool_name | replaceRE "[^a-zA-Z0-9]" "_") }}
   {{ $affiliateInfo := index $affiliateData $toolKey }}
   
@@ -593,7 +593,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const url = new URL(link.href);
     url.searchParams.set('utm_source', 'aidiscovery');
     url.searchParams.set('utm_medium', 'affiliate');
-    url.searchParams.set('utm_campaign', 'tool_review');
+    url.searchParams.set('utm_campaign', 'tool_guide');
     link.href = url.toString();
     
     // 添加外链图标

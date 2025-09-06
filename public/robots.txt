@@ -1,29 +1,42 @@
 User-agent: *
 Allow: /
 
-# Sitemap
-Sitemap: https://ai-discovery-nu.vercel.app/sitemap.xml
-
-# 优化爬虫抓取
-Crawl-delay: 1
-
-# 禁止抓取的路径
-Disallow: /admin/
-Disallow: /private/
-Disallow: /*.json$
-Disallow: /api/
-
-# 允许重要页面
+# Optimize crawling for AI tool review pages
 Allow: /reviews/
 Allow: /categories/
-Allow: /images/
+Allow: /tags/
 
-# SEO优化指令
+# Disallow administrative and template files
+Disallow: /admin/
+Disallow: /*_template*
+Disallow: /*_draft*
+Disallow: /search/?*
+
+# Sitemap location
+Sitemap: http://localhost:1313/sitemap.xml
+
+# Crawl delay to be respectful
+Crawl-delay: 1
+
+# Specific directives for major search engines
 User-agent: Googlebot
+Crawl-delay: 0
 Allow: /
 
 User-agent: Bingbot
+Crawl-delay: 1
 Allow: /
 
-User-agent: Baiduspider
+User-agent: Slurp
+Crawl-delay: 1
 Allow: /
+
+# Block common spam bots
+User-agent: SemrushBot
+Disallow: /
+
+User-agent: AhrefsBot
+Disallow: /
+
+User-agent: MJ12bot
+Disallow: /

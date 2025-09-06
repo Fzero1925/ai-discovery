@@ -46,26 +46,32 @@ class RealImageFetcher:
             'icon': (150, 150)          # Small icon
         }
         
-        # AI工具搜索查询优化
+        # AI工具搜索查询优化 - 更具体的AI相关关键词
         self.search_queries = {
-            'ChatGPT': 'chatgpt ai assistant artificial intelligence',
-            'Claude': 'claude ai anthropic artificial intelligence assistant',
-            'Jasper AI': 'jasper ai writing content creation copywriting',
-            'Copy.ai': 'copywriting ai content creation marketing tools',
-            'Midjourney': 'midjourney ai art generation digital art',
-            'DALL-E 3': 'dalle ai image generation artificial intelligence art',
-            'Stable Diffusion': 'stable diffusion ai art generation machine learning',
-            'Adobe Firefly': 'adobe firefly ai creative generative design',
-            'GitHub Copilot': 'github copilot ai programming coding assistant',
-            'Codeium': 'codeium ai coding assistant programming development',
-            'Amazon CodeWhisperer': 'aws codewhisperer ai programming development',
-            'TabNine': 'tabnine ai code completion programming assistant',
-            'Grammarly': 'grammarly writing assistant ai proofreading',
-            'Notion AI': 'notion ai productivity workspace collaboration',
-            'Zapier': 'zapier automation workflow integration productivity',
-            'Tableau': 'tableau data visualization analytics business intelligence',
-            'DataRobot': 'datarobot machine learning ai analytics platform',
-            'Power BI': 'power bi microsoft business intelligence analytics'
+            'ChatGPT': 'artificial intelligence chatbot interface dashboard ai conversation',
+            'Claude': 'ai assistant interface anthropic artificial intelligence dashboard',
+            'Jasper AI': 'ai writing assistant dashboard content creation interface',
+            'Copy.ai': 'ai copywriting interface dashboard marketing content creation',
+            'Midjourney': 'ai art generation interface digital art creation dashboard',
+            'DALL-E 3': 'ai image generation interface openai artificial intelligence art',
+            'Stable Diffusion': 'ai art generation interface machine learning dashboard',
+            'Adobe Firefly': 'ai creative interface adobe generative design dashboard',
+            'GitHub Copilot': 'ai coding assistant interface programming dashboard development',
+            'Codeium': 'ai code completion interface programming assistant dashboard',
+            'Amazon CodeWhisperer': 'aws ai programming interface development assistant dashboard',
+            'TabNine': 'ai code completion interface programming development assistant',
+            'Grammarly': 'ai writing assistant interface proofreading dashboard editor',
+            'Notion AI': 'ai productivity interface workspace collaboration dashboard',
+            'Zapier': 'automation workflow interface productivity dashboard integration',
+            'Tableau': 'data visualization interface analytics dashboard business intelligence',
+            'DataRobot': 'machine learning interface ai analytics platform dashboard',
+            'Power BI': 'business intelligence interface analytics dashboard microsoft data',
+            # 通用AI工具相关搜索词
+            'default': 'artificial intelligence interface dashboard ai technology software',
+            'content_creation': 'ai writing assistant interface content creation dashboard',
+            'image_generation': 'ai image generation interface art creation dashboard',
+            'code_assistance': 'ai programming assistant interface coding development dashboard',
+            'productivity': 'ai productivity interface automation dashboard workflow'
         }
         
         # 请求间隔（避免API限制）
@@ -86,6 +92,33 @@ class RealImageFetcher:
             print("请先运行: python scripts/test_unsplash_api.py")
             return False
         return True
+    
+    def get_tool_query(self, tool_name: str) -> str:
+        """获取工具的搜索查询，支持智能类型推断"""
+        # 直接匹配
+        if tool_name in self.search_queries:
+            return self.search_queries[tool_name]
+        
+        # 模糊匹配
+        for key in self.search_queries.keys():
+            if key.lower() in tool_name.lower() or tool_name.lower() in key.lower():
+                return self.search_queries[key]
+        
+        # 基于工具名称推断类型
+        tool_lower = tool_name.lower()
+        if any(keyword in tool_lower for keyword in ['gpt', 'chat', 'claude', 'gemini', 'bard']):
+            return self.search_queries['default']
+        elif any(keyword in tool_lower for keyword in ['write', 'copy', 'jasper', 'content', 'grammar']):
+            return self.search_queries['content_creation'] 
+        elif any(keyword in tool_lower for keyword in ['midjourney', 'dalle', 'stable', 'image', 'art', 'firefly']):
+            return self.search_queries['image_generation']
+        elif any(keyword in tool_lower for keyword in ['copilot', 'code', 'program', 'github', 'codeium', 'tabnine']):
+            return self.search_queries['code_assistance']
+        elif any(keyword in tool_lower for keyword in ['zapier', 'notion', 'productivity', 'automat']):
+            return self.search_queries['productivity']
+        
+        # 默认查询
+        return f"{tool_name} artificial intelligence tool dashboard interface"
     
     def search_images(self, query: str, count: int = 5) -> List[Dict]:
         """搜索相关图片"""
@@ -175,8 +208,8 @@ class RealImageFetcher:
         try:
             print(f"\\n🔍 处理工具: {tool_name}")
             
-            # 获取搜索查询
-            query = self.search_queries.get(tool_name, f"{tool_name} artificial intelligence")
+            # 获取搜索查询（使用智能推断）
+            query = self.get_tool_query(tool_name)
             print(f"  🔎 搜索查询: {query}")
             
             # 搜索图片
