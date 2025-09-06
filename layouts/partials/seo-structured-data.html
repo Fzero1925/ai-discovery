@@ -70,7 +70,7 @@
         "worstRating": "1"
     },
     {{ end }}
-    "itemGuideed": {
+    "itemReviewed": {
         "@type": "SoftwareApplication",
         "name": "{{ .Params.tool_name | default (index (split .Title " ") 0) }}",
         "description": "{{ if .Description }}{{ .Description }}{{ else }}{{ .Summary | truncate 200 }}{{ end }}",
