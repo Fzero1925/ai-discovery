@@ -140,7 +140,8 @@
       "Bash(sed:*)",
       "Bash(for:*)",
       "Bash(do sed -i 's/content_creation/content-creation/g; s/image_generation/image-generation/g; s/code_assistance/code-assistance/g' \"$file\")",
-      "Bash(done)"
+      "Bash(done)",
+      "WebFetch(domain:ai-discovery-nu.vercel.app)"
     ],
     "deny": [],
     "ask": [],
