@@ -141,7 +141,10 @@
       "Bash(for:*)",
       "Bash(do sed -i 's/content_creation/content-creation/g; s/image_generation/image-generation/g; s/code_assistance/code-assistance/g' \"$file\")",
       "Bash(done)",
-      "WebFetch(domain:ai-discovery-nu.vercel.app)"
+      "WebFetch(domain:ai-discovery-nu.vercel.app)",
+      "Bash(gh secret:*)",
+      "Bash(set PEXELS_API_KEY=GEIG80uBUWAZYPkdLvhqSxLatgJ5Gyiu7DWxTy3veJTMGMVVkMuSWdrg)",
+      "Bash(set PIXABAY_API_KEY=52152560-87d638059f34cdb71e8341171)"
     ],
     "deny": [],
     "ask": [],
