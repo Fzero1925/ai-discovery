@@ -120,7 +120,7 @@ jobs:
             echo "  HTML files: $(find public -name "*.html" | wc -l)"
             echo "  CSS files: $(find public -name "*.css" | wc -l)" 
             echo "  JS files: $(find public -name "*.js" | wc -l)"
-            echo "  Image files: $(find public \\( -name "*.jpg" -o -name "*.png" -o -name "*.webp" \\) | wc -l)"
+            echo "  Image files: $(find public -name '*.jpg' -o -name '*.png' -o -name '*.webp' | wc -l)"
             echo "  Total size: $(du -sh public | cut -f1)"
           else
             echo "Hugo build failed"
