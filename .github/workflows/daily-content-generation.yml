@@ -56,99 +56,17 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-hugomod-
 
-      - name: Generate AI tool keywords
+      - name: Generate AI tool keywords with hot topics detection
         id: keywords
         run: |
-          echo "🔍 Analyzing trending AI tools..."
-          python -c "
-          import sys
-          sys.path.append('modules')
-          from keyword_tools.ai_tool_keyword_analyzer import AIToolKeywordAnalyzer
-          
-          analyzer = AIToolKeywordAnalyzer()
-          keywords = analyzer.get_daily_ai_keywords()
-          
-          print(f'Found {len(keywords)} trending keywords')
-          for kw in keywords[:5]:
-              print(f'  - {kw.keyword} (Score: {kw.trend_score})')
-          
-          # Save keywords for content generation with enhanced data
-          import json, random
-          with open('daily_keywords.json', 'w') as f:
-              json.dump([{
-                  'keyword': kw.keyword,
-                  'category': kw.category,
-                  'trend_score': kw.trend_score,
-                  'related_queries': kw.related_queries,
-                  'search_volume': int(kw.trend_score * 1000 + random.randint(500, 2000)),
-                  'commercial_intent': min(1.0, kw.trend_score / 100 + random.uniform(0.3, 0.7)),
-                  'difficulty': kw.competition_level,
-                  'monthly_revenue_estimate': f'${random.randint(50, 300)}-{random.randint(350, 800)}',
-                  'reason': f'This keyword shows strong {kw.competition_level.lower()} competition with growing search trends in the {kw.category.replace(\"_\", \" \")} category, making it ideal for our AI tools directory targeting.'
-              } for kw in keywords], f, indent=2)
-          "
+          echo "🔍 Analyzing trending AI tools and hot topics..."
+          python scripts/generate_keywords.py
 
-      - name: Generate new content
+      - name: Generate new content with hot topics support
         id: content
         run: |
-          echo "📝 Generating AI tool reviews..."
-          python -c "
-          import sys, json, os
-          from datetime import datetime
-          sys.path.append('modules')
-          from content_generator.ai_tool_content_generator import AIToolContentGenerator
-          
-          # Load trending keywords
-          if os.path.exists('daily_keywords.json'):
-              with open('daily_keywords.json', 'r') as f:
-                  keywords = json.load(f)
-          else:
-              keywords = []
-          
-          generator = AIToolContentGenerator()
-          
-          # Generate content for top trending tools
-          generated_files = []
-          for tool_name in generator.ai_tool_database.keys():
-              target_keywords = [tool_name + ' review', 'AI tools 2025', f'best {tool_name} alternative']
-              
-              try:
-                  content = generator.generate_ai_tool_review(tool_name, target_keywords)
-                  
-                  # Create filename
-                  filename = f'content/reviews/{tool_name.lower().replace(\" \", \"-\")}-review-{datetime.now().strftime(\"%Y-%m\")}.md'
-                  
-                  # Ensure directory exists
-                  os.makedirs('content/reviews', exist_ok=True)
-                  
-                  # Skip if file already exists
-                  if not os.path.exists(filename):
-                      with open(filename, 'w', encoding='utf-8') as f:
-                          f.write(content)
-                      generated_files.append(filename)
-                      print(f'Generated: {filename}')
-              except Exception as e:
-                  print(f'Error generating content for {tool_name}: {e}')
-          
-          print(f'Generated {len(generated_files)} new articles')
-          
-          # Set output for next step
-          with open('generated_files.txt', 'w') as f:
-              f.write('\n'.join(generated_files))
-              
-          # Save keyword and content data for notification
-          if keywords and len(generated_files) > 0:
-              notification_data = {
-                  'keyword_data': keywords[0] if keywords else {},
-                  'content_data': {
-                      'tool_name': list(generator.ai_tool_database.keys())[0] if generator.ai_tool_database else 'AI Tool',
-                      'title': f'{list(generator.ai_tool_database.keys())[0] if generator.ai_tool_database else \"AI Tool\"} 深度评测与使用指南',
-                      'word_count': 2500
-                  }
-              }
-              with open('notification_data.json', 'w', encoding='utf-8') as f:
-                  json.dump(notification_data, f, ensure_ascii=False, indent=2)
-          "
+          echo "📝 Generating AI tool content with hot topics support..."
+          python scripts/generate_content.py
 
       - name: Performance optimization
         run: |
@@ -247,99 +165,41 @@ jobs:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
         run: |
-          echo "🧠 Sending advanced keyword analysis notification..."
+          echo "🧠 Sending enhanced keyword analysis notification..."
           
-          # Enhanced notification with detailed keyword analysis
-          python -c "
-          import json, os, sys
-          from datetime import datetime
-          
-          # Read generated files and keyword data
-          generated_files = []
-          if os.path.exists('generated_files.txt'):
-              with open('generated_files.txt', 'r') as f:
-                  generated_files = [line.strip() for line in f.readlines() if line.strip()]
-          
-          keywords_data = []
-          if os.path.exists('daily_keywords.json'):
-              with open('daily_keywords.json', 'r') as f:
-                  keywords_data = json.load(f)
-          
-          # Create comprehensive notification data
-          if keywords_data and len(generated_files) > 0:
-              # Use the top keyword for primary analysis
-              primary_keyword = keywords_data[0]
-              
-              # Enhanced content data
-              content_info = {
-                  'tool_name': primary_keyword.get('keyword', 'AI Tool'),
-                  'title': f'{primary_keyword.get(\"keyword\", \"AI Tool\")} Complete Analysis Guide 2025',
-                  'word_count': 2800,
-                  'articles_generated': len(generated_files),
-                  'categories_covered': list(set([kw.get('category', 'AI Tools') for kw in keywords_data[:3]])),
-                  'total_keywords_analyzed': len(keywords_data)
-              }
-              
-              # Prepare notification payload
-              notification_payload = {
-                  'keyword_data': primary_keyword,
-                  'content_data': content_info,
-                  'additional_keywords': keywords_data[1:6] if len(keywords_data) > 1 else [],
-                  'generation_summary': {
-                      'success_rate': '95%',
-                      'quality_score': '⭐⭐⭐⭐⭐',
-                      'seo_optimization': 'Advanced',
-                      'anti_ai_detection': 'Active'
-                  }
-              }
-              
-              with open('enhanced_notification_data.json', 'w', encoding='utf-8') as f:
-                  json.dump(notification_payload, f, ensure_ascii=False, indent=2)
-                  
-              print('Enhanced notification data prepared successfully')
-              print(f'Primary keyword: {primary_keyword.get(\"keyword\", \"N/A\")}')
-              print(f'Commercial value: {primary_keyword.get(\"monthly_revenue_estimate\", \"N/A\")}')
-              print(f'Articles generated: {len(generated_files)}')
-          else:
-              print('No sufficient data for enhanced notification')
-          "
-          
-          # Send the enhanced notification
-          if [ -f "enhanced_notification_data.json" ]; then
-            echo "📈 Sending enhanced keyword analysis notification..."
+          # Check if notification data exists (generated by our scripts)
+          if [ -f "notification_data.json" ]; then
+            echo "📈 Sending detailed keyword analysis notification..."
             
+            # Extract keyword and content data using jq or python
             KEYWORD_DATA=$(python -c "
-            import json
-            try:
-                with open('enhanced_notification_data.json', 'r', encoding='utf-8') as f:
-                    data = json.load(f)
-                print(json.dumps(data.get('keyword_data', {}), ensure_ascii=False))
-            except Exception as e:
-                print('{}')
-            ")
+import json
+try:
+    with open('notification_data.json', 'r', encoding='utf-8') as f:
+        data = json.load(f)
+    print(json.dumps(data.get('keyword_data', {}), ensure_ascii=False))
+except: print('{}')")
             
             CONTENT_DATA=$(python -c "
-            import json
-            try:
-                with open('enhanced_notification_data.json', 'r', encoding='utf-8') as f:
-                    data = json.load(f)
-                print(json.dumps(data.get('content_data', {}), ensure_ascii=False))
-            except Exception as e:
-                print('{}')
-            ")
+import json
+try:
+    with open('notification_data.json', 'r', encoding='utf-8') as f:
+        data = json.load(f)
+    print(json.dumps(data.get('content_data', {}), ensure_ascii=False))
+except: print('{}')")
             
-            # Send advanced keyword analysis notification
+            # Send enhanced notification with full analysis
             python scripts/telegram_notify.py \
               --type keyword_analysis \
               --keyword-data "$KEYWORD_DATA" \
-              --content-data "$CONTENT_DATA" || echo "⚠️ Notification failed, but content generation succeeded"
+              --content-data "$CONTENT_DATA" || echo "⚠️ Enhanced notification failed"
               
           else
-            echo "⚠️ No enhanced data available, sending basic status"
+            echo "⚠️ No notification data available, sending basic status"
             python scripts/telegram_notify.py \
               --type content_update \
               --tool-count 1 \
-              --category "AI Tools Analysis" || echo "Basic notification failed"
+              --category "AI Tools with Hot Topics" || echo "⚠️ Basic notification failed"
           fi
 
       - name: Performance report

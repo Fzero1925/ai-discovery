@@ -375,6 +375,34 @@ class AIToolContentGenerator:
                 free_tier=True
             ),
 
+            # Research & Search Tools (NEW CATEGORY)
+            "Perplexity AI": AIToolReview(
+                tool_name="Perplexity AI",
+                category="content_creation",
+                rating=4.6,
+                pricing="Free, Pro $20/month",
+                key_features=["Real-time search", "Source citations", "Follow-up questions", "API access"],
+                pros=["Current information", "Cited sources", "User-friendly interface", "Accurate answers"],
+                cons=["Limited free usage", "Slower than ChatGPT", "Less creative", "Source dependency"],
+                use_cases=["Research", "Fact-checking", "Current events", "Academic writing"],
+                alternatives=["ChatGPT with browsing", "Google Bard", "Bing Chat"],
+                website_url="https://perplexity.ai",
+                free_tier=True
+            ),
+            "Character.AI": AIToolReview(
+                tool_name="Character.AI",
+                category="content_creation",
+                rating=4.4,
+                pricing="Free, Plus $9.99/month",
+                key_features=["Character creation", "Roleplay conversations", "Memory system", "Community sharing"],
+                pros=["Creative conversations", "Engaging personalities", "Free tier", "Active community"],
+                cons=["Content filters", "Inconsistent responses", "Limited practical use", "Addictive"],
+                use_cases=["Entertainment", "Creative writing", "Language practice", "Character development"],
+                alternatives=["ChatGPT", "Claude", "Replika"],
+                website_url="https://character.ai",
+                free_tier=True
+            ),
+
             # Data Analysis Tools
             "DataRobot": AIToolReview(
                 tool_name="DataRobot",

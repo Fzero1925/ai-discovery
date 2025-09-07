@@ -49,11 +49,12 @@ class AIToolKeywordAnalyzer:
             requests_args={'verify': False}
         )
         
-        # AI tool categories and seed keywords
+        # AI tool categories and seed keywords (Enhanced with trending tools)
         self.ai_tool_categories = {
             "content_creation": [
                 "ChatGPT", "Claude AI", "Jasper AI", "Copy.ai", "Writesonic",
-                "AI writing assistant", "content generator", "AI copywriting"
+                "Perplexity AI", "Character.AI", "AI writing assistant", 
+                "content generator", "AI copywriting", "AI search engine"
             ],
             "image_generation": [
                 "Midjourney", "DALL-E", "Stable Diffusion", "Adobe Firefly",
@@ -70,6 +71,10 @@ class AIToolKeywordAnalyzer:
             "data_analysis": [
                 "DataRobot", "H2O.ai", "Tableau AI", "Power BI AI",
                 "AI analytics", "data visualization AI", "business intelligence AI"
+            ],
+            "research_search": [
+                "Perplexity AI", "AI search", "research assistant", 
+                "fact checking AI", "academic research AI", "real-time AI search"
             ]
         }
         

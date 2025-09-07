@@ -1,0 +1,33 @@
+{
+  "keyword_data": {
+    "keyword": "Claude AI",
+    "category": "content_creation",
+    "trend_score": 92,
+    "related_queries": [
+      "claude ai problems",
+      "claude ai worse",
+      "claude downgrade",
+      "claude intelligence drop"
+    ],
+    "search_volume": 92749,
+    "commercial_intent": 0.88,
+    "difficulty": "High",
+    "monthly_revenue_estimate": "$390-620",
+    "reason": "This keyword shows high competition with growing search trends in the content creation category. **TRENDING CONTROVERSY DETECTED** - Recent surge in problem-related queries (score: 40), making this highly valuable for capturing user attention and providing timely solutions.",
+    "is_trending_topic": true,
+    "controversy_score": 40
+  },
+  "content_data": {
+    "tool_name": "Claude AI",
+    "title": "Claude AI Complete Analysis Guide 2025",
+    "word_count": 2800,
+    "articles_generated": 3,
+    "categories_covered": [
+      "content_creation",
+      "AI Tools"
+    ],
+    "total_keywords_analyzed": 4,
+    "controversy_articles": 1,
+    "trending_topics_detected": 1
+  }
+}
