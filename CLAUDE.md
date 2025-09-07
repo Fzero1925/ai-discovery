@@ -69,7 +69,7 @@ Each tool guide page follows a standardized 6-module layout:
 ## Key Files & Systems
 
 ### Core Content Management (v2.0 Enhanced)
-- **98 AI Tool Guides**: Comprehensive English guides covering major AI tools and categories
+- **108 AI Tool Guides**: Comprehensive English guides covering major AI tools and categories
 - **Automated Scripts**: Python-based content generation with intelligent image processing
 - **Template System**: Hugo-based responsive templates with performance optimization integration
 
