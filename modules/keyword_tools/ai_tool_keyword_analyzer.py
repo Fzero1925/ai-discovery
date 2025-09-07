@@ -78,7 +78,7 @@ class AIToolKeywordAnalyzer:
             ]
         }
         
-        # Long-tail keyword patterns for AI tools
+        # Long-tail keyword patterns for AI tools (Enhanced for hot topics)
         self.keyword_patterns = [
             "{tool} review", "{tool} vs", "best {category} tools",
             "{tool} pricing", "how to use {tool}", "{tool} alternatives",
