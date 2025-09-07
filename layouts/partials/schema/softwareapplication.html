@@ -1,5 +1,6 @@
 {{ if .Params.categories }}
-{{ if in .Params.categories "content-creation" "image-generation" "code-assistance" "productivity" }}
+{{ $targetCategories := slice "content-creation" "image-generation" "code-assistance" "productivity" }}
+{{ if intersect .Params.categories $targetCategories }}
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
