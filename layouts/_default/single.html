@@ -1,4 +1,10 @@
 {{ define "main" }}
+<!-- Schema.org Structured Data -->
+{{ partial "schema/softwareapplication" . }}
+{{ partial "schema/review" . }}
+{{ partial "schema/article" . }}
+{{ partial "schema/faqpage" . }}
+
 <!-- Breadcrumb Navigation -->
 {{ partial "breadcrumb" . }}
 
