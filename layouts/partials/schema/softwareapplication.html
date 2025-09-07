@@ -1,0 +1,30 @@
+{{ if .Params.categories }}
+{{ if in .Params.categories "content-creation" "image-generation" "code-assistance" "productivity" }}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "{{ .Title }}",
+  "description": "{{ .Description }}",
+  "url": "{{ .Permalink }}",
+  "applicationCategory": "{{ range .Params.categories }}{{ . | title }}{{ end }}",
+  "operatingSystem": "Web, Windows, macOS, Linux",
+  "offers": {
+    "@type": "Offer",
+    "price": "{{ .Params.pricing | default "Free" }}",
+    "priceCurrency": "USD"
+  },
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "{{ .Params.rating | default 4.5 }}",
+    "reviewCount": "{{ .Params.review_count | default 100 }}"
+  },
+  "author": {
+    "@type": "Organization",
+    "name": "AI Discovery",
+    "url": "{{ .Site.BaseURL }}"
+  }
+}
+</script>
+{{ end }}
+{{ end }}

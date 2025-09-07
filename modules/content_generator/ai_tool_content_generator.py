@@ -21,6 +21,9 @@ import sys
 sys.path.append(str(Path(__file__).parent.parent))
 from image_processor.ai_tool_image_handler import AIToolImageHandler
 
+# Import advanced anti-AI detection system
+from .advanced_anti_ai_detection import AdvancedAntiAIDetection, HumanizationConfig
+
 
 @dataclass
 class AIToolReview:
@@ -67,6 +70,17 @@ class AIToolContentGenerator:
         
         # Initialize image processor
         self.image_handler = AIToolImageHandler()
+        
+        # Initialize advanced anti-AI detection system
+        humanization_config = HumanizationConfig(
+            sentence_length_variance=0.4,
+            paragraph_structure_randomness=0.3,
+            vocabulary_diversity_level=0.85,
+            personal_voice_intensity=0.7,
+            imperfection_level=0.15,
+            conversational_tone=0.5
+        )
+        self.advanced_humanizer = AdvancedAntiAIDetection(humanization_config)
         
         # Load content variation patterns
         self.variations = self._load_ai_tool_variations()
@@ -592,90 +606,29 @@ class AIToolContentGenerator:
         return sections
     
     def _apply_human_variations(self, sections: Dict[str, str]) -> Dict[str, str]:
-        """Apply advanced human-like writing variations to avoid AI detection"""
+        """Apply advanced human-like writing variations using sophisticated anti-AI detection system"""
         humanized = {}
         
         for section_name, content in sections.items():
-            varied_content = content
+            # Create context for humanization
+            context = {
+                'section_type': section_name,
+                'content_length': len(content.split()),
+                'is_technical': section_name in ['features', 'technical_specs'],
+                'is_personal': section_name in ['review', 'conclusion', 'personal_opinion']
+            }
             
-            # Advanced sentence structure variations
-            sentences = varied_content.split('. ')
-            if len(sentences) > 3:
-                # Add conversational elements
-                if random.random() < 0.15:
-                    fragment_idx = random.randint(1, len(sentences) - 2)
-                    conversational_markers = [" — quite impressive, actually", " (which is significant)", " — a notable improvement", " — something worth highlighting"]
-                    sentences[fragment_idx] = sentences[fragment_idx].rstrip('.') + random.choice(conversational_markers)
-                
-                # Vary sentence connections
-                if random.random() < 0.2:
-                    connector_idx = random.randint(1, len(sentences) - 2)
-                    connectors = ["That said,", "Here's the thing:", "What's interesting is that", "Interestingly enough,"]
-                    sentences[connector_idx] = random.choice(connectors) + " " + sentences[connector_idx].lower()
+            # Apply advanced humanization using the sophisticated system
+            humanized_content = self.advanced_humanizer.humanize_content(content, context)
             
-            # Add professional qualifiers and nuanced language
-            professional_qualifiers = [
-                ("is ", ["tends to be ", "appears to be ", "generally is ", "typically is "]),
-                ("will ", ["should ", "is likely to ", "tends to ", "generally will "]),
-                ("can ", ["may ", "might ", "could potentially ", "has the ability to "]),
-                ("always ", ["usually ", "typically ", "generally ", "in most cases "]),
-                ("never ", ["rarely ", "seldom ", "infrequently ", "almost never "])
-            ]
+            # Calculate and log humanization effectiveness
+            if hasattr(self.advanced_humanizer, 'calculate_humanization_score'):
+                scores = self.advanced_humanizer.calculate_humanization_score(humanized_content)
+                if scores.get('overall_score', 0) < 0.6:
+                    # If score is low, apply additional humanization pass
+                    humanized_content = self.advanced_humanizer.humanize_content(humanized_content, context)
             
-            for original, replacements in professional_qualifiers:
-                if random.random() < 0.25 and original in varied_content:
-                    replacement = random.choice(replacements)
-                    varied_content = varied_content.replace(original, replacement, 1)
-            
-            # Add contextual asides and parenthetical information
-            if random.random() < 0.3:
-                contextual_asides = [
-                    " (based on current market analysis)",
-                    " — at least in my testing",
-                    " (though results may vary)",
-                    " — particularly for enterprise users",
-                    " (which is increasingly important)",
-                    " — something competitors struggle with"
-                ]
-                # Find a good spot to insert contextual information
-                sentences = varied_content.split('. ')
-                if len(sentences) > 2:
-                    target_sentence_idx = random.randint(1, len(sentences) - 2)
-                    aside = random.choice(contextual_asides)
-                    sentences[target_sentence_idx] = sentences[target_sentence_idx] + aside
-                    varied_content = '. '.join(sentences)
-            
-            # Add subtle personal voice indicators
-            if random.random() < 0.2:
-                personal_indicators = [
-                    "What I find particularly noteworthy is",
-                    "In my experience, this translates to",
-                    "From a practical standpoint,",
-                    "One aspect that stands out is",
-                    "What's worth mentioning is that"
-                ]
-                indicator = random.choice(personal_indicators)
-                # Replace a generic transition with personal voice
-                varied_content = re.sub(r'\bMoreover,\b', indicator, varied_content, count=1)
-                varied_content = re.sub(r'\bFurthermore,\b', indicator, varied_content, count=1)
-            
-            # Natural paragraph flow optimization
-            varied_content = re.sub(r'\n\n+', '\n\n', varied_content)
-            
-            # Remove excessive formality occasionally
-            if random.random() < 0.15:
-                formal_replacements = [
-                    ("utilize", "use"),
-                    ("facilitate", "help"),
-                    ("implement", "set up"),
-                    ("optimize", "improve"),
-                    ("leverage", "use")
-                ]
-                for formal, casual in formal_replacements:
-                    if formal in varied_content and random.random() < 0.5:
-                        varied_content = varied_content.replace(formal, casual, 1)
-            
-            humanized[section_name] = varied_content
+            humanized[section_name] = humanized_content
         
         return humanized
     

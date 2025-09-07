@@ -198,7 +198,7 @@ _🤖 Claude Code 内容更新通知_"""
     return message
 
 def format_keyword_analysis_message(keyword_data, generated_content_info):
-    """Format advanced keyword analysis notification with comprehensive business intelligence"""
+    """Format advanced keyword analysis notification with comprehensive business intelligence and multi-source data"""
     china_time = get_china_time()
     
     # Parse keyword data with enhanced fields
@@ -211,6 +211,12 @@ def format_keyword_analysis_message(keyword_data, generated_content_info):
     monthly_revenue_estimate = keyword_data.get('monthly_revenue_estimate', '$100-200')
     reason = keyword_data.get('reason', '该关键词具有良好的商业价值和搜索热度')
     related_queries = keyword_data.get('related_queries', [])
+    
+    # Multi-source data enhancement
+    data_sources = keyword_data.get('data_sources', ['google_trends'])
+    controversy_score = int(keyword_data.get('controversy_score', 0))
+    sentiment = keyword_data.get('sentiment', 'neutral')
+    is_trending_topic = keyword_data.get('is_trending_topic', False)
     
     # Enhanced business intelligence calculations
     market_opportunity = 'Excellent' if commercial_intent > 0.8 else 'Good' if commercial_intent > 0.6 else 'Moderate'
@@ -245,63 +251,100 @@ def format_keyword_analysis_message(keyword_data, generated_content_info):
     organic_traffic_potential = int(search_volume * 0.15) if difficulty == 'Low' else int(search_volume * 0.08) if difficulty == 'Medium' else int(search_volume * 0.03)
     annual_revenue_potential = f"${adsense_revenue_low * 12:,}-{adsense_revenue_high * 12:,}"
     
-    message = f"""🧠 *AI Discovery Intelligence Report* | {china_time}
+    # Multi-source intelligence indicators
+    source_emoji_map = {
+        'reddit': '🗣️ Reddit',
+        'news_api': '📰 News',
+        'hackernews': '💻 HackerNews', 
+        'rss': '📡 RSS',
+        'google_trends': '📊 Google Trends',
+        'multi-source': '🔄 Multi-Platform'
+    }
+    
+    sources_display = ", ".join([source_emoji_map.get(source.split('_')[0], source) for source in data_sources[:3]])
+    if len(data_sources) > 3:
+        sources_display += f" (+{len(data_sources)-3} more)"
+    
+    # Controversy and sentiment analysis
+    controversy_level = ""
+    if controversy_score > 30:
+        controversy_level = f"🚨 **TRENDING CONTROVERSY DETECTED** (Score: {controversy_score}/100)\n"
+    elif controversy_score > 15:
+        controversy_level = f"⚠️ **Minor Controversy** (Score: {controversy_score}/100)\n"
+    
+    sentiment_emoji = {'positive': '😊', 'negative': '😠', 'neutral': '😐'}.get(sentiment, '😐')
+    trending_indicator = "🔥 **TRENDING NOW**" if is_trending_topic else "📈 Regular Topic"
+    
+    # Multi-source data analysis
+    content_data_analysis = generated_content_info.get('content_data', {})
+    sources_used = content_data_analysis.get('sources_used', data_sources)
+    total_topics = content_data_analysis.get('total_topics', 0)
+    high_value_keywords = content_data_analysis.get('high_value_keywords', 0)
+    
+    message = f"""🧠 *AI Discovery 智能分析报告* | {china_time}
 
-{priority_emoji} *CONTENT GENERATION COMPLETE* - Priority: **{content_priority}**
+{priority_emoji} *内容生成完成* - 优先级: **{content_priority}**
+{trending_indicator} | {sentiment_emoji} 情感倾向: {sentiment.title()}
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-📄 **Content Delivered:**
-• **Article**: {article_title}
-• **Word Count**: {word_count:,} words (Premium length)
-• **Articles Generated**: {articles_generated} new guides
-• **Categories**: {', '.join(categories_covered)}
-• **Quality**: ⭐⭐⭐⭐⭐ Professional analysis
+{controversy_level}📊 **多源数据分析结果**：
+🔍 **数据来源**: {sources_display}
+📈 **分析话题数**: {total_topics} 个热门话题
+💎 **高价值关键词**: {high_value_keywords} 个已识别
+🤖 **实时验证**: ✅ 跨平台数据验证
 
-🎯 **PRIMARY KEYWORD INTELLIGENCE**:
+📄 **已生成内容**：
+• **文章标题**: {article_title}
+• **文章长度**: {word_count:,} 字 (专业深度)
+• **生成指南**: {articles_generated} 篇新指南
+• **覆盖分类**: {', '.join(categories_covered)}
+• **内容质量**: ⭐⭐⭐⭐⭐ 专业分析
+
+🎯 **核心关键词智能分析**：
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-🏷️ **Target Keyword**: `{main_keyword}`
-📂 **Category**: {category.replace('_', ' ').title()}
-{trend_emoji} **Trend Score**: {trend_score:.1f}/100 (Momentum: {'Strong' if trend_score > 70 else 'Moderate' if trend_score > 40 else 'Building'})
-🔍 **Search Volume**: {search_volume:,} monthly searches
-💰 **Commercial Intent**: {commercial_intent:.2f}/1.0 ({market_opportunity} opportunity)
-{competition_emoji} **SEO Difficulty**: {difficulty} competition
+🏷️ **目标关键词**: `{main_keyword}`
+📂 **所属分类**: {category.replace('_', ' ').title()}
+{trend_emoji} **趋势评分**: {trend_score:.1f}/100 (热度: {'强劲' if trend_score > 70 else '中等' if trend_score > 40 else '上升中'})
+🔍 **搜索量**: {search_volume:,} 次/月
+💰 **商业意图**: {commercial_intent:.2f}/1.0 ({market_opportunity} 市场机会)
+{competition_emoji} **SEO难度**: {difficulty} 竞争
 
-💡 **KEYWORD SELECTION RATIONALE**:
+💡 **关键词选择理由**：
 {reason}
 
-📊 **BUSINESS INTELLIGENCE FORECAST**:
+📊 **商业智能预测**：
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-💎 **Revenue Potential**: {monthly_revenue_estimate}/month
-📈 **Organic Traffic Est.**: {organic_traffic_potential:,} monthly visitors
-🎯 **Click Potential**: {projected_monthly_clicks:,} clicks/month
-💵 **AdSense Revenue Est.**: ${adsense_revenue_low}-{adsense_revenue_high}/month
-🏆 **Annual Value**: {annual_revenue_potential}
-📱 **Market**: English-speaking professionals (Premium CPC)
+💎 **收益潜力**: {monthly_revenue_estimate}/月
+📈 **有机流量预估**: {organic_traffic_potential:,} 月访客
+🎯 **点击潜力**: {projected_monthly_clicks:,} 点击/月
+💵 **AdSense收益预估**: ${adsense_revenue_low}-{adsense_revenue_high}/月
+🏆 **年度价值**: {annual_revenue_potential}
+📱 **目标市场**: 英语专业用户 (高价CPC)
 
-🚀 **COMPETITIVE ADVANTAGE ANALYSIS**:
-• **Content Gap**: {'✅ Minimal competition' if difficulty == 'Low' else '⚡ Moderate competition' if difficulty == 'Medium' else '🔥 High competition'}
-• **Market Timing**: {'🎯 Perfect timing' if trend_score > 60 else '📊 Good timing' if trend_score > 30 else '📈 Early entry'}
-• **User Intent**: {'💰 High purchase intent' if commercial_intent > 0.8 else '🔍 Research intent' if commercial_intent > 0.5 else '📚 Awareness stage'}
-• **Authority Building**: Expert positioning in {category.replace('_', ' ')} space
+🚀 **竞争优势分析**：
+• **内容缺口**: {'✅ 竞争极小' if difficulty == 'Low' else '⚡ 中等竞争' if difficulty == 'Medium' else '🔥 激烈竞争'}
+• **市场时机**: {'🎯 完美时机' if trend_score > 60 else '📊 良好时机' if trend_score > 30 else '📈 提前布局'}
+• **用户意图**: {'💰 高购买意图' if commercial_intent > 0.8 else '🔍 研究意图' if commercial_intent > 0.5 else '📚 认知阶段'}
+• **专业权威**: 在 {category.replace('_', ' ')} 领域建立专家地位
 
-🔗 **EXPANSION OPPORTUNITIES** ({len(related_queries)} keywords identified):
+🔗 **扩展机会** (已识别 {len(related_queries)} 个关键词)：
 {related_keywords_text}
 
-🎯 **STRATEGIC RECOMMENDATIONS**:
-• **Content Focus**: {'Conversion-optimized content' if commercial_intent > 0.7 else 'Educational content with CTA' if commercial_intent > 0.4 else 'Awareness-building content'}
-• **Internal Linking**: Connect to {', '.join(categories_covered[:2])} category pages
-• **Follow-up Content**: {total_keywords_analyzed} related topics for content calendar
-• **Monetization**: {'High-value affiliate partnerships' if commercial_intent > 0.7 else 'Display ads + basic affiliates' if commercial_intent > 0.4 else 'Focus on traffic building'}
+🎯 **战略建议**：
+• **内容重点**: {'转化优化内容' if commercial_intent > 0.7 else '教育内容+行动引导' if commercial_intent > 0.4 else '认知建设内容'}
+• **内部链接**: 链接至 {', '.join(categories_covered[:2])} 分类页面
+• **后续内容**: {total_keywords_analyzed} 个相关主题纳入内容日历
+• **盈利策略**: {'高价值联盟合作' if commercial_intent > 0.7 else '展示广告+基础联盟' if commercial_intent > 0.4 else '专注流量建设'}
 
-📈 **NEXT ACTIONS**:
-• Monitor rankings for primary keyword
-• Track click-through rates and user engagement
-• Optimize for featured snippets opportunity
-• Plan related content for topic cluster expansion
+📈 **下一步行动**：
+• 监控主要关键词排名
+• 跟踪点击率和用户参与度
+• 优化精选摘要机会
+• 规划相关内容主题集群扩展
 
 *Live Site*: [ai-discovery-nu.vercel.app](https://ai-discovery-nu.vercel.app/)
 
-_🤖 Advanced SEO Intelligence by Claude Code_"""
+_🤖 Claude Code 高级SEO智能分析_"""
     
     return message
 

@@ -1,0 +1,29 @@
+{{ if .Params.categories }}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Review",
+  "name": "{{ .Title }}",
+  "reviewBody": "{{ .Summary | default .Description }}",
+  "reviewRating": {
+    "@type": "Rating",
+    "ratingValue": "{{ .Params.rating | default 4.5 }}",
+    "bestRating": "5"
+  },
+  "author": {
+    "@type": "Person",
+    "name": "{{ .Site.Params.author | default "AI Discovery Team" }}"
+  },
+  "itemReviewed": {
+    "@type": "SoftwareApplication",
+    "name": "{{ .Params.tool_name | default .Title }}",
+    "description": "{{ .Description }}"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "AI Discovery",
+    "url": "{{ .Site.BaseURL }}"
+  }
+}
+</script>
+{{ end }}

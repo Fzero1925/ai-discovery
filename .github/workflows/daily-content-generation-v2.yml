@@ -1,0 +1,82 @@
+name: AI Discovery - Daily Content Generation (v2.0 Simplified)
+
+on:
+  schedule:
+    # Run twice daily for active content generation
+    - cron: '0 2 * * *'   # 10:00 AM Beijing Time
+    - cron: '0 14 * * *'  # 10:00 PM Beijing Time
+  workflow_dispatch: # Allow manual trigger
+    inputs:
+      test_mode:
+        description: 'Run in test mode'
+        required: false
+        default: 'false'
+  push:
+    branches: [main]
+    paths:
+      - 'modules/**'
+      - '.github/workflows/**'
+      - 'scripts/**'
+
+env:
+  HUGO_VERSION: "0.149.0"
+
+jobs:
+  generate-content:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install Python dependencies
+        run: pip install -r requirements.txt
+
+      - name: Setup Hugo
+        uses: peaceiris/actions-hugo@v2
+        with:
+          hugo-version: ${{ env.HUGO_VERSION }}
+          extended: true
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Cache Hugo modules
+        uses: actions/cache@v3
+        with:
+          path: /tmp/hugo_cache
+          key: ${{ runner.os }}-hugomod-${{ hashFiles('**/go.sum') }}
+          restore-keys: |
+            ${{ runner.os }}-hugomod-
+
+      - name: Run Complete AI Discovery Workflow
+        env:
+          HUGO_PARAMS_GOOGLE_ANALYTICS_ID: ${{ secrets.GOOGLE_ANALYTICS_ID }}
+          HUGO_ENV: production
+          HUGO_ENABLEGITINFO: false
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          REDDIT_CLIENT_ID: ${{ secrets.REDDIT_CLIENT_ID }}
+          REDDIT_CLIENT_SECRET: ${{ secrets.REDDIT_CLIENT_SECRET }}
+          REDDIT_USER_AGENT: ${{ secrets.REDDIT_USER_AGENT }}
+          NEWS_API_KEY: ${{ secrets.NEWS_API_KEY }}
+          PRODUCTHUNT_TOKEN: ${{ secrets.PRODUCTHUNT_TOKEN }}
+          UNSPLASH_ACCESS_KEY: ${{ secrets.UNSPLASH_ACCESS_KEY }}
+          PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY }}
+          PIXABAY_API_KEY: ${{ secrets.PIXABAY_API_KEY }}
+        run: |
+          echo "Starting AI Discovery v2.0 Multi-Source Workflow..."
+          chmod +x scripts/workflow_runner.sh
+          bash scripts/workflow_runner.sh
