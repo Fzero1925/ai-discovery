@@ -37,6 +37,17 @@ jobs:
           hugo-version: ${{ env.HUGO_VERSION }}
           extended: true
 
+      - name: Pre-build validation
+        run: |
+          echo "🔍 Running pre-build validation before deployment..."
+          chmod +x scripts/pre-build-validator.sh
+          if bash scripts/pre-build-validator.sh; then
+            echo "✅ Pre-build validation passed - proceeding with build"
+          else
+            echo "❌ Pre-build validation failed - stopping deployment"
+            exit 1
+          fi
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:

@@ -54,6 +54,20 @@ jobs:
           hugo-version: ${{ env.HUGO_VERSION }}
           extended: true
 
+      - name: Pre-build validation
+        id: validation
+        run: |
+          echo "🔍 Running pre-build validation checks..."
+          chmod +x scripts/pre-build-validator.sh
+          if bash scripts/pre-build-validator.sh; then
+            echo "✅ Pre-build validation passed"
+            echo "validation_status=success" >> $GITHUB_OUTPUT
+          else
+            echo "❌ Pre-build validation failed"
+            echo "validation_status=failure" >> $GITHUB_OUTPUT
+            exit 1
+          fi
+
       - name: Content quality analysis
         id: content-analysis
         run: |
@@ -291,11 +305,47 @@ jobs:
     
     steps:
       - name: Quality check failure notification
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
         run: |
           echo "❌ Quality check failed for AI Discovery"
           echo "Commit: ${{ github.sha }}"
           echo "Workflow: ${{ github.workflow }}"
           echo "Run ID: ${{ github.run_id }}"
           
-          # Here you could add Telegram/Discord/Email notifications
-          # For now, just log the failure
+          # Send Telegram notification if credentials available
+          if [ "${{ secrets.TELEGRAM_BOT_TOKEN }}" != "" ] && [ "${{ secrets.TELEGRAM_CHAT_ID }}" != "" ]; then
+            python -c "
+import requests
+import sys
+
+bot_token = '${{ secrets.TELEGRAM_BOT_TOKEN }}'
+chat_id = '${{ secrets.TELEGRAM_CHAT_ID }}'
+
+message = '''🚨 AI Discovery 质量检查失败
+
+❌ 工作流: ${{ github.workflow }}
+🔗 提交: ${{ github.sha }}
+📋 运行ID: ${{ github.run_id }}
+⏰ 时间: $(date)
+
+🔍 详细信息: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
+
+需要立即检查和修复系统问题。'''
+
+try:
+    url = f'https://api.telegram.org/bot{bot_token}/sendMessage'
+    data = {'chat_id': chat_id, 'text': message, 'parse_mode': 'HTML'}
+    response = requests.post(url, data=data, timeout=10)
+    
+    if response.status_code == 200:
+        print('✅ Telegram notification sent successfully')
+    else:
+        print(f'❌ Telegram notification failed: {response.status_code}')
+except Exception as e:
+    print(f'❌ Error sending Telegram notification: {e}')
+"
+          else
+            echo "⚠️ Telegram credentials not configured, skipping notification"
+          fi

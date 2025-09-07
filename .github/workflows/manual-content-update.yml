@@ -50,6 +50,17 @@ jobs:
           hugo-version: ${{ env.HUGO_VERSION }}
           extended: true
 
+      - name: Pre-build validation
+        run: |
+          echo "🔍 Running pre-build validation before content generation..."
+          chmod +x scripts/pre-build-validator.sh
+          if bash scripts/pre-build-validator.sh; then
+            echo "✅ Pre-build validation passed - proceeding with content generation"
+          else
+            echo "❌ Pre-build validation failed - attempting auto-fixes"
+            # 验证脚本已包含自动修复功能
+          fi
+
       - name: Display input parameters
         run: |
           echo "🎯 Manual Content Generation Parameters:"

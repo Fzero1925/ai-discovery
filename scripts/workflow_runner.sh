@@ -249,12 +249,34 @@ cleanup() {
     log_success "Advanced cleanup completed"
 }
 
+# 步骤0: 预构建验证
+run_pre_build_validation() {
+    log_info "Running pre-build validation checks..."
+    
+    if [ -f "scripts/pre-build-validator.sh" ]; then
+        chmod +x scripts/pre-build-validator.sh
+        if bash scripts/pre-build-validator.sh; then
+            log_success "Pre-build validation passed"
+            return 0
+        else
+            log_warning "Pre-build validation found issues - attempting to continue with fixes"
+            return 1
+        fi
+    else
+        log_warning "Pre-build validator not found, skipping validation"
+        return 0
+    fi
+}
+
 # 主执行函数
 main() {
-    log_info "Starting AI Discovery workflow..."
+    log_info "Starting AI Discovery workflow with enhanced validation..."
     
     # 记录开始时间
     start_time=$(date +%s)
+    
+    # 执行预构建验证
+    run_pre_build_validation
     
     # 执行步骤
     run_keyword_analysis
