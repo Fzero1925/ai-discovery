@@ -31,10 +31,21 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install -r requirements.txt
+          # Install Python dependencies with retry
+          for i in {1..3}; do
+            pip install -r requirements.txt && break
+            echo "Attempt $i failed, waiting..."
+            sleep 10
+          done
           
-          # Install additional quality check tools
-          pip install markdownlint-cli2 html5lib beautifulsoup4
+          # Install additional quality check tools with retry
+          for i in {1..3}; do
+            pip install markdownlint-cli2 html5lib beautifulsoup4 && break
+            echo "Additional tools install attempt $i failed, waiting..."
+            sleep 5
+          done
+          
+          # Install npm tools
           npm install -g htmlhint stylelint
 
       - name: Setup Hugo

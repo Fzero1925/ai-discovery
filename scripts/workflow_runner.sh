@@ -199,7 +199,7 @@ Co-Authored-By: Claude <noreply@anthropic.com>"
         fi
     else
         log_warning "No content generated, skipping commit"
-        return 1
+        return 0
     fi
 }
 

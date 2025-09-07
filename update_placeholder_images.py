@@ -22,10 +22,18 @@ PRIORITY_TOOLS = [
 def update_article_images():
     """Update articles to use real images instead of placeholders"""
     
-    # API keys
-    unsplash_key = "fU_RSdecKs7yCLkwfietuN_An8Y4pDAARPjbGuWlyKQ"
-    pexels_key = "GEIG80uBUWAZYPkdLvhqSxLatgJ5Gyiu7DWxTy3veJTMGMVVkMuSWdrg"
-    pixabay_key = "52152560-87d638059f34cdb71e8341171"
+    # API keys from environment variables (secure)
+    unsplash_key = os.getenv('UNSPLASH_ACCESS_KEY')
+    pexels_key = os.getenv('PEXELS_API_KEY')
+    pixabay_key = os.getenv('PIXABAY_API_KEY')
+    
+    # Validate API keys are available
+    if not any([unsplash_key, pexels_key, pixabay_key]):
+        print("ERROR: 至少需要配置一个图片API密钥。请设置环境变量:")
+        print("- UNSPLASH_ACCESS_KEY")  
+        print("- PEXELS_API_KEY")
+        print("- PIXABAY_API_KEY")
+        return False
     
     # Initialize image handler
     handler = AIToolImageHandler(
@@ -84,6 +92,10 @@ def update_article_images():
     print(f"\n=== Summary ===")
     print(f"Successfully updated {success_count}/{len(PRIORITY_TOOLS)} articles")
     print("Real images generated and articles updated!")
+    return True
 
 if __name__ == "__main__":
-    update_article_images()
+    success = update_article_images()
+    if not success:
+        print("Image update failed due to missing API keys.")
+        exit(1)
