@@ -1,4 +1,5 @@
 ---
+title: 'Claude AI Review 2025: The Thinking Person's AI Assistant - My 18-Month Analysis'
 categories:
 - content-creation
 date: 2025-01-09
@@ -31,7 +32,6 @@ faq:
   answer: "Based on my observations: consulting, research, content marketing, strategic planning, and professional services. Any field requiring deep analysis, synthesis of complex information, or high-quality business communications benefits significantly."
 - question: "How steep is the learning curve for maximizing Claude's potential?"
   answer: "Moderate. Basic use is immediate, but mastering advanced prompting techniques takes 2-3 months. Investment in learning proper context-setting and instruction clarity pays exponential returns. I recommend starting with simple research tasks and gradually increasing complexity."
-title: 'Claude AI Review 2025: The Thinking Person's AI Assistant - My 18-Month Analysis'
 ---
 
 # Claude AI Review 2025: The Thinking Person's AI Assistant - My 18-Month Analysis
