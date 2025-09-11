@@ -1,11 +1,8 @@
 {{ define "main" }}
 <div class="hero-section">
     <div class="hero-content">
-        <h1 class="hero-title">Discover the Best AI Tools for Your Needs</h1>
-        <p class="hero-description">
-            Comprehensive guides, expert analysis, and practical guides to help you navigate 
-            the ever-evolving world of artificial intelligence tools and software.
-        </p>
+        <h1 class="hero-title">Latest Tech News — Curated and Explained</h1>
+        <p class="hero-description">Concise, compliant and value‑driven tech news: what’s new, why it matters, and context — updated throughout the day.</p>
         <div class="hero-stats">
             <div class="stat">
                 <span class="stat-number">500+</span>
@@ -25,30 +22,30 @@
 
 <section class="categories-section">
     <div class="container">
-        <h2>Explore AI Tool Categories</h2>
+        <h2>Explore News Categories</h2>
         <div class="categories-grid">
             <div class="category-card">
-                <div class="category-icon">✍️</div>
-                <h3>Content Creation</h3>
-                <p>AI writing assistants, copywriting tools, and content generators for marketers and creators.</p>
-                <div class="category-stats">{{ len (where site.RegularPages "Params.categories" "intersect" (slice "content-creation")) }} tools available</div>
-                <a href="/categories/content-creation/" class="category-link">Explore Tools →</a>
+                <div class="category-icon">⚙️</div>
+                <h3>Chips / Compute</h3>
+                <p>Semiconductors, accelerators and compute infrastructure updates.</p>
+                <div class="category-stats">News coverage</div>
+                <a href="/categories/chips-compute/" class="category-link">View News →</a>
             </div>
             
             <div class="category-card">
-                <div class="category-icon">🎨</div>
-                <h3>Image Generation</h3>
-                <p>Text-to-image AI, art generators, and visual design tools for creative professionals.</p>
-                <div class="category-stats">{{ len (where site.RegularPages "Params.categories" "intersect" (slice "image-generation")) }} tools available</div>
-                <a href="/categories/image-generation/" class="category-link">Explore Tools →</a>
+                <div class="category-icon">🤖</div>
+                <h3>Robotics</h3>
+                <p>Robotics, automation and real‑world applications.</p>
+                <div class="category-stats">News coverage</div>
+                <a href="/categories/robotics/" class="category-link">View News →</a>
             </div>
             
             <div class="category-card">
-                <div class="category-icon">💻</div>
-                <h3>Code Assistance</h3>
-                <p>AI-powered coding assistants, code completion, and development productivity tools.</p>
-                <div class="category-stats">{{ len (where site.RegularPages "Params.categories" "intersect" (slice "code-assistance")) }} tools available</div>
-                <a href="/categories/code-assistance/" class="category-link">Explore Tools →</a>
+                <div class="category-icon">📱</div>
+                <h3>Consumer Electronics</h3>
+                <p>Devices, wearables, displays and consumer ecosystems.</p>
+                <div class="category-stats">News coverage</div>
+                <a href="/categories/consumer-electronics/" class="category-link">View News →</a>
             </div>
             
             <div class="category-card">
@@ -65,20 +62,21 @@
 <section class="featured-guides">
     <div class="container">
         <div class="section-header">
-            <h2>Latest AI Tool Discovery</h2>
-            <p class="section-subtitle">Comprehensive analysis of the newest and most promising AI tools in the market</p>
+            <h2>Latest Tech News</h2>
+            <p class="section-subtitle">What’s new, why it matters, and context — curated from authoritative sources</p>
         </div>
         <div class="guides-grid">
-            {{ range first 6 (where site.RegularPages "Section" "reviews") }}
+            {{ $news := where site.RegularPages "Params.categories" "intersect" (slice "news") }}
+            {{ range first 8 (sort $news "Date" "desc") }}
             <article class="guide-card">
                 <div class="guide-image">
                     {{ if .Params.featured_image }}
                     <img src="{{ .Params.featured_image }}" alt="{{ .Title }}" loading="lazy">
                     {{ else }}
-                    <img src="/images/default-ai-tool.jpg" alt="{{ .Title }}" loading="lazy">
+                    <img src="/images/ai-discovery-og.jpg" alt="{{ .Title }}" loading="lazy">
                     {{ end }}
                     <div class="image-overlay">
-                        <span class="new-badge">New Analysis</span>
+                        <span class="new-badge">Latest</span>
                     </div>
                 </div>
                 <div class="guide-content">
@@ -95,7 +93,7 @@
                             <span class="reading-time">{{ .ReadingTime }} min read</span>
                         </div>
                         <div class="meta-right">
-                            <span class="analysis-type">In-Depth</span>
+                            <span class="analysis-type">News</span>
                         </div>
                     </div>
                 </div>
@@ -103,8 +101,8 @@
             {{ end }}
         </div>
         <div class="view-all">
-            <a href="/reviews/" class="btn-primary">View All Discovery →</a>
-            <p class="discovery-count">{{ len (where site.RegularPages "Section" "reviews") }} comprehensive AI tool analyses available</p>
+            <a href="/categories/news/" class="btn-primary">View All News →</a>
+            <p class="discovery-count">{{ len (where site.RegularPages "Params.categories" "intersect" (slice "news")) }} news updates published</p>
         </div>
     </div>
 </section>
