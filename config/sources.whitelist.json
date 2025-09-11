@@ -1,0 +1,9 @@
+{
+  "rss": [
+    { "name": "OpenAI Blog", "url": "https://openai.com/blog/rss" },
+    { "name": "Google AI Blog", "url": "https://ai.googleblog.com/atom.xml" },
+    { "name": "Microsoft Blog AI", "url": "https://blogs.microsoft.com/ai/feed/" },
+    { "name": "NVIDIA Blog", "url": "https://blogs.nvidia.com/feed/" },
+    { "name": "EU Digital Strategy", "url": "https://digital-strategy.ec.europa.eu/en/news/feed" }
+  ]
+}

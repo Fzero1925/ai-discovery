@@ -1,0 +1,16 @@
+{
+  "weights": {
+    "SourceAuthority": 0.25,
+    "Novelty": 0.20,
+    "Impact": 0.15,
+    "Recency": 0.15,
+    "SearchDemand": 0.10,
+    "SocialVelocity": 0.10,
+    "AdValue": 0.05
+  },
+  "thresholds": {
+    "nvs_min": 60,
+    "nqs_min": 85,
+    "story_cooldown_minutes": 60
+  }
+}
