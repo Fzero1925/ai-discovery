@@ -18,7 +18,11 @@
     {{ end }}
     
     <!-- Enhanced SEO Meta Tags -->
+    {{ if templates.Exists "partials/seo-meta-tags-enhanced.html" }}
+    {{ partial "seo-meta-tags-enhanced" . }}
+    {{ else }}
     {{ partial "seo-meta-tags" . }}
+    {{ end }}
     
     <!-- RSS Feed -->
     {{ with .OutputFormats.Get "RSS" }}
@@ -39,7 +43,16 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
     <!-- Enhanced Schema.org Structured Data -->
+    {{ if templates.Exists "partials/seo-structured-data-enhanced.html" }}
+    {{ partial "seo-structured-data-enhanced" . }}
+    {{ else }}
     {{ partial "seo-structured-data" . }}
+    {{ end }}
+
+    <!-- NewsArticle Structured Data for articles -->
+    {{ if templates.Exists "partials/news-structured-data.html" }}
+    {{ partial "news-structured-data" . }}
+    {{ end }}
     
     <!-- AdSense自动化广告系统 -->
     {{ partial "monetization-adsense" . }}

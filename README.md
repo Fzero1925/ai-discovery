@@ -142,6 +142,14 @@ TELEGRAM_CHAT_ID=your_chat_id
 - **Performance Suite**: LCP, FID, CLS, FCP, TTFB monitoring
 - **Mobile Optimization**: Responsive design and fast loading
 
+### Automation v3.0 (Quality-Gated Publishing)
+- **Quality Gate 85+**: Only publish when quality score ≥ 85/100
+- **Daily Target**: Automatically ships 4 high-quality posts/day
+- **Humanization Check**: Measures humanization to reduce AI-detection
+- **SEO & AdSense Ready**: Frontmatter + alt tags + internal links enforced
+- **Auto-Fix Loop**: Iterates improvements if score < 85, logs failures
+- **Module**: `scripts/auto_content_pipeline.py` (integrated in Master Control)
+
 ## 📞 Support & Documentation
 
 ### Key Files

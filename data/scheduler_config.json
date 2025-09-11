@@ -1,0 +1,15 @@
+{
+  "timezone": "Asia/Shanghai",
+  "active_hours": { "start": "08:00", "end": "23:00" },
+  "day": {
+    "max_per_hour": 6,
+    "min_interval_minutes": 12,
+    "max_interval_minutes": 18
+  },
+  "night": {
+    "policy": "throttle",
+    "max_per_hour": 2,
+    "min_interval_minutes": 20,
+    "max_interval_minutes": 30
+  }
+}

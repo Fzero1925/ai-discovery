@@ -1,0 +1,36 @@
+{{/* NewsArticle JSON-LD for articles section */}}
+{{ if and .IsPage (eq .Section "articles") }}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "NewsArticle",
+  "headline": "{{ .Title }}",
+  "datePublished": "{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}",
+  {{ if .Lastmod }}
+  "dateModified": "{{ .Lastmod.Format "2006-01-02T15:04:05Z07:00" }}",
+  {{ end }}
+  "author": {
+    "@type": "Organization",
+    "name": "{{ .Site.Params.organization_name | default "AI Discovery Team" }}"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "{{ .Site.Title }}",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "{{ .Site.Params.logo_url | default (printf "%s/images/logo.png" .Site.BaseURL) }}"
+    }
+  },
+  {{ if .Params.featured_image }}
+  "image": ["{{ .Params.featured_image | absURL }}"],
+  {{ end }}
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "{{ .Permalink }}"
+  },
+  "articleSection": "News",
+  "keywords": "{{ range .Params.tags }}{{ . }},{{ end }}AI, artificial intelligence, technology"
+}
+</script>
+{{ end }}
+

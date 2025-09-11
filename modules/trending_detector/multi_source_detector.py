@@ -95,12 +95,38 @@ class MultiSourceTrendDetector:
         """初始化各种API客户端"""
         # Reddit API
         try:
-            if all(key in os.environ for key in ['REDDIT_CLIENT_ID', 'REDDIT_CLIENT_SECRET']):
-                self.reddit = praw.Reddit(
-                    client_id=os.environ.get('REDDIT_CLIENT_ID'),
-                    client_secret=os.environ.get('REDDIT_CLIENT_SECRET'),
-                    user_agent=os.environ.get('REDDIT_USER_AGENT', 'AI-Discovery/1.0')
-                )
+            client_id = os.environ.get('REDDIT_CLIENT_ID')
+            client_secret = os.environ.get('REDDIT_CLIENT_SECRET')
+            user_agent = os.environ.get('REDDIT_USER_AGENT', 'AI-Discovery/1.0')
+            username = os.environ.get('REDDIT_USERNAME')
+            # 兼容传入形式为 "u/xxx" 的用户名
+            if username and username.startswith('u/'):
+                username = username[2:]
+            password = os.environ.get('REDDIT_PASSWORD')
+
+            if client_id and client_secret:
+                if username and password:
+                    # Script-type app with password grant (use carefully)
+                    self.reddit = praw.Reddit(
+                        client_id=client_id,
+                        client_secret=client_secret,
+                        user_agent=user_agent,
+                        username=username,
+                        password=password,
+                        check_for_async=False,
+                    )
+                else:
+                    # Read-only application
+                    self.reddit = praw.Reddit(
+                        client_id=client_id,
+                        client_secret=client_secret,
+                        user_agent=user_agent,
+                        check_for_async=False,
+                    )
+                    try:
+                        self.reddit.read_only = True
+                    except Exception:
+                        pass
             else:
                 self.reddit = None
                 print("Reddit API credentials not found")

@@ -32,6 +32,7 @@ class MasterControl:
         # 系统模块
         self.modules = {
             'content_generation': 'generate_daily_ai_content.py',
+            'quality_pipeline': 'auto_content_pipeline.py',
             'trends_analysis': 'ai_trends_analyzer.py', 
             'seo_optimization': 'seo_optimizer.py',
             'revenue_tracking': 'revenue_tracker.py',
@@ -101,8 +102,9 @@ class MasterControl:
         
         # 任务序列（按优先级排序）
         tasks = [
-            ('trends_analysis', ['--limit', '6', '--save'], '市场趋势分析'),
-            ('content_generation', ['--count', '1', '--focus-high-revenue'], 'AI工具内容生成'),
+            ('trends_analysis', ['--limit', '12', '--save'], '市场趋势分析'),
+            # 质量闸门 + 4篇/天
+            ('quality_pipeline', ['--target', '4', '--max-attempts', '3'], '高质量内容生产(质量闸门85+)'),
             ('seo_optimization', ['--sitemap', '--robots'], 'SEO优化'),
             ('revenue_tracking', ['--daily'], '收益跟踪分析')
         ]
