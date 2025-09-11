@@ -199,3 +199,14 @@ We welcome contributions to improve AI Discovery:
 **AI Discovery** - Transforming how professionals discover and evaluate AI tools through comprehensive, data-driven analysis.
 
 *For detailed technical documentation, see `CLAUDE.md` and `PROJECT_STATUS.md`*
+
+## Workflows (Simplified)
+- hourly_news.yml: hourly queue + news sitemap + ping
+- quarter_hour_publisher.yml: publish due posts every 15 minutes
+- daily_news_report.yml / weekly_news_report.yml: daily/weekly reports
+
+## Docs & Folders
+- docs/PROGRESS_TODO.md: progress and TODO
+- oldfile/: archived docs (ignored)
+- test/: test scripts (ignored)
+
