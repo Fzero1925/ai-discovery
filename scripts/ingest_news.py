@@ -64,7 +64,27 @@ def main():
         sources = [{"name": t.source, "url": t.url or ""}]
         body = render_short_news(title, summary, sources)
         fm = build_frontmatter(title, ["news", title], sources, 0)
+        # Auto-generate safe banner to ensure each news has an image
+        try:
+            from modules.image_processor.auto_banner import generate_banner
+            cat_key = "consumer-electronics" if "iphone" in title.lower() else "news"
+            featured_path, alt_text = generate_banner(title, cat_key)
+            web_path = "/" + str(Path(featured_path).as_posix()).split("static/")[-1]
+            insert = f"featured_image: \"{web_path}\"\nimage_alt: \"{alt_text}\"\n"
+            fm = fm.replace("---\n", insert + "---\n", 1)
+        except Exception:
+            pass
         md = fm + body
+
+        # Similarity guard (two-level)
+        from modules.quality.similarity_guard import SimilarityGuard
+        guard = SimilarityGuard(content_dir="content")
+        rep = guard.assess(md, window_days=7)
+        if rep.max_similarity >= 0.75:
+            continue
+        rep_global = guard.assess(md, window_days=90)
+        if rep_global.max_similarity >= 0.30:
+            continue
 
         # Quality gate (for news体裁，长度短也应合格)
         q = assessor.assess(md, {"title": title, "categories": ["news"], "tags": [title]})
@@ -106,4 +126,3 @@ if __name__ == "__main__":
     import sys
 
     sys.exit(main())
-
