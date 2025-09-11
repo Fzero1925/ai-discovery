@@ -50,7 +50,7 @@ defaultContentLanguage = "en"
     weight = 1
   [[menu.main]]
     name = "News"
-    url = "/categories/news/"
+    url = "/news/"
     weight = 2
   [[menu.main]]
     name = "Tools"

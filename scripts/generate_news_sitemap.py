@@ -2,7 +2,7 @@
 """
 Generate Google News sitemap for recent articles.
 
-Scans content/articles for items modified in last 48 hours and writes
+Scans content/ for items with category "news" modified in last 48 hours and writes
 static/sitemap-news.xml with proper namespaces.
 """
 
@@ -17,7 +17,7 @@ from typing import List, Dict
 
 import frontmatter
 
-CONTENT_DIR = Path("content/articles")
+CONTENT_DIR = Path("content")
 OUTPUT = Path("static/sitemap-news.xml")
 BASE_URL = os.getenv("SITE_BASE_URL", "https://ai-discovery-nu.vercel.app")
 
@@ -30,6 +30,13 @@ def collect_recent_articles(hours: int = 48) -> List[Dict]:
     for md in CONTENT_DIR.rglob("*.md"):
         try:
             post = frontmatter.load(md)
+            # Only include news-category posts
+            cats = post.get("categories") or []
+            if isinstance(cats, str):
+                cats = [cats]
+            cats = [str(c).lower() for c in cats]
+            if "news" not in cats:
+                continue
             # Determine date
             dt_str = post.get("date") or post.get("last_updated")
             if dt_str:
@@ -93,4 +100,3 @@ def main():
 
 if __name__ == "__main__":
     sys.exit(main())
-

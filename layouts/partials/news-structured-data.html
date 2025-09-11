@@ -1,5 +1,5 @@
-{{/* NewsArticle JSON-LD for articles section */}}
-{{ if and .IsPage (eq .Section "articles") }}
+{{/* NewsArticle JSON-LD for news pages (section=news or category=news) */}}
+{{ if and .IsPage (or (eq .Section "news") (in .Params.categories "news")) }}
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -33,4 +33,3 @@
 }
 </script>
 {{ end }}
-

@@ -9,7 +9,7 @@
     "preview": "hugo server --minify --environment production --port 3001",
     "deploy": "vercel --prod",
     "lint": "echo 'No JS linting configured'",
-    "test": "python test_keyword_analyzer.py && python test_content_generator.py"
+    "test": "python -m pytest -q"
   },
   "repository": {
     "type": "git",

@@ -95,9 +95,9 @@ def main():
                 continue
             md = improved
 
-        # Write file under content/articles for now
+        # Write file under content/news (news-first)
         slug = title.lower().replace(" ", "-")
-        out_path = Path("content/articles") / f"{slug}-short-{datetime.utcnow().strftime('%Y-%m-%d')}.md"
+        out_path = Path("content/news") / f"{slug}-short-{datetime.utcnow().strftime('%Y-%m-%d')}.md"
         out_path.parent.mkdir(parents=True, exist_ok=True)
         out_path.write_text(md, encoding="utf-8")
 

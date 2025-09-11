@@ -1,0 +1,43 @@
+{{ define "main" }}
+<article class="news-single">
+  <header class="article-header">
+    <div class="article-header-content">
+      <div class="article-meta">
+        {{ range .Params.categories }}<span class="article-category">{{ . | title }}</span>{{ end }}
+        <time class="article-date" datetime="{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}">{{ .Date.Format "January 2, 2006" }}</time>
+        <span class="reading-time">{{ .ReadingTime }} min read</span>
+      </div>
+      <h1 class="article-title">{{ .Title }}</h1>
+      {{ if .Description }}<p class="article-description">{{ .Description }}</p>{{ end }}
+    </div>
+    {{ if .Params.featured_image }}
+    <div class="article-image">
+      <img src="{{ .Params.featured_image }}" alt="{{ .Params.image_alt | default .Title }}" loading="eager" width="1200" height="630">
+    </div>
+    {{ end }}
+  </header>
+
+  <div class="article-content">
+    {{ .Content }}
+  </div>
+
+  {{ with .Params.sources }}
+  <section class="news-sources">
+    <h3>Sources</h3>
+    <ul>
+      {{ range . }}
+      <li><a href="{{ .url }}" rel="noopener nofollow" target="_blank">{{ .name }}</a></li>
+      {{ end }}
+    </ul>
+  </section>
+  {{ end }}
+
+  <div class="article-tags">
+    {{ if .Params.tags }}
+      <h3>Related Topics</h3>
+      <div class="tags-list">{{ range .Params.tags }}<a href="/tags/{{ . | urlize }}/" class="tag">{{ . }}</a>{{ end }}</div>
+    {{ end }}
+  </div>
+</article>
+{{ end }}
+

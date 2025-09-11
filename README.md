@@ -213,3 +213,17 @@ We welcome contributions to improve AI Discovery:
 - oldfile/: archived docs (ignored)
 - test/: test scripts (ignored)
 
+## Status & TODO
+- Current status and prioritized TODOs are maintained in `PROJECT_STATUS.md` (single source of truth for tools/agents).
+
+## News‑First Architecture (What changed)
+- New section: `/news/` with dedicated list/single templates (`layouts/news/*`)
+- Homepage pulls latest from `section=news` (falling back to `category=news`)
+- News ingestion writes to `content/news/*.md` with `categories: ["news"]`
+- Google News sitemap scans all `content/` posts with category `news`
+- Hourly workflow runs news ingestion and queued publisher
+
+Quick commands:
+- Ingest short news locally: `python scripts/ingest_news.py`
+- Generate news sitemap: `SITE_BASE_URL=http://localhost:3000 python scripts/generate_news_sitemap.py`
+
