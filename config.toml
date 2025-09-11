@@ -49,21 +49,41 @@ defaultContentLanguage = "en"
     url = "/"
     weight = 1
   [[menu.main]]
+    name = "News"
+    url = "/categories/news/"
+    weight = 2
+  [[menu.main]]
     name = "Content Creation"
     url = "/categories/content-creation/"
-    weight = 2
+    weight = 3
   [[menu.main]]
     name = "Image Generation"
     url = "/categories/image-generation/"
-    weight = 3
+    weight = 4
   [[menu.main]]
     name = "Code Assistance"
     url = "/categories/code-assistance/"
-    weight = 4
+    weight = 5
+  [[menu.main]]
+    name = "Robotics"
+    url = "/categories/robotics/"
+    weight = 6
   [[menu.main]]
     name = "Productivity"
     url = "/categories/productivity/"
-    weight = 5
+    weight = 7
+  [[menu.main]]
+    name = "Chips / Compute"
+    url = "/categories/chips-compute/"
+    weight = 8
+  [[menu.main]]
+    name = "Consumer Electronics"
+    url = "/categories/consumer-electronics/"
+    weight = 9
+  [[menu.main]]
+    name = "Policy and Regulation"
+    url = "/categories/policy/"
+    weight = 10
 
 [sitemap]
   changefreq = "weekly"
