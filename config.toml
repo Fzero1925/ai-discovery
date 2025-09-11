@@ -53,25 +53,9 @@ defaultContentLanguage = "en"
     url = "/categories/news/"
     weight = 2
   [[menu.main]]
-    name = "Content Creation"
-    url = "/categories/content-creation/"
+    name = "Tools"
+    url = "/reviews/"
     weight = 3
-  [[menu.main]]
-    name = "Image Generation"
-    url = "/categories/image-generation/"
-    weight = 4
-  [[menu.main]]
-    name = "Code Assistance"
-    url = "/categories/code-assistance/"
-    weight = 5
-  [[menu.main]]
-    name = "Robotics"
-    url = "/categories/robotics/"
-    weight = 6
-  [[menu.main]]
-    name = "Productivity"
-    url = "/categories/productivity/"
-    weight = 7
   [[menu.main]]
     name = "Chips / Compute"
     url = "/categories/chips-compute/"

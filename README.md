@@ -1,13 +1,16 @@
-# 🤖 AI Discovery - Professional AI Tools Directory
+# AI Discovery — Tech News First
 
-*English-focused AI tools analysis platform for high-value markets*
+AI Discovery 是一个以“科技新闻”为核心的自动化网站：
+- 每天从权威来源获取科技新闻，快速生成“可读、合规、有价值”的英文短文与汇总；
+- AI 工具评测与对比是子栏目，用于中后期联盟变现（不再主导首页）。
 
-## 🌐 Live Website
-**https://ai-discovery-nu.vercel.app/**
+我们的原则：
+- 事实优先、来源权威、合规友好（不扩散传言，不使用风险图片与广告）；
+- 全自动化流水线，文章质量量化（NQS≥85）不过关不发布；
+- 节奏化发布与去重控制，提升用户体验与搜索友好度。
 
-## 📋 Project Overview
-
-AI Discovery is a comprehensive English-focused AI tools directory and analysis platform designed for North American and European professionals, researchers, and decision-makers in the AI space. The platform maximizes monetization potential through higher CPC rates ($1-5 vs $0.1-0.5 for Chinese markets) and premium affiliate commissions.
+网站地址：
+- https://ai-discovery-nu.vercel.app/
 
 ## ✨ Key Features
 
