@@ -27,12 +27,12 @@ def main():
             
             message = format_keyword_analysis_message(keyword_data, content_data)
             success = send_telegram_message(message)
-            
             if success:
                 print("Enhanced notification sent successfully")
             else:
-                print("Enhanced notification failed")
-                sys.exit(1)
+                print("Enhanced notification failed (non blocking)")
+                # 不阻塞工作流
+                sys.exit(0)
                 
         else:
             print("No notification data available, sending basic status")
@@ -48,12 +48,12 @@ def main():
             
             success = send_telegram_message(message)
             if not success:
-                print("Basic notification failed")
-                sys.exit(1)
+                print("Basic notification failed (non blocking)")
+                sys.exit(0)
                 
     except Exception as e:
-        print(f"Notification error: {e}")
-        sys.exit(1)
+        print(f"Notification error (non blocking): {e}")
+        sys.exit(0)
 
 if __name__ == "__main__":
     main()

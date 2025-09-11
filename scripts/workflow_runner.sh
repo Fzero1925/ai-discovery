@@ -211,8 +211,8 @@ send_notification() {
         log_success "Enhanced notification sent successfully"
         return 0
     else
-        log_error "Notification failed"
-        return 1
+        log_warning "Notification failed (non blocking)"
+        return 0
     fi
 }
 
