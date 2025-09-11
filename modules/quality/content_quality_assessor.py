@@ -63,14 +63,31 @@ class ContentQualityAssessor:
         meta_ok = sum(1 for k in meta_required if k in fm and fm.get(k))
         meta_score = (meta_ok / len(meta_required)) * 10.0  # 0–10
 
-        # Components (weights sum to 100)
-        word_score = max(0.0, min(1.0, word_count / 2500.0)) * 25.0  # 0–25
-        structure_score = self._structure_score(h2_count, h3_count)  # 0–15
-        image_score = self._image_score(image_info)  # 0–10
-        link_score = min(internal_links, 4) / 4.0 * 5.0  # 0–5
-        humanization_score = max(0.0, min(1.0, human_scores.get("overall_score", 0.0))) * 20.0  # 0–20
-        # meta_score computed above (0–10)
-        readability_component = readability_score  # 0–15 (tuned below)
+        # Components (weights sum to 100). News 与 Review 两套权重
+        is_news = False
+        cats = fm.get("categories") or []
+        if isinstance(cats, list):
+            is_news = any(str(c).lower() == "news" for c in cats)
+        elif isinstance(cats, str):
+            is_news = cats.lower() == "news"
+
+        if is_news:
+            # 针对短新闻优化：长度期望 ~180–300 词，结构简单但要求可读+人性化+元数据
+            word_score = max(0.0, min(1.0, word_count / 180.0)) * 20.0
+            structure_score = min(h2_count, 1) / 1.0 * 8.0  # 标题段落存在即可
+            image_score = min(image_info["count"], 1) * 4.0  # 图片可选
+            link_score = min(internal_links, 2) / 2.0 * 8.0
+            humanization_score = max(0.0, min(1.0, human_scores.get("overall_score", 0.0))) * 25.0
+            readability_component = min(15.0, self._readability_score(avg_sentence_len) + 5.0)
+            meta_component = min(20.0, meta_score + 10.0)
+        else:
+            word_score = max(0.0, min(1.0, word_count / 2500.0)) * 25.0
+            structure_score = self._structure_score(h2_count, h3_count)  # 0–15
+            image_score = self._image_score(image_info)  # 0–10
+            link_score = min(internal_links, 4) / 4.0 * 5.0  # 0–5
+            humanization_score = max(0.0, min(1.0, human_scores.get("overall_score", 0.0))) * 20.0
+            readability_component = readability_score  # 0–15
+            meta_component = meta_score  # 0–10
 
         breakdown = {
             "word_count": round(word_score, 2),
@@ -78,7 +95,7 @@ class ContentQualityAssessor:
             "images": round(image_score, 2),
             "internal_links": round(link_score, 2),
             "humanization": round(humanization_score, 2),
-            "metadata": round(meta_score, 2),
+            "metadata": round(meta_component, 2),
             "readability": round(readability_component, 2),
         }
 
@@ -219,6 +236,18 @@ class ContentQualityAssessor:
         alt_bonus = 2.0 if with_alt >= min(3, count) else 0.0
         return base + alt_bonus
 
+    def _ensure_image_alts(self, text: str, default_alt: str) -> str:
+        """Ensure that all markdown images have alt text; fill with default if empty."""
+        # ![alt](url) or ![](url)
+        def repl(m):
+            alt = m.group(1)
+            url = m.group(2)
+            if alt.strip():
+                return f"![{alt}]({url})"
+            return f"![{default_alt}]({url})"
+
+        return re.sub(r"!\[(.*?)\]\(([^\)]+)\)", repl, text)
+
     def _collect_issues(
         self,
         *,
@@ -260,4 +289,3 @@ class ContentQualityAssessor:
             suggestions.append("Break up long sentences and merge very short ones for natural flow")
 
         return issues, suggestions
-

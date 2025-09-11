@@ -17,25 +17,33 @@ def render_short_news(title: str, summary: Dict, sources: List[Dict]) -> str:
         "**来源**:",
     ]
     for s in sources[:3]:
-        lines.append(f"- [{s.get('name','source')}]({s.get('url','#')})")
+        name = s.get('name', 'source')
+        url = s.get('url', '#')
+        lines.append(f"- [{name}]({url})")
     return "\n".join(lines)
 
 
 def build_frontmatter(title: str, tags: List[str], sources: List[Dict], nqs: float) -> str:
     date = datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%SZ")
+    # build tags yaml list safely
+    safe_tags = [t.replace('"', '\\"') for t in tags]
+    tags_str = "[" + ", ".join('"%s"' % t for t in safe_tags) + "]"
+
     fm = [
         "---",
         f"title: \"{title}\"",
         f"date: {date}",
         "categories: [\"news\"]",
-        f"tags: [{', '.join('"'+t+'"' for t in tags)}]",
+        f"tags: {tags_str}",
         f"draft: true",
         f"nqs_score: {nqs}",
         "sources:",
     ]
     for s in sources[:3]:
-        fm.append(f"  - name: \"{s.get('name','source')}\"")
-        fm.append(f"    url: \"{s.get('url','#')}\"")
+        name = s.get('name', 'source').replace('"', '\\"')
+        url = s.get('url', '#').replace('"', '\\"')
+        fm.append(f"  - name: \"{name}\"")
+        fm.append(f"    url: \"{url}\"")
     fm.append("---\n")
     return "\n".join(fm)
 
