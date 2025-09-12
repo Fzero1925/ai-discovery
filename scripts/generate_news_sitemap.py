@@ -53,10 +53,14 @@ def collect_recent_articles(hours: int = 48) -> List[Dict]:
                 continue
             title = post.get("title") or md.stem
             loc = f"{BASE_URL}/{md.relative_to('content').with_suffix('').as_posix()}"
+            image = post.get("featured_image") or ""
+            if image and image.startswith("/"):
+                image = f"{BASE_URL}{image}"
             items.append({
                 "loc": loc,
                 "title": title,
                 "date": dt.strftime("%Y-%m-%dT%H:%M:%SZ"),
+                "image": image,
             })
         except Exception:
             continue
@@ -67,10 +71,14 @@ def render_news_sitemap(items: List[Dict]) -> str:
     header = (
         "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
         "<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\"\n"
-        "        xmlns:news=\"http://www.google.com/schemas/sitemap-news/0.9\">\n"
+        "        xmlns:news=\"http://www.google.com/schemas/sitemap-news/0.9\"\n"
+        "        xmlns:image=\"http://www.google.com/schemas/sitemap-image/1.1\">\n"
     )
     body_parts = []
     for it in items:
+        img_xml = ""
+        if it.get('image'):
+            img_xml = f"    <image:image>\n      <image:loc>{it['image']}</image:loc>\n    </image:image>\n"
         body_parts.append(
             f"  <url>\n"
             f"    <loc>{it['loc']}</loc>\n"
@@ -83,6 +91,7 @@ def render_news_sitemap(items: List[Dict]) -> str:
             f"      <news:title>{it['title']}</news:title>\n"
             f"      <news:genres>Blog</news:genres>\n"
             f"    </news:news>\n"
+            f"{img_xml}"
             f"  </url>\n"
         )
     footer = "</urlset>\n"

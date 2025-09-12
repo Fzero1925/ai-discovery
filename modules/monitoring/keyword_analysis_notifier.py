@@ -233,12 +233,11 @@ class KeywordAnalysisNotifier:
     
     def send_content_generation_notification(self, report: ContentGenerationReport) -> bool:
         """Send comprehensive content generation notification"""
-        
         try:
             # Format the advanced notification message
             message = self._format_advanced_notification(report)
-            
-            # Send via Telegram
+
+            # Try HTML first
             response = requests.post(
                 f"{self.api_base}/sendMessage",
                 json={
@@ -249,14 +248,26 @@ class KeywordAnalysisNotifier:
                 },
                 timeout=10
             )
-            
             if response.status_code == 200:
                 print("SUCCESS: Keyword analysis notification sent")
                 return True
-            else:
-                print(f"ERROR: Telegram API error: {response.status_code}")
-                return False
-                
+
+            # Fallback to plain text
+            response2 = requests.post(
+                f"{self.api_base}/sendMessage",
+                json={
+                    "chat_id": self.chat_id,
+                    "text": message,
+                    "disable_web_page_preview": True
+                },
+                timeout=10
+            )
+            if response2.status_code == 200:
+                print("SUCCESS: Notification sent (plain text fallback)")
+                return True
+
+            print(f"ERROR: Telegram API error: {response.status_code}")
+            return False
         except Exception as e:
             print(f"ERROR: Failed to send notification: {e}")
             return False

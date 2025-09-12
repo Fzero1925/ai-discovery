@@ -19,7 +19,7 @@ import sys
 from datetime import datetime, timedelta
 import pytz
 from pathlib import Path
-from typing import Dict, List
+from typing import Dict, List, Tuple
 
 sys.path.append(str(Path("scripts").resolve()))
 
@@ -100,6 +100,16 @@ def next_active_start(dt: datetime, cfg: Dict) -> datetime:
     return target_local.astimezone(pytz.utc)
 
 
+def _get_category_intervals(cfg: Dict, category: str, in_day: bool) -> Tuple[int, int]:
+    cat_cfg = (cfg.get("categories", {}) or {}).get(category or "", {})
+    key = "day" if in_day else "night"
+    if key in cat_cfg:
+        v = cat_cfg[key]
+        return int(v.get("min_interval_minutes", 12 if in_day else 20)), int(v.get("max_interval_minutes", 18 if in_day else 30))
+    base = cfg.get(key, {})
+    return int(base.get("min_interval_minutes", 12 if in_day else 20)), int(base.get("max_interval_minutes", 18 if in_day else 30))
+
+
 def schedule_times(now: datetime, k: int, cfg: Dict) -> List[datetime]:
     times: List[datetime] = []
 
@@ -120,6 +130,24 @@ def schedule_times(now: datetime, k: int, cfg: Dict) -> List[datetime]:
         times.append(cursor)
         min_int, max_int = get_interval(cursor)
         cursor += timedelta(minutes=random.randint(min_int, max_int))
+    return times
+
+
+def schedule_times_for_items(now: datetime, items: List[Dict], cfg: Dict) -> List[datetime]:
+    """Assign per-item publish times honoring category overrides."""
+    times: List[datetime] = []
+    cursor = now
+    for it in items:
+        category = (it.get("category") or "").lower()
+        in_day = is_in_active_hours(cursor, cfg)
+        min_int, max_int = _get_category_intervals(cfg, category, in_day)
+        # move cursor forward by category-specific interval
+        cursor = cursor + timedelta(minutes=random.randint(min_int, max_int))
+        if not is_in_active_hours(cursor, cfg):
+            policy = cfg.get("night", {}).get("policy", cfg.get("night_policy", "pause"))
+            if policy == "pause":
+                cursor = next_active_start(cursor, cfg) + timedelta(minutes=random.randint(0, 10))
+        times.append(cursor)
     return times
 
 
@@ -238,7 +266,7 @@ def main():
         return 0
 
     # Assign publish_at times with staggering
-    times = schedule_times(datetime.utcnow(), len(scheduled_items), cfg)
+    times = schedule_times_for_items(datetime.utcnow(), scheduled_items, cfg)
     for item, t in zip(scheduled_items, times):
         item["publish_at"] = t.isoformat() + "Z"
 

@@ -348,6 +348,85 @@ _🤖 Claude Code 高级SEO智能分析_"""
     
     return message
 
+# --- Safe Telegram sending with fallback & logging override ---
+def _log_telegram_event(event: dict) -> None:
+    try:
+        os.makedirs('data', exist_ok=True)
+        with open('data/telegram_notifications.log', 'a', encoding='utf-8') as f:
+            f.write(json.dumps(event, ensure_ascii=False) + "\n")
+    except Exception:
+        pass
+
+
+def _send_with_mode(message: str, bot_token: str, chat_id: str, parse_mode: str | None, disable_preview: bool = True, timeout: int = 8):
+    url = f"https://api.telegram.org/bot{bot_token}/sendMessage"
+    payload = {
+        'chat_id': chat_id,
+        'text': message,
+        'disable_web_page_preview': disable_preview,
+    }
+    if parse_mode:
+        payload['parse_mode'] = parse_mode
+    return requests.post(url, data=payload, timeout=timeout)
+
+
+def send_telegram_message(message, bot_token=None, chat_id=None):
+    """Send a message to Telegram with safe fallback and logging.
+
+    Order: Markdown -> HTML -> Plain text (no parse_mode). On failures, log raw body.
+    """
+    bot_token = bot_token or os.getenv('TELEGRAM_BOT_TOKEN')
+    chat_id = chat_id or os.getenv('TELEGRAM_CHAT_ID')
+
+    if not bot_token or not chat_id:
+        print("❌ Missing Telegram credentials")
+        _log_telegram_event({
+            'level': 'error', 'reason': 'missing_credentials', 'length': len(str(message)), 'ts': datetime.utcnow().isoformat() + 'Z'
+        })
+        return False
+
+    try:
+        # Try Markdown first
+        resp = _send_with_mode(message, bot_token, chat_id, 'Markdown')
+        if resp.status_code == 200:
+            print("✅ Telegram notification sent successfully")
+            return True
+
+        # Retry with HTML on parse errors/400s
+        if resp.status_code in (400, 413, 414):
+            resp2 = _send_with_mode(message, bot_token, chat_id, 'HTML')
+            if resp2.status_code == 200:
+                print("✅ Telegram notification sent (HTML fallback)")
+                _log_telegram_event({
+                    'level': 'info', 'mode': 'HTML', 'fallback': True, 'code': resp.status_code,
+                    'ts': datetime.utcnow().isoformat() + 'Z', 'length': len(message)
+                })
+                return True
+
+        # Final fallback: plain text
+        resp3 = _send_with_mode(message, bot_token, chat_id, None)
+        if resp3.status_code == 200:
+            print("✅ Telegram notification sent (plain text fallback)")
+            _log_telegram_event({
+                'level': 'info', 'mode': 'plain', 'fallback': True, 'prev_code': resp.status_code,
+                'ts': datetime.utcnow().isoformat() + 'Z', 'length': len(message)
+            })
+            return True
+
+        # All failed: log raw body
+        _log_telegram_event({
+            'level': 'error', 'mode': 'all_failed', 'code': resp.status_code,
+            'ts': datetime.utcnow().isoformat() + 'Z', 'length': len(message), 'snippet': message[:200]
+        })
+        print(f"❌ Telegram API error: {resp.status_code}")
+        return False
+    except Exception as e:
+        print(f"❌ Failed to send Telegram message: {e}")
+        _log_telegram_event({
+            'level': 'error', 'exception': str(e), 'ts': datetime.utcnow().isoformat() + 'Z', 'length': len(str(message))
+        })
+        return False
+
 def format_test_message():
     """Format simple test message"""
     china_time = get_china_time()

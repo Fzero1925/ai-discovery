@@ -11,5 +11,15 @@
     "max_per_hour": 2,
     "min_interval_minutes": 20,
     "max_interval_minutes": 30
+  },
+  "categories": {
+    "news": {
+      "day": { "min_interval_minutes": 10, "max_interval_minutes": 18 },
+      "night": { "min_interval_minutes": 20, "max_interval_minutes": 30 }
+    }
+  },
+  "weekend": {
+    "policy": "throttle",
+    "multiplier": 0.8
   }
 }

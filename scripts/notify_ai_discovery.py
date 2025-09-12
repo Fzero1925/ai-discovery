@@ -392,3 +392,66 @@ _💼 专业变现监控系统_"""
 
 if __name__ == "__main__":
     main()
+    
+# --- Safe Telegram sending with fallback & logging override (override earlier definition) ---
+def _log_telegram_event(event: dict) -> None:
+    try:
+        os.makedirs('data', exist_ok=True)
+        with open('data/telegram_notifications.log', 'a', encoding='utf-8') as f:
+            f.write(json.dumps(event, ensure_ascii=False) + "\n")
+    except Exception:
+        pass
+
+
+def _send_with_mode(message: str, bot_token: str, chat_id: str, parse_mode: str | None, disable_preview: bool = True, timeout: int = 10):
+    url = f"https://api.telegram.org/bot{bot_token}/sendMessage"
+    payload = {
+        'chat_id': chat_id,
+        'text': message,
+        'disable_web_page_preview': disable_preview,
+    }
+    if parse_mode:
+        payload['parse_mode'] = parse_mode
+    return requests.post(url, data=payload, timeout=timeout)
+
+
+def send_telegram_message(message, bot_token=None, chat_id=None):
+    """安全发送Telegram消息：Markdown -> HTML -> 纯文本，且记录失败body"""
+    bot_token = bot_token or os.getenv('TELEGRAM_BOT_TOKEN')
+    chat_id = chat_id or os.getenv('TELEGRAM_CHAT_ID')
+
+    if not bot_token or not chat_id:
+        print("❌ 缺少Telegram凭据")
+        _log_telegram_event({'level': 'error', 'reason': 'missing_credentials', 'len': len(str(message))})
+        return False
+
+    try:
+        # Markdown first
+        resp = _send_with_mode(message, bot_token, chat_id, 'Markdown')
+        if resp.status_code == 200:
+            print("✅ AI Discovery通知发送成功")
+            return True
+
+        # HTML fallback
+        if resp.status_code in (400, 413, 414):
+            resp2 = _send_with_mode(message, bot_token, chat_id, 'HTML')
+            if resp2.status_code == 200:
+                print("✅ AI Discovery通知发送成功(HTML回退)")
+                _log_telegram_event({'level': 'info', 'mode': 'HTML', 'fallback': True, 'prev': resp.status_code})
+                return True
+
+        # Plain text fallback
+        resp3 = _send_with_mode(message, bot_token, chat_id, None)
+        if resp3.status_code == 200:
+            print("✅ AI Discovery通知发送成功(纯文本回退)")
+            _log_telegram_event({'level': 'info', 'mode': 'plain', 'fallback': True, 'prev': resp.status_code})
+            return True
+
+        # All failed
+        _log_telegram_event({'level': 'error', 'mode': 'all_failed', 'code': resp.status_code, 'snippet': str(message)[:200]})
+        print(f"❌ Telegram API错误: {resp.status_code}")
+        return False
+    except Exception as e:
+        print(f"❌ 发送Telegram消息失败: {e}")
+        _log_telegram_event({'level': 'error', 'exception': str(e), 'snippet': str(message)[:200]})
+        return False
