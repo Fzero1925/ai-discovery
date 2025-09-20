@@ -149,8 +149,9 @@ a:hover {
 
 .nav-container {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: center;
+  column-gap: var(--space-xl);
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 var(--space-md);
@@ -178,7 +179,9 @@ a:hover {
 
 .nav-menu {
   display: none;
+  align-items: center;
   gap: var(--space-lg);
+  margin-left: var(--space-lg);
 }
 
 .nav-link {
@@ -664,7 +667,7 @@ a:hover {
   transform: translateY(-2px);
 }
 
-/* 移动端适配 */
+/* 绉诲姩绔€傞厤 */
 @media (max-width: 768px) {
   .back-to-top {
     width: 45px;
@@ -988,7 +991,7 @@ a:hover {
 }
 
 .features-list li:before {
-  content: "✓";
+  content: "鉁?;
   color: var(--success-color);
   font-weight: bold;
   position: absolute;
@@ -1845,6 +1848,7 @@ a:hover {
   gap: var(--space-xs);
   cursor: pointer;
   padding: var(--space-sm);
+  margin-left: auto;
 }
 
 .toggle-line {

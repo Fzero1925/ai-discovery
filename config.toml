@@ -50,7 +50,7 @@ defaultContentLanguage = "en"
     weight = 1
   [[menu.main]]
     name = "Tools"
-    url = "/reviews/"
+    url = "/tools/"
     weight = 2
   [[menu.main]]
     name = "Robot"

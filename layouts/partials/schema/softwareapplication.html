@@ -15,11 +15,6 @@
     "price": "{{ .Params.pricing | default "Free" }}",
     "priceCurrency": "USD"
   },
-  "aggregateRating": {
-    "@type": "AggregateRating",
-    "ratingValue": "{{ .Params.rating | default 4.5 }}",
-    "reviewCount": "{{ .Params.review_count | default 100 }}"
-  },
   "author": {
     "@type": "Organization",
     "name": "AI Discovery",

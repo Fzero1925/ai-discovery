@@ -1,0 +1,73 @@
+{{ define "main" }}
+{{ partial "breadcrumb" . }}
+
+<section class="list-page tools-directory">
+    <header class="list-header">
+        <div class="container">
+            <div class="header-content">
+                <h1 class="list-title">{{ .Title }}</h1>
+                <p class="list-description">{{ if .Description }}{{ .Description }}{{ else }}Explore AI software and services by use case, pricing model, and workflow fit.{{ end }}</p>
+            </div>
+        </div>
+    </header>
+
+    {{ $tools := where site.RegularPages "Section" "reviews" }}
+    {{ $tools = sort $tools "Date" "desc" }}
+
+    <section class="tools-grid-section">
+        <div class="container">
+            <div class="results-info">
+                <p>{{ len $tools }} tools catalogued</p>
+            </div>
+
+            <div class="tools-grid">
+                {{ range $tools }}
+                <article class="tool-card"
+                         data-category="{{ with .Params.categories }}{{ delimit . " " }}{{ else }}uncategorized{{ end }}"
+                         data-pricing="{{ .Params.pricing_type | default "unknown" }}"
+                         data-name="{{ .Title }}">
+                    <div class="tool-image">
+                        {{ if .Params.featured_image }}
+                        <img src="{{ .Params.featured_image }}" alt="{{ .Title }}" loading="lazy">
+                        {{ else }}
+                        <img src="/images/default-ai-tool.jpg" alt="{{ .Title }}" loading="lazy">
+                        {{ end }}
+                    </div>
+
+                    <div class="tool-info">
+                        <div class="tool-header">
+                            <h3 class="tool-title"><a href="{{ .Permalink }}">{{ .Title }}</a></h3>
+                            <div class="tool-categories">
+                                {{ range .Params.categories }}
+                                <span class="category-tag">{{ . | title }}</span>
+                                {{ end }}
+                            </div>
+                        </div>
+
+                        <p class="tool-description">{{ .Description | default (.Summary | plainify | truncate 120) }}</p>
+
+                        {{ if .Params.key_features }}
+                        <div class="tool-features">
+                            <ul class="features-list">
+                                {{ range first 3 .Params.key_features }}
+                                <li>閳?{{ . }}</li>
+                                {{ end }}
+                            </ul>
+                        </div>
+                        {{ end }}
+
+                        <div class="tool-meta">
+                            <div class="pricing-info">
+                                {{ if .Params.free_trial }}<span class="free-trial">棣冨晫 Free Trial</span>{{ end }}
+                                {{ if .Params.pricing }}<span class="pricing-tag">{{ .Params.pricing }}</span>{{ end }}
+                            </div>
+                            <a class="read-more" href="{{ .Permalink }}">Read Overview 閳?/a>
+                        </div>
+                    </div>
+                </article>
+                {{ end }}
+            </div>
+        </div>
+    </section>
+</section>
+{{ end }}

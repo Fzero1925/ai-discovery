@@ -4,21 +4,21 @@ Allow: /
 # Sitemap
 Sitemap: https://ai-discovery-nu.vercel.app/sitemap.xml
 
-# 优化爬虫抓取
+# 浼樺寲鐖櫕鎶撳彇
 Crawl-delay: 1
 
-# 禁止抓取的路径
+# 绂佹鎶撳彇鐨勮矾寰?
 Disallow: /admin/
 Disallow: /private/
 Disallow: /*.json$
 Disallow: /api/
 
-# 允许重要页面
-Allow: /reviews/
+# 鍏佽閲嶈椤甸潰
+Allow: /tools/
 Allow: /categories/
 Allow: /images/
 
-# SEO优化指令
+# SEO浼樺寲鎸囦护
 User-agent: Googlebot
 Allow: /
 

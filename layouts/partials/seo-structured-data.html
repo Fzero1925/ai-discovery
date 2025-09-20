@@ -62,14 +62,6 @@
     "dateModified": "{{ .Lastmod.Format "2006-01-02T15:04:05Z07:00" }}",
     "description": "{{ if .Description }}{{ .Description }}{{ else }}{{ .Summary | truncate 160 }}{{ end }}",
     "guideBody": "{{ .Summary | truncate 500 }}",
-    {{ if .Params.rating }}
-    "guideRating": {
-        "@type": "Rating",
-        "ratingValue": "{{ .Params.rating }}",
-        "bestRating": "5",
-        "worstRating": "1"
-    },
-    {{ end }}
     "itemReviewed": {
         "@type": "SoftwareApplication",
         "name": "{{ .Params.tool_name | default (index (split .Title " ") 0) }}",
@@ -95,15 +87,6 @@
             "hasTrial": true,
             {{ end }}
             "priceCurrency": "USD"
-        },
-        {{ end }}
-        {{ if .Params.rating }}
-        "aggregateRating": {
-            "@type": "AggregateRating",
-            "ratingValue": "{{ .Params.rating }}",
-            "guideCount": "1",
-            "bestRating": "5",
-            "worstRating": "1"
         },
         {{ end }}
         "operatingSystem": "Cross-platform",
@@ -148,15 +131,6 @@
     {{ if .Params.featured_image }}
     "image": "{{ absURL .Params.featured_image }}",
     {{ end }}
-    {{ if .Params.rating }}
-    "aggregateRating": {
-        "@type": "AggregateRating",
-        "ratingValue": "{{ .Params.rating }}",
-        "bestRating": "5",
-        "worstRating": "1",
-        "ratingCount": "1"
-    },
-    {{ end }}
     {{ if .Params.pricing }}
     "offers": {
         "@type": "Offer",
@@ -177,39 +151,6 @@
     {{ end }}
     "guide": {
         "@type": "Guide",
-        "guideRating": {
-            "@type": "Rating",
-            "ratingValue": "{{ .Params.rating | default 4.5 }}",
-            "bestRating": "5"
-        },
-        "author": {
-            "@type": "Organization",
-            "name": "{{ site.Params.author }}"
-        },
-        "guideBody": "{{ .Summary | truncate 300 }}"
-    }
-}
-</script>
-
-<!-- Article Schema -->
-<script type="application/ld+json">
-{
-    "@context": "https://schema.org",
-    "@type": "Article",
-    "headline": "{{ .Title }}",
-    "description": "{{ if .Description }}{{ .Description }}{{ else }}{{ .Summary | truncate 160 }}{{ end }}",
-    "author": {
-        "@type": "Organization",
-        "name": "{{ site.Params.author }}",
-        "url": "{{ site.BaseURL }}"
-    },
-    "publisher": {
-        "@type": "Organization",
-        "name": "{{ site.Title }}",
-        "logo": {
-            "@type": "ImageObject",
-            "url": "{{ absURL "/images/logo.svg" }}"
-        }
     },
     "datePublished": "{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}",
     "dateModified": "{{ .Lastmod.Format "2006-01-02T15:04:05Z07:00" }}",

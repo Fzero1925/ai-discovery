@@ -33,9 +33,6 @@
                     </h3>
                     <p class="link-card-description">{{ .Description | default (.Summary | truncate 100) }}</p>
                     <div class="link-card-meta">
-                        {{ if .Params.rating }}
-                        <span class="rating">⭐ {{ .Params.rating }}/5</span>
-                        {{ end }}
                         {{ range first 1 .Params.categories }}
                         <span class="category-tag">{{ . | title }}</span>
                         {{ end }}
@@ -61,7 +58,7 @@
         <div class="contextual-links-content">
             <h3>Explore More {{ $currentCategory | title }} Tools</h3>
             <p>We've guideed {{ $categoryCount }} tools in the {{ $currentCategory | title }} category. 
-               <a href="/categories/{{ $currentCategory | urlize }}/" class="category-link">See all {{ $currentCategory | title }} guides →</a>
+               <a href="/categories/{{ $currentCategory | urlize }}/" class="category-link">See all {{ $currentCategory | title }} guides 鈫?/a>
             </p>
         </div>
     </div>
@@ -79,9 +76,6 @@
             <li class="popular-link-item">
                 <a href="{{ .Permalink }}" class="popular-link">
                     <span class="popular-link-title">{{ .Title }}</span>
-                    {{ if .Params.rating }}
-                    <span class="popular-link-rating">{{ .Params.rating }}/5 ⭐</span>
-                    {{ end }}
                 </a>
             </li>
             {{ end }}

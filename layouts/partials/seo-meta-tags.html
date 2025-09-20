@@ -98,10 +98,6 @@
 <meta name="product:price" content="{{ .Params.pricing }}">
 <meta name="product:currency" content="USD">
 {{ end }}
-{{ if .Params.rating }}
-<meta name="product:rating" content="{{ .Params.rating }}">
-<meta name="product:rating:scale" content="5">
-{{ end }}
 {{ if .Params.categories }}
 <meta name="product:category" content="{{ index .Params.categories 0 | title }}">
 {{ end }}
@@ -139,7 +135,3 @@
 {{ end }}
 
 <!-- Structured Data for Guide Snippets -->
-{{ if and (eq .Section "guides") .Params.rating }}
-<meta name="rating" content="{{ .Params.rating }}">
-<meta name="rating_scale" content="5">
-{{ end }}

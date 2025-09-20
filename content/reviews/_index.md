@@ -1,11 +1,12 @@
 ---
-title: "All AI Tools Directory"
-description: "Comprehensive analysis and detailed guides of the latest AI tools across all categories. Expert evaluations, real-world testing, and practical insights to help you choose the perfect AI solution."
-date: 2025-09-04
-layout: list
+title: "AI Tools Directory"
+description: "Qualitative deep dives into AI products across productivity, creation, coding, analytics, and automation workflows."
+date: 2025-09-20
+layout: tools-directory
 type: reviews
-url: /reviews/
+url: /tools/
 aliases:
+  - /reviews/
   - /articles/
   - /all-reviews/
 sitemap:
@@ -17,52 +18,18 @@ cascade:
 schema:
   type: CollectionPage
   name: "AI Tools Directory"
-  description: "Expert analysis and guides of artificial intelligence tools and software"
-  mainEntity:
-    type: ItemList
-    name: "AI Tools Directory Collection"
+  description: "Qualitative insights and guides covering artificial intelligence software and services"
 meta:
   robots: "index, follow"
-  canonical: "https://ai-discovery-nu.vercel.app/reviews/"
-  og_type: "website"
-  twitter_card: "summary_large_image"
+  canonical: "https://ai-discovery-nu.vercel.app/tools/"
 ---
 
-# All AI Tools Directory
+# How We Catalogue AI Tools
 
-Welcome to our comprehensive collection of AI tool guides. We provide in-depth analysis, real-world testing, and expert insights across all categories of artificial intelligence tools.
+This directory gathers every long-form guide we publish. Each article focuses on scenarios, workflow impact, and implementation notes—no numeric scoring, no generic star ratings.
 
-## What You'll Find Here
+- **Use cases first** – filter by categories such as productivity, marketing, data, or development to jump straight to what matters.
+- **Clear expectations** – front matter highlights pricing notes, free trial availability, and three headline capabilities for quick scanning.
+- **Practical takeaways** – every guide ends with adoption tips, integration considerations, and caveats discovered during testing.
 
-### 🔍 Expert Analysis
-- Detailed feature breakdowns and capability assessments
-- Real-world performance testing and benchmarking
-- Pros, cons, and honest evaluations from experienced users
-
-### 🎯 Practical Insights  
-- Use case scenarios and target audience recommendations
-- Pricing analysis and value-for-money assessments
-- Integration capabilities and workflow compatibility
-
-### 📊 Comparison Data
-- Side-by-side feature comparisons
-- Alternative tool recommendations
-- Market positioning and competitive analysis
-
-### 🚀 Latest Updates
-- Regular guides for new AI tools and features
-- Updated pricing and availability information
-- Community feedback and user experience reports
-
-## Categories Covered
-
-- **Content Creation**: Writing assistants, copywriting tools, content generators
-- **Image Generation**: AI art tools, photo editing, design assistants  
-- **Code Assistance**: Programming aids, code completion, development tools
-- **Productivity**: Task automation, workflow optimization, business intelligence
-- **Data Analysis**: Analytics platforms, visualization tools, reporting systems
-- **Specialized Tools**: Industry-specific AI solutions and niche applications
-
----
-
-*All guides are based on hands-on testing and expert analysis. We maintain editorial independence and provide unbiased assessments to help you make informed decisions.*
+Upload a new Markdown file to `content/reviews/` and Hugo will automatically slot it into this directory during the next build.

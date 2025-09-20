@@ -2,7 +2,7 @@ User-agent: *
 Allow: /
 
 # Optimize crawling for AI tool review pages
-Allow: /reviews/
+Allow: /tools/
 Allow: /categories/
 Allow: /tags/
 

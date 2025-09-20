@@ -1,4 +1,4 @@
-<!-- 增强的Google Analytics 4跟踪 -->
+<!-- 澧炲己鐨凣oogle Analytics 4璺熻釜 -->
 {{ if site.Params.google_analytics_id }}
 <script async src="https://www.googletagmanager.com/gtag/js?id={{ site.Params.google_analytics_id }}"></script>
 <script>
@@ -7,29 +7,28 @@
     gtag('js', new Date());
     
     gtag('config', '{{ site.Params.google_analytics_id }}', {
-        // 增强电子商务跟踪
+        // 澧炲己鐢靛瓙鍟嗗姟璺熻釜
         enhanced_ecommerce: true,
-        // 自动跟踪外链点击
+        // 鑷姩璺熻釜澶栭摼鐐瑰嚮
         link_attribution: true,
-        // 跟踪文件下载
+        // 璺熻釜鏂囦欢涓嬭浇
         file_downloads: true,
-        // 跟踪滚动深度
+        // 璺熻釜婊氬姩娣卞害
         page_title: document.title,
         page_location: window.location.href
     });
 
-    // 跟踪AI工具评测页面的特定事件
+    // 璺熻釜AI宸ュ叿璇勬祴椤甸潰鐨勭壒瀹氫簨浠?
     {{ if eq .Type "guides" }}
     gtag('event', 'page_view', {
         'page_category': 'AI Tool Guide',
         'ai_tool_name': '{{ .Params.title }}',
         'tool_category': '{{ index .Params.categories 0 }}',
-        'rating': '{{ .Params.rating }}',
         'commercial_intent': '{{ .Params.commercial_intent }}'
     });
     {{ end }}
 
-    // 跟踪外部链接点击（联盟营销）
+    // 璺熻釜澶栭儴閾炬帴鐐瑰嚮锛堣仈鐩熻惀閿€锛?
     document.addEventListener('click', function(event) {
         if (event.target.tagName === 'A' && event.target.hostname !== window.location.hostname) {
             gtag('event', 'click', {
@@ -40,7 +39,7 @@
         }
     });
 
-    // 跟踪搜索功能使用
+    // 璺熻釜鎼滅储鍔熻兘浣跨敤
     document.addEventListener('DOMContentLoaded', function() {
         const searchForm = document.querySelector('.search-form');
         if (searchForm) {
@@ -53,7 +52,7 @@
         }
     });
 
-    // 跟踪滚动深度
+    // 璺熻釜婊氬姩娣卞害
     let scrollDepth = 0;
     let scrollTimer = null;
     
