@@ -1,62 +1,17 @@
 ﻿{{ define "main" }}
 <div class="hero-section">
   <div class="hero-content">
-    <h1 class="hero-title">Daily AI News and Tool Briefings</h1>
-    <p class="hero-description">Short updates on AI research, product launches, policy moves, and robotics projects for teams who need context fast.</p>
-    <ul class="hero-highlights">
-      <li>News summaries with plain-language context</li>
-      <li>Tool rundowns focused on real workflows</li>
-      <li>Robotics coverage across industrial and service sectors</li>
-    </ul>
+    <h1 class="hero-title">AI news and tools in plain English.</h1>
+    <p class="hero-description">Daily briefs and workflow notes so your team stays current on research, launches, policy, and robotics without sifting through noise.</p>
   </div>
   <style>
     .hero-section{padding:48px 0;background:linear-gradient(180deg,#f8fafc,transparent)}
-    .hero-title{font-size:2rem;margin:0 0 8px}
-    .hero-description{color:#475569;max-width:840px}
-    .hero-highlights{margin-top:20px;padding-left:20px;color:#334155;display:grid;gap:8px;list-style:disc}
+    .hero-title{font-size:2.2rem;margin:0 0 12px}
+    .hero-description{color:#475569;max-width:760px}
   </style>
 </div>
 
-<section class="categories-section">
-  <div class="container">
-    <h2>Explore News Categories</h2>
-    <div class="categories-grid">
-      <div class="category-card">
-        <h3>Chips and Compute</h3>
-        <p>Semiconductors, accelerators, and compute infrastructure updates.</p>
-        <div class="category-stats">News coverage</div>
-        <a href="/categories/chips-compute/" class="category-link">View News</a>
-      </div>
-      <div class="category-card">
-        <h3>Robotics</h3>
-        <p>Robotics, automation, and real-world applications.</p>
-        <div class="category-stats">News coverage</div>
-        <a href="/categories/robotics/" class="category-link">View News</a>
-      </div>
-      <div class="category-card">
-        <h3>Consumer Electronics</h3>
-        <p>Devices, wearables, displays, and consumer ecosystems.</p>
-        <div class="category-stats">News coverage</div>
-        <a href="/categories/consumer-electronics/" class="category-link">View News</a>
-      </div>
-      <div class="category-card">
-        <h3>Productivity</h3>
-        <p>Task automation, workflow optimization, and AI-powered business solutions.</p>
-        <div class="category-stats">{{ len (where site.RegularPages "Params.categories" "intersect" (slice "productivity")) }} tools available</div>
-        <a href="/categories/productivity/" class="category-link">Explore Tools</a>
-      </div>
-    </div>
-  </div>
-  <style>
-    .container{max-width:1100px;margin:0 auto;padding:0 16px}
-    .categories-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px}
-    .category-card{background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:12px}
-    .category-link{color:#2563eb;text-decoration:none;font-weight:600}
-    .category-link:hover{text-decoration:underline}
-  </style>
-</section>
-
-<section class="featured-guides">
+<section class="featured-news">
   <div class="container">
     <div class="section-header">
       <h2>Latest Tech News</h2>
@@ -90,8 +45,10 @@
       <p class="discovery-count">{{ len $news }} news updates published</p>
     </div>
   </div>
-
   <style>
+    .featured-news{padding:48px 0}
+    .section-header{text-align:center;margin-bottom:32px}
+    .section-subtitle{color:#6b7280;font-size:1.05rem;margin:.5rem auto 0;max-width:640px}
     .guides-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:24px;margin-bottom:24px;align-items:stretch}
     .guide-card{background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 4px 6px rgba(0,0,0,.05);display:flex;flex-direction:column;height:100%}
     .guide-image{position:relative;overflow:hidden;aspect-ratio:16/9;background:#f8fafc}
@@ -108,5 +65,87 @@
     .btn-primary:hover{background:#1d4ed8}
   </style>
 </section>
-{{ end }}
 
+<section class="tools-preview">
+  <div class="container">
+    <div class="section-header">
+      <h2>Latest Tool Guides</h2>
+      <p class="section-subtitle">Workflow-first rundowns to help you choose the right software.</p>
+    </div>
+    {{ $articles := where site.RegularPages "Section" "articles" }}
+    {{ $news := where $articles "Params.categories" "intersect" (slice "news") }}
+    {{ $robotics := where $articles "Params.categories" "intersect" (slice "robotics") }}
+    {{ $tools := $articles | complement $news }}
+    {{ $tools = $tools | complement $robotics }}
+    <div class="tools-grid">
+      {{ range first 4 (sort $tools "Date" "desc") }}
+      <article class="tool-card">
+        <div class="tool-image">
+          {{ if .Params.featured_image }}
+          <img src="{{ .Params.featured_image }}" alt="{{ .Title }}" loading="lazy">
+          {{ else }}
+          <img src="/images/default-ai-tool.jpg" alt="{{ .Title }}" loading="lazy">
+          {{ end }}
+        </div>
+        <div class="tool-info">
+          <div class="tool-header">
+            <h3 class="tool-title"><a href="{{ .Permalink }}">{{ .Title }}</a></h3>
+            <div class="tool-categories">
+              {{ range .Params.categories }}
+              <span class="category-tag">{{ . | title }}</span>
+              {{ end }}
+            </div>
+          </div>
+          <p class="tool-description">{{ .Description | default (.Summary | plainify | truncate 120) }}</p>
+          <div class="tool-meta">
+            <div class="pricing-info">
+              {{ if .Params.free_trial }}<span class="free-trial">Free trial</span>{{ end }}
+              {{ if .Params.pricing }}<span class="pricing-tag">{{ .Params.pricing }}</span>{{ end }}
+            </div>
+            <a class="read-more" href="{{ .Permalink }}">Read overview</a>
+          </div>
+        </div>
+      </article>
+      {{ end }}
+    </div>
+    <div class="view-all"><a href="/tools/" class="link-inline">Browse all tool guides</a></div>
+  </div>
+  <style>
+    .tools-preview{padding:48px 0;background:#f9fafb}
+    .tools-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px}
+    .link-inline{color:#2563eb;text-decoration:none;font-weight:600}
+    .link-inline:hover{text-decoration:underline}
+  </style>
+</section>
+
+<section class="robotics-preview">
+  <div class="container">
+    <div class="section-header">
+      <h2>Robotics Highlights</h2>
+      <p class="section-subtitle">Industrial and service robotics stories with deployment context.</p>
+    </div>
+    {{ $robotics := where site.RegularPages "Params.categories" "intersect" (slice "robotics") }}
+    <div class="robotics-grid">
+      {{ range first 3 (sort $robotics "Date" "desc") }}
+      <article class="robotics-card">
+        <h3><a href="{{ .Permalink }}">{{ .Title }}</a></h3>
+        <p>{{ .Description | default (.Summary | plainify | truncate 140) }}</p>
+        <div class="robotics-meta">
+          <span>{{ .Date.Format "Jan 2, 2006" }}</span>
+          <span>{{ .ReadingTime }} min read</span>
+        </div>
+      </article>
+      {{ end }}
+    </div>
+    <div class="view-all"><a href="/robot/" class="link-inline">View robotics coverage</a></div>
+  </div>
+  <style>
+    .robotics-preview{padding:48px 0}
+    .robotics-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px}
+    .robotics-card{background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:18px;display:flex;flex-direction:column;gap:12px}
+    .robotics-card h3{margin:0;font-size:1.1rem}
+    .robotics-card p{margin:0;color:#475569}
+    .robotics-meta{display:flex;gap:16px;color:#6b7280;font-size:.85rem}
+  </style>
+</section>
+{{ end }}
