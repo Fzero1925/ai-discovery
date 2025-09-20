@@ -1,35 +1,20 @@
-name: AI Discovery - Vercel Deployment
+﻿name: Deploy to Vercel
 
 on:
   push:
     branches: [main]
-  pull_request:
-    branches: [main]
-  workflow_dispatch: # Manual trigger
+  workflow_dispatch:
 
 env:
-  VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-  VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
   HUGO_VERSION: "0.149.0"
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    environment: production
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-
-      - name: Setup Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.11'
-          cache: 'pip'
-
-      - name: Install Python dependencies
-        run: |
-          pip install -r requirements.txt
 
       - name: Setup Hugo
         uses: peaceiris/actions-hugo@v2
@@ -37,16 +22,9 @@ jobs:
           hugo-version: ${{ env.HUGO_VERSION }}
           extended: true
 
-      - name: Pre-build validation
+      - name: Build site
         run: |
-          echo "🔍 Running pre-build validation before deployment..."
-          chmod +x scripts/pre-build-validator.sh
-          if bash scripts/pre-build-validator.sh; then
-            echo "✅ Pre-build validation passed - proceeding with build"
-          else
-            echo "❌ Pre-build validation failed - stopping deployment"
-            exit 1
-          fi
+          hugo --minify --environment production --destination public
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -54,127 +32,16 @@ jobs:
           node-version: '18'
 
       - name: Install Vercel CLI
-        run: npm i -g vercel@latest
+        run: npm install -g vercel@latest
 
-      - name: Generate fresh content (if needed)
-        run: |
-          echo "🔄 Checking for fresh content generation..."
-          echo "✅ Skipping content generation for deployment simplicity"
-          echo "📝 Content generation can be triggered separately via manual workflow"
-
-      - name: Build Hugo site
+      - name: Deploy to Vercel
         env:
-          HUGO_PARAMS_GOOGLE_ANALYTICS_ID: ${{ secrets.GOOGLE_ANALYTICS_ID }}
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
         run: |
-          echo "🏗️ Building Hugo site for production..."
-          echo "📊 Google Analytics ID: ${HUGO_PARAMS_GOOGLE_ANALYTICS_ID:0:8}***"
-          hugo --minify --environment production --destination public
-          
-          # Verify build
-          if [ ! -d "public" ]; then
-            echo "❌ Hugo build failed"
-            exit 1
+          if [ -z "$VERCEL_TOKEN" ]; then
+            echo "VERCEL_TOKEN not configured; skipping deploy"
+            exit 0
           fi
-          
-          echo "✅ Hugo build successful"
-          echo "📊 Build statistics:"
-          echo "   HTML files: $(find public -name "*.html" | wc -l)"
-          echo "   CSS files: $(find public -name "*.css" | wc -l)" 
-          echo "   JS files: $(find public -name "*.js" | wc -l)"
-          echo "   Total size: $(du -sh public | cut -f1)"
-
-      - name: Deploy to Vercel (Preview)
-        if: github.event_name == 'pull_request'
-        run: |
-          echo "🚀 Deploying to Vercel (Preview)..."
-          vercel deploy --token=${{ secrets.VERCEL_TOKEN }} > deployment-url.txt
-          echo "preview-url=$(cat deployment-url.txt)" >> $GITHUB_OUTPUT
-
-      - name: Deploy to Vercel (Production)
-        if: github.ref == 'refs/heads/main'
-        run: |
-          echo "🚀 Deploying to Vercel (Production)..."
-          vercel deploy --prod --token=${{ secrets.VERCEL_TOKEN }} > deployment-url.txt
-          echo "production-url=$(cat deployment-url.txt)" >> $GITHUB_OUTPUT
-
-      - name: Update deployment status
-        if: always()
-        run: |
-          if [ -f "deployment-url.txt" ]; then
-            URL=$(cat deployment-url.txt)
-            echo "✅ Deployment successful!"
-            echo "🌐 Live URL: $URL"
-            
-            # Comment on PR if it's a pull request
-            if [ "${{ github.event_name }}" = "pull_request" ]; then
-              echo "Preview deployed to: $URL" >> $GITHUB_STEP_SUMMARY
-            else
-              echo "Production deployed to: $URL" >> $GITHUB_STEP_SUMMARY
-            fi
-          else
-            echo "❌ Deployment failed"
-            exit 1
-          fi
-
-      - name: Run basic health check
-        if: success()
-        run: |
-          if [ -f "deployment-url.txt" ]; then
-            URL=$(cat deployment-url.txt)
-            echo "🏥 Running health check on $URL..."
-            
-            # Wait a moment for deployment to be ready
-            sleep 10
-            
-            # Check if site is accessible
-            if curl -f -s "$URL" > /dev/null; then
-              echo "✅ Site is accessible"
-              
-              # Check for key elements
-              if curl -s "$URL" | grep -q "AI Discovery"; then
-                echo "✅ Site content verified"
-              else
-                echo "⚠️ Site accessible but content may be incomplete"
-              fi
-            else
-              echo "❌ Site health check failed"
-            fi
-          fi
-
-      - name: Send Telegram notification
-        if: always()
-        env:
-          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
-        run: |
-          if [ "${{ secrets.TELEGRAM_BOT_TOKEN }}" != "" ] && [ "${{ secrets.TELEGRAM_CHAT_ID }}" != "" ]; then
-            # Determine environment
-            ENVIRONMENT="production"
-            if [ "${{ github.event_name }}" = "pull_request" ]; then
-              ENVIRONMENT="preview"
-            fi
-            
-            # Determine status
-            STATUS="success"
-            if [ "${{ job.status }}" != "success" ]; then
-              STATUS="failure"
-            fi
-            
-            python scripts/telegram_notify.py \
-              --type deployment \
-              --status "$STATUS" \
-              --environment "$ENVIRONMENT"
-          else
-            echo "⚠️ Telegram credentials not configured, skipping notification"
-          fi
-
-      - name: Performance metrics
-        run: |
-          echo "📈 Deployment Metrics"
-          echo "===================="
-          echo "Hugo version: $(hugo version)"
-          echo "Node.js version: $(node --version)"
-          echo "Vercel CLI version: $(vercel --version)"
-          echo "Build timestamp: $(date)"
-          echo "Commit SHA: ${{ github.sha }}"
-          echo "===================="
+          vercel deploy --prod --token=$VERCEL_TOKEN --yes --scope=$VERCEL_ORG_ID --project=$VERCEL_PROJECT_ID --cwd=public

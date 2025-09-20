@@ -1,229 +1,78 @@
-# AI Discovery — Tech News First
+# AI Discovery 静态站点
 
-AI Discovery 是一个以“科技新闻”为核心的自动化网站：
-- 每天从权威来源获取科技新闻，快速生成“可读、合规、有价值”的英文短文与汇总；
-- AI 工具评测与对比是子栏目，用于中后期联盟变现（不再主导首页）。
+AI Discovery 是聚焦 “AI 新闻 + AI 工具指南 + 机器人专题” 的英文内容站，目标是通过 Google AdSense 实现长期变现。生产仓库仅保留 Hugo 静态站点必需文件，后期维护只需上传符合模板的 Markdown 内容即可。
 
-我们的原则：
-- 事实优先、来源权威、合规友好（不扩散传言，不使用风险图片与广告）；
-- 全自动化流水线，文章质量量化（NQS≥85）不过关不发布；
-- 节奏化发布与去重控制，提升用户体验与搜索友好度。
+- **核心栏目**：`News`（新闻快讯与深度解读）、`Tools`（AI 工具评测与榜单）、`Robot`（工业/服务机器人专题）、`About`（品牌信息）。
+- **运营策略**：保持高质量英文内容、合法合规的图片与结构化数据支持，提升 CPC 与收录效果。
+- **导航配置**：见 `config.toml`，菜单顺序为 News → Tools → Robot → About。
 
-网站地址：
-- https://ai-discovery-nu.vercel.app/
+## 快速开始
 
-## ✨ Key Features
-
-- **108 Professional AI Tool Guides**: 2500+ word in-depth analyses
-- **Schema.org Integration**: Complete structured data for rich search results
-- **Multi-API Image System**: Professional AI-related imagery from Unsplash/Pexels/Pixabay
-- **Advanced SEO**: Smart internal linking, semantic HTML, 85+ SEO scores
-- **Performance Optimized**: <2s load times, Core Web Vitals monitoring
-- **Automated Content Pipeline**: Daily AI tool analysis generation
-- **Business Intelligence**: Telegram notifications with revenue forecasting
-
-## 🏗️ Technical Architecture
-
-### Core Stack
-- **Hugo Static Site Generator**: Fast, SEO-optimized static website
-- **Vercel Deployment**: Global CDN with automatic deployments
-- **Multi-API Integration**: Unsplash, Pexels, Pixabay (images), Telegram (analytics)
-- **Automated Systems**: Python-based content generation and optimization
-
-### Performance Metrics
-- **Load Time**: 1.86s average page load
-- **SEO Score**: 85+ average across all pages
-- **Automation Success**: 98%+ success rate
-- **System Uptime**: 99.9% reliability
-
-## 📁 Project Structure
-
-```
-ai-discovery/
-├── content/             # Main content system
-│   ├── reviews/        # AI tool guides and analyses
-│   ├── articles/       # Technical articles
-│   └── _index.md      # Homepage content
-├── layouts/            # Hugo templates
-│   ├── _default/      # Page templates
-│   └── partials/      # Reusable components
-├── static/             # Static assets
-│   ├── images/        # Professional image library
-│   └── css/          # Styling
-├── modules/            # Automation systems
-│   ├── content_generator/  # AI tool content generation
-│   ├── image_processor/   # Intelligent image management
-│   └── monitoring/        # Performance and business analytics
-└── scripts/           # Deployment and maintenance
-```
-
-## 🚀 Quick Start
-
-### Prerequisites
-- Hugo Extended (v0.110.0+)
-- Python 3.9+
-- Node.js 16+ (for build tools)
-
-### Installation
 ```bash
-# Clone repository
+# 克隆仓库
 git clone https://github.com/yourusername/ai-discovery.git
 cd ai-discovery
 
-# Install dependencies
+# 安装依赖（仅需 Hugo，如果需要 Tailwind 自定义则安装 Node）
 npm install
-pip install -r requirements.txt
 
-# Start development server
-hugo serve --disableFastRender
+# 本地预览
+hugo server -D
 ```
 
-### Environment Setup
-Create `.env` file with required API keys:
+> 备注：所有自动化脚本、数据处理、监控工具已迁移至仓库外的 `../ai-discovery-automation/` 目录，如需批量生成内容，可在本地或私有环境中运行，再将生成的 Markdown 拷贝回本仓库 `content/`。
+
+## 内容发布流程（零维护）
+
+1. 准备 Markdown 文件，补充 front matter：
+   ```yaml
+   ---
+   title: "示例标题"
+   description: "150 字以内摘要"
+   date: 2025-09-20
+   categories: ["news"]
+   tags: ["ai", "robotics"]
+   featured_image: "/images/sample.jpg"
+   image_alt: "描述图片内容"
+   draft: false
+   ---
+   ```
+2. 根据栏目放入对应目录：
+   - 新闻 → `content/news/`
+   - 工具评测 → `content/reviews/`
+   - 机器人专题 → `content/robot/`（可按 `industrial/`、`service/`、`research/` 建子目录）
+3. 提交并推送，Vercel 自动构建发布。
+
+## 目录结构
+
 ```
-UNSPLASH_ACCESS_KEY=your_unsplash_key
-PEXELS_API_KEY=your_pexels_key
-PIXABAY_API_KEY=your_pixabay_key
-TELEGRAM_BOT_TOKEN=your_telegram_bot
-TELEGRAM_CHAT_ID=your_chat_id
+ai-discovery/
+├── content/            # News / Tools / Robot / About 等 Markdown 内容
+├── layouts/            # Hugo 模板（首页、列表、单页、partials 等）
+├── static/             # 静态资源（CSS/JS/图片）
+├── config/             # 站点配置补充文件
+├── dev-docs/           # 内部规划文档（已加入 .gitignore，不推送 GitHub）
+├── config.toml         # Hugo 主配置
+├── README.md           # 本文档
+└── vercel.json         # 部署配置
 ```
 
-## 📊 Content Strategy
+## 机器人栏目说明
 
-### Target Market
-- **Primary**: North American and European AI professionals
-- **Language**: 100% English for maximum CPC rates
-- **Content Type**: In-depth guides, not basic reviews
-- **SEO Focus**: Long-tail English keywords with lower competition
+- 访问 `/robot/` 即可查看机器人专题页，页面提供了 `Industrial`, `Service`, `Research` 三个锚点，便于定位内容。
+- 上传内容时将 Markdown 放入对应子目录，Hugo 会基于 front matter 自动归档并生成页面。
 
-### Content Quality Standards
-- **Minimum 2500 words** per AI tool guide
-- **Professional first-person analysis** with real testing data
-- **Structured data markup** for rich search results
-- **High-quality AI-relevant imagery** with proper licensing
-- **FAQ sections** optimized for featured snippets
+## SEO 与合规
 
-## 🔧 Development Workflow
+- 模板内置结构化数据、面包屑、站点地图、Lazy Load 等 SEO 能力，无需额外脚本。
+- 上传图片时请确认版权与来源，并补充 `image_alt` 文本。
+- `About` 页面建议提供品牌描述、联系方式、隐私/条款链接，满足 AdSense 审核要求。
 
-### Content Creation
-1. **Automated Generation**: Daily AI tool analysis via GitHub Actions
-2. **Human Review**: Professional editing and optimization
-3. **Image Integration**: Multi-API system for relevant imagery
-4. **SEO Optimization**: Schema markup and internal linking
+## 常见命令
 
-### Deployment Process
-1. **Development**: Local Hugo development server
-2. **Testing**: Automated quality checks and performance tests
-3. **Production**: Vercel automatic deployment from main branch
-4. **Monitoring**: Real-time performance and business analytics
+```bash
+hugo server -D          # 本地预览
+hugo --minify           # 生成生产环境静态文件（输出到 public/）
+```
 
-## 📈 Business Model
-
-### Revenue Streams
-- **Google AdSense**: Premium CPC rates for English AI content
-- **Affiliate Marketing**: High-commission AI tool partnerships
-- **Premium Content**: Advanced guides and analysis
-
-### Success Metrics
-- **Target Monthly Revenue**: $2,000+
-- **Target Monthly Visitors**: 10,000+
-- **Conversion Rate Goal**: 2%+
-- **User Retention Target**: 30%+
-
-## 🛠️ Advanced Features
-
-### Automation v2.5
-- **Content Humanization**: Anti-AI detection templates
-- **Image Deduplication**: MD5 hash-based system (52 cached hashes)
-- **Performance Monitoring**: Real-time Core Web Vitals tracking
-- **Business Intelligence**: Revenue forecasting and keyword analysis
-- **Error Recovery**: Intelligent API failover systems
-
-### SEO Optimization
-- **Schema.org Integration**: SoftwareApplication, Review, Article, FAQPage
-- **Smart Internal Linking**: Automated contextual connections
-- **Performance Suite**: LCP, FID, CLS, FCP, TTFB monitoring
-- **Mobile Optimization**: Responsive design and fast loading
-
-### Automation v3.0 (Quality-Gated Publishing)
-- **Quality Gate 85+**: Only publish when quality score ≥ 85/100
-- **Daily Target**: Automatically ships 4 high-quality posts/day
-- **Humanization Check**: Measures humanization to reduce AI-detection
-- **SEO & AdSense Ready**: Frontmatter + alt tags + internal links enforced
-- **Auto-Fix Loop**: Iterates improvements if score < 85, logs failures
-- **Module**: `scripts/auto_content_pipeline.py` (integrated in Master Control)
-
-## 📞 Support & Documentation
-
-### Key Files
-- **`CLAUDE.md`**: Comprehensive project documentation for AI assistants
-- **`PROJECT_STATUS.md`**: Current development status and metrics
-- **`config.toml`**: Hugo site configuration
-- **`vercel.json`**: Deployment configuration
-
-### Development Guidelines
-- **Code Style**: Follow Hugo best practices
-- **Content Standards**: Professional, data-driven analysis
-- **Performance**: Maintain <2s load times
-- **SEO**: Implement all structured data standards
-
-## 🎯 Future Roadmap
-
-### Near-term (Q4 2025)
-- [ ] Google Analytics integration and traffic analysis
-- [ ] Google AdSense approval and optimization
-- [ ] Premium AI tool affiliate partnerships
-- [ ] Advanced user interaction features
-
-### Medium-term (Q1 2026)
-- [ ] Mobile app development
-- [ ] User account system
-- [ ] AI tool comparison engine
-- [ ] Community features and user reviews
-
-## 📄 License & Attribution
-
-This project uses various open-source technologies and APIs:
-- **Hugo**: Open-source static site generator
-- **Images**: Professional imagery via Unsplash, Pexels, Pixabay APIs
-- **Analytics**: Custom business intelligence system
-- **Deployment**: Vercel platform for global distribution
-
-## 🤝 Contributing
-
-We welcome contributions to improve AI Discovery:
-1. Fork the repository
-2. Create a feature branch
-3. Make improvements following our guidelines
-4. Submit a pull request with detailed description
-
----
-
-**AI Discovery** - Transforming how professionals discover and evaluate AI tools through comprehensive, data-driven analysis.
-
-*For detailed technical documentation, see `CLAUDE.md` and `PROJECT_STATUS.md`*
-
-## Workflows (Simplified)
-- hourly_news.yml: hourly queue + news sitemap + ping
-- quarter_hour_publisher.yml: publish due posts every 15 minutes
-- daily_news_report.yml / weekly_news_report.yml: daily/weekly reports
-
-## Docs & Folders
-- docs/PROGRESS_TODO.md: progress and TODO
-- oldfile/: archived docs (ignored)
-- test/: test scripts (ignored)
-
-## Status & TODO
-- Current status and prioritized TODOs are maintained in `PROJECT_STATUS.md` (single source of truth for tools/agents).
-
-## News‑First Architecture (What changed)
-- New section: `/news/` with dedicated list/single templates (`layouts/news/*`)
-- Homepage pulls latest from `section=news` (falling back to `category=news`)
-- News ingestion writes to `content/news/*.md` with `categories: ["news"]`
-- Google News sitemap scans all `content/` posts with category `news`
-- Hourly workflow runs news ingestion and queued publisher
-
-Quick commands:
-- Ingest short news locally: `python scripts/ingest_news.py`
-- Generate news sitemap: `SITE_BASE_URL=http://localhost:3000 python scripts/generate_news_sitemap.py`
-
+更多内部计划、路线图与待办事项详见 `dev-docs/` 目录中的 Markdown 文件（仅供团队参考）。
