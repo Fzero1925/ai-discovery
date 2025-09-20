@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="{{ site.Language.Lang | default "en" }}">
 <head>
     <meta charset="utf-8">
@@ -54,7 +54,7 @@
     {{ partial "news-structured-data" . }}
     {{ end }}
     
-    <!-- AdSense自动化广告系统 -->
+    <!-- AdSense automation placeholder -->
     {{ partial "monetization-adsense" . }}
     
     <!-- Enhanced Google Analytics 4 -->
@@ -82,7 +82,7 @@
                     </a>
                     {{ end }}
                     <a href="/search/" class="nav-link search-link">
-                        <span class="search-icon">🔍</span>
+                        <span class="search-icon" aria-hidden="true">Search</span>
                         Search
                     </a>
                 </div>
@@ -148,13 +148,13 @@
         </div>
     </footer>
 
-    <!-- AdSense Auto Ads -->
+    <!-- AdSense automation placeholder -->
     {{ if site.Params.google_adsense_id }}
     {{ partial "adsense" . }}
     {{ end }}
 
-    <!-- 返回顶部按钮 -->
-    <button id="back-to-top" class="back-to-top" title="返回顶部">
+    <!-- Back to top button -->
+    <button id="back-to-top" class="back-to-top" title="Back to top">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
             <path d="M7 14l5-5 5 5z"/>
         </svg>
@@ -166,12 +166,12 @@
     <!-- Performance Optimization Suite -->
     <script src="{{ "js/performance-optimizer.js" | absURL }}" defer></script>
     
-    <!-- 返回顶部功能脚本 -->
+    <!-- Back to top script -->
     <script>
     document.addEventListener('DOMContentLoaded', function() {
         const backToTop = document.getElementById('back-to-top');
         
-        // 显示/隐藏按钮
+        // Toggle button visibility
         window.addEventListener('scroll', function() {
             if (window.pageYOffset > 300) {
                 backToTop.classList.add('show');
@@ -180,7 +180,7 @@
             }
         });
         
-        // 点击返回顶部
+        // Scroll to top
         backToTop.addEventListener('click', function() {
             window.scrollTo({
                 top: 0,

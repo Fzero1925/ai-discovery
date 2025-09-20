@@ -4,39 +4,39 @@ description: "Understand how AI Discovery collects, uses, and protects visitor d
 date: 2025-09-20
 ---
 
-本隐私政策说明我们如何收集、使用、存储和保护访问 AI Discovery 的用户信息。网站面向全球访客，主要提供英文内容，并通过 Google AdSense 实现商业化。
+This privacy policy explains what data AI Discovery collects, how we use it, and the choices you have. The site is designed for a global audience and monetised through advertising and affiliate programs.
 
-## 数据收集方式
+## Data We Collect
 
-1. **访问日志**：服务器记录匿名访问日志（IP、浏览器、访问时间、页面路径），用于安全分析与性能优化。
-2. **Cookies 与类似技术**：主要由第三方（如 Google AdSense、Google Analytics）设置，用于广告投放与访问统计。
-3. **用户提供的信息**：当您通过邮件主动联系我们时，我们会收到您主动提供的姓名、邮箱及内容。
+1. **Server logs** - anonymised IP addresses, browser type, and timestamps to maintain security and performance.
+2. **Cookies** - primarily from Google AdSense and Google Analytics to measure engagement and deliver relevant ads.
+3. **Voluntary submissions** - information you provide when contacting us via email.
 
-## 数据使用目的
+## How We Use Data
 
-- 监控网站稳定性与安全性。
-- 分析内容表现，优化选题与用户体验。
-- 提供个性化和上下文相关的广告投放。
-- 回复用户咨询、合作或媒体请求。
+- Monitor uptime, diagnose issues, and improve site performance.
+- Understand which topics resonate so we can prioritise future coverage.
+- Deliver contextual advertising and track compliance requirements.
+- Respond to support, media, or partnership enquiries.
 
-## 第三方服务
+## Third Parties
 
-我们使用 Google AdSense 和可能的分析工具（如 Google Analytics）。这些服务可能通过 Cookies 收集访客信息，并按照各自政策使用。我们不对第三方的隐私实践负责，建议您查阅对应政策。
+We use Google AdSense and, when enabled, Google Analytics. These providers may place their own cookies and follow their respective privacy policies. We recommend reviewing those policies for details on opt-out options.
 
-## 数据保留与安全
+## Retention and Security
 
-- 访问日志通常保留 12 个月，用于安全追踪与流量分析。
-- 邮件沟通记录仅在必要期间保留，以便跟进请求或履行法律义务。
-- 我们采取技术和组织措施防止未授权访问，但不能保证互联网传输绝对安全。
+- Server logs are retained for up to 12 months.
+- Email conversations are kept only as long as needed to resolve the request or meet legal obligations.
+- We apply reasonable technical and organisational measures, but no internet transmission is completely secure.
 
-## 儿童隐私
+## Children
 
-AI Discovery 不面向 13 岁以下儿童，也不会主动收集其个人信息。如您认为我们误收集相关数据，请立即通知我们以便删除。
+AI Discovery is not directed at children under 13, and we do not knowingly collect their personal information. If you believe we have inadvertently collected such data, contact us so we can delete it promptly.
 
-## 政策更新
+## Policy Updates
 
-我们可能根据法律法规或业务调整更新本政策。最新版本会发布在本页面，更新日期将同步修改。
+We may update this policy to reflect legal or business changes. The latest revision date is shown at the top of this page.
 
-## 联系方式
+## Contact
 
-如对隐私政策或数据处理有任何疑问，请发送邮件至 `privacy@aidiscovery.com`。
+Questions about privacy or data handling can be sent to `privacy@aidiscovery.com`.

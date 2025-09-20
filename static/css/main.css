@@ -1,4 +1,4 @@
-/* AI Discovery - Main Stylesheet */
+﻿/* AI Discovery - Main Stylesheet */
 
 /* ==========================================
    CSS Variables
@@ -667,7 +667,7 @@ a:hover {
   transform: translateY(-2px);
 }
 
-/* 绉诲姩绔€傞厤 */
+/* Mobile layout adjustments */
 @media (max-width: 768px) {
   .back-to-top {
     width: 45px;
@@ -991,7 +991,7 @@ a:hover {
 }
 
 .features-list li:before {
-  content: "鉁?;
+    content: "-";
   color: var(--success-color);
   font-weight: bold;
   position: absolute;

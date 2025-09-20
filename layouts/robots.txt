@@ -1,26 +1,26 @@
-User-agent: *
+﻿User-agent: *
 Allow: /
 
 # Optimize crawling for AI tool review pages
 Allow: /tools/
 Allow: /categories/
-Allow: /tags/
+# Crawler guidance
 
 # Disallow administrative and template files
-Disallow: /admin/
+# Disallowed paths
 Disallow: /*_template*
 Disallow: /*_draft*
 Disallow: /search/?*
 
 # Sitemap location
-Sitemap: {{ site.BaseURL }}sitemap.xml
+# Allow important paths
 
 # Crawl delay to be respectful
 Crawl-delay: 1
 
 # Specific directives for major search engines
 User-agent: Googlebot
-Crawl-delay: 0
+# Search engine directives
 Allow: /
 
 User-agent: Bingbot

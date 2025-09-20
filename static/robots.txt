@@ -1,24 +1,24 @@
-User-agent: *
+﻿User-agent: *
 Allow: /
 
 # Sitemap
 Sitemap: https://ai-discovery-nu.vercel.app/sitemap.xml
 
-# 浼樺寲鐖櫕鎶撳彇
+# Crawler guidance
 Crawl-delay: 1
 
-# 绂佹鎶撳彇鐨勮矾寰?
+# Disallowed paths
 Disallow: /admin/
 Disallow: /private/
 Disallow: /*.json$
 Disallow: /api/
 
-# 鍏佽閲嶈椤甸潰
+# Allow important paths
 Allow: /tools/
 Allow: /categories/
 Allow: /images/
 
-# SEO浼樺寲鎸囦护
+# Search engine directives
 User-agent: Googlebot
 Allow: /
 

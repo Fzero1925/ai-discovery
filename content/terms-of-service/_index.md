@@ -4,34 +4,33 @@ description: "Review the terms and conditions for using AI Discovery."
 date: 2025-09-20
 ---
 
-欢迎使用 AI Discovery。访问或使用本网站即表示您同意以下条款与条件。若不同意，请停止使用本服务。
+By accessing AI Discovery you agree to the following terms. If you do not agree, please discontinue use of the site.
 
-## 内容与版权
+## Content and Copyright
 
-- 网站内容（文字、图片、结构化数据）受版权和相关法规保护。未经许可不得复制、转发或商业化使用。
-- 部分图片或第三方引用资料归原作者所有，我们会在可能情况下注明来源。
-- 您可以在合理引用范围内分享内容，但需保留原始链接和出处。
+- Articles, graphics, and structured data on this site are protected by copyright. Do not copy or republish without permission.
+- Third-party images or excerpts remain the property of their respective owners; credit is provided when required.
+- You may share excerpts for commentary or education with a link back to the original page.
 
-## 使用要求
+## Acceptable Use
 
-- 不得利用网站发布垃圾信息、恶意脚本或进行任何形式的攻击。
-- 不得建立镜像站点或未经授权的大规模抓取数据。
-- 如需 API 或批量数据访问，请先与我们联系并取得书面许可。
+- Do not attempt to disrupt the site, inject malicious code, or harvest data without permission.
+- Automated scraping, mirroring, or API use requires written approval.
 
-## 免责声明
+## Disclaimers
 
-- 网站内容仅供信息参考，不构成投资、法律或专业决策建议。
-- 虽然我们努力确保信息准确，但仍可能存在错误或滞后。我们不对因使用本站信息产生的任何损失负责。
-- 对第三方链接或服务的可用性、内容或行为不承担责任。
+- Content is provided for information purposes only and is not professional advice.
+- We strive for accuracy but cannot guarantee completeness or timeliness. Use information at your own risk.
+- We are not responsible for the content or behaviour of external websites we link to.
 
-## 服务变更
+## Changes and Availability
 
-我们保留随时修改、暂停或终止全部或部分网站服务的权利，无需提前通知。
+We may modify, suspend, or discontinue any part of the site at any time without notice.
 
-## 准据法与争议解决
+## Governing Law
 
-本条款受网站主要运营地适用法律管辖。若双方无法协商解决纠纷，将提交至该司法管辖区有权法院处理。
+These terms are governed by the laws of our primary place of business. Disputes will be handled by the courts in that jurisdiction.
 
-## 联系方式
+## Contact
 
-如对条款有疑问，请发送邮件至 `legal@aidiscovery.com`，我们将在必要时更新条款内容。
+Questions about these terms can be sent to `legal@aidiscovery.com`.

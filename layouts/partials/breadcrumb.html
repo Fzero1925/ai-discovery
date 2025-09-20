@@ -1,4 +1,4 @@
-<!-- Breadcrumb Navigation with Schema.org markup -->
+﻿<!-- Breadcrumb Navigation with Schema.org markup -->
 {{ if not .IsHome }}
 <nav class="breadcrumb-nav" aria-label="Breadcrumb">
     <div class="breadcrumb-container">
@@ -9,7 +9,7 @@
                     <span itemprop="name">Home</span>
                 </a>
                 <meta itemprop="position" content="1" />
-                <span class="breadcrumb-separator" aria-hidden="true">›</span>
+                <span class="breadcrumb-separator" aria-hidden="true">&gt;</span>
             </li>
             
             <!-- Section (Categories, etc.) -->
@@ -20,7 +20,7 @@
                 </a>
                 <meta itemprop="position" content="2" />
                 {{ if ne .Type "section" }}
-                <span class="breadcrumb-separator" aria-hidden="true">›</span>
+                <span class="breadcrumb-separator" aria-hidden="true">&gt;</span>
                 {{ end }}
             </li>
             {{ end }}
@@ -33,7 +33,7 @@
                     <span itemprop="name">{{ . | title }}</span>
                 </a>
                 <meta itemprop="position" content="{{ if $.Section }}3{{ else }}2{{ end }}" />
-                <span class="breadcrumb-separator" aria-hidden="true">›</span>
+                <span class="breadcrumb-separator" aria-hidden="true">&gt;</span>
             </li>
             {{ end }}
             {{ end }}
@@ -97,7 +97,7 @@
     font-weight: 500;
 }
 
-.breadcrumb-separator {
+                <span class="breadcrumb-separator" aria-hidden="true">&gt;</span>
     margin: 0 0.5rem;
     color: #6c757d;
     font-weight: bold;
@@ -112,7 +112,7 @@
         font-size: 0.8125rem;
     }
     
-    .breadcrumb-separator {
+                <span class="breadcrumb-separator" aria-hidden="true">&gt;</span>
         margin: 0 0.25rem;
     }
     

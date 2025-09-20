@@ -1,18 +1,1 @@
-<!-- AdSense自动化广告系统 - 仅加载脚本，不添加广告容器 -->
-{{ if site.Params.google_adsense_id }}
-
-<!-- AdSense 自动广告脚本 -->
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client={{ site.Params.google_adsense_id }}"
-     crossorigin="anonymous"></script>
-
-<!-- 简化的AdSense初始化 - 避免干扰页面布局 -->
-<script>
-// 基本的AdSense初始化，不添加容器元素
-window.adsbygoogle = window.adsbygoogle || [];
-adsbygoogle.push({
-    google_ad_client: "{{ site.Params.google_adsense_id }}",
-    enable_page_level_ads: true
-});
-</script>
-
-{{ end }}
+﻿<!-- AdSense automation placeholder -->

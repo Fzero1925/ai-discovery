@@ -1,22 +1,19 @@
-{{ define "main" }}
+﻿{{ define "main" }}
 <div class="hero-section">
   <div class="hero-content">
-    <h1 class="hero-title">Latest Tech News 鈥?Curated and Explained</h1>
-    <p class="hero-description">Concise, compliant, and value鈥慸riven tech news: what鈥檚 new, why it matters, and context 鈥?updated throughout the day.</p>
-    <div class="hero-stats">
-      <div class="stat"><span class="stat-number">500+</span><span class="stat-label">AI Tools Reviewed</span></div>
-      <div class="stat"><span class="stat-number">50K+</span><span class="stat-label">Monthly Readers</span></div>
-      <div class="stat"><span class="stat-number">4.8鈽?/span><span class="stat-label">User Rating</span></div>
-    </div>
+    <h1 class="hero-title">Daily AI News and Tool Briefings</h1>
+    <p class="hero-description">Short updates on AI research, product launches, policy moves, and robotics projects for teams who need context fast.</p>
+    <ul class="hero-highlights">
+      <li>News summaries with plain-language context</li>
+      <li>Tool rundowns focused on real workflows</li>
+      <li>Robotics coverage across industrial and service sectors</li>
+    </ul>
   </div>
   <style>
     .hero-section{padding:48px 0;background:linear-gradient(180deg,#f8fafc,transparent)}
     .hero-title{font-size:2rem;margin:0 0 8px}
     .hero-description{color:#475569;max-width:840px}
-    .hero-stats{display:flex;gap:24px;margin-top:16px;color:#334155}
-    .stat{display:flex;flex-direction:column}
-    .stat-number{font-weight:700;font-size:1.25rem}
-    .stat-label{font-size:.875rem;color:#64748b}
+    .hero-highlights{margin-top:20px;padding-left:20px;color:#334155;display:grid;gap:8px;list-style:disc}
   </style>
 </div>
 
@@ -24,17 +21,36 @@
   <div class="container">
     <h2>Explore News Categories</h2>
     <div class="categories-grid">
-      <div class="category-card"><div class="category-icon">鈿欙笍</div><h3>Chips / Compute</h3><p>Semiconductors, accelerators and compute infrastructure updates.</p><div class="category-stats">News coverage</div><a href="/categories/chips-compute/" class="category-link">View News</a></div>
-      <div class="category-card"><div class="category-icon">馃</div><h3>Robotics</h3><p>Robotics, automation and real鈥憌orld applications.</p><div class="category-stats">News coverage</div><a href="/categories/robotics/" class="category-link">View News</a></div>
-      <div class="category-card"><div class="category-icon">馃摫</div><h3>Consumer Electronics</h3><p>Devices, wearables, displays and consumer ecosystems.</p><div class="category-stats">News coverage</div><a href="/categories/consumer-electronics/" class="category-link">View News</a></div>
-      <div class="category-card"><div class="category-icon">馃</div><h3>Productivity</h3><p>Task automation, workflow optimization, and AI鈥憄owered business productivity solutions.</p><div class="category-stats">{{ len (where site.RegularPages "Params.categories" "intersect" (slice "productivity")) }} tools available</div><a href="/categories/productivity/" class="category-link">Explore Tools 鈫?/a></div>
+      <div class="category-card">
+        <h3>Chips and Compute</h3>
+        <p>Semiconductors, accelerators, and compute infrastructure updates.</p>
+        <div class="category-stats">News coverage</div>
+        <a href="/categories/chips-compute/" class="category-link">View News</a>
+      </div>
+      <div class="category-card">
+        <h3>Robotics</h3>
+        <p>Robotics, automation, and real-world applications.</p>
+        <div class="category-stats">News coverage</div>
+        <a href="/categories/robotics/" class="category-link">View News</a>
+      </div>
+      <div class="category-card">
+        <h3>Consumer Electronics</h3>
+        <p>Devices, wearables, displays, and consumer ecosystems.</p>
+        <div class="category-stats">News coverage</div>
+        <a href="/categories/consumer-electronics/" class="category-link">View News</a>
+      </div>
+      <div class="category-card">
+        <h3>Productivity</h3>
+        <p>Task automation, workflow optimization, and AI-powered business solutions.</p>
+        <div class="category-stats">{{ len (where site.RegularPages "Params.categories" "intersect" (slice "productivity")) }} tools available</div>
+        <a href="/categories/productivity/" class="category-link">Explore Tools</a>
+      </div>
     </div>
   </div>
   <style>
     .container{max-width:1100px;margin:0 auto;padding:0 16px}
     .categories-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px}
-    .category-card{background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:16px}
-    .category-icon{font-size:20px}
+    .category-card{background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:12px}
     .category-link{color:#2563eb;text-decoration:none;font-weight:600}
     .category-link:hover{text-decoration:underline}
   </style>
@@ -44,7 +60,7 @@
   <div class="container">
     <div class="section-header">
       <h2>Latest Tech News</h2>
-      <p class="section-subtitle">What鈥檚 new, why it matters, and context 鈥?curated from authoritative sources</p>
+      <p class="section-subtitle">What's new, why it matters, and context from authoritative sources.</p>
     </div>
     <div class="guides-grid">
       {{ $news := where site.RegularPages "Params.categories" "intersect" (slice "news") }}
@@ -70,13 +86,12 @@
       </article>
       {{ end }}
     </div>
-    <div class="view-all"><a href="/news/" class="btn-primary">View All News 鈫?/a>
+    <div class="view-all"><a href="/news/" class="btn-primary">View All News</a>
       <p class="discovery-count">{{ len $news }} news updates published</p>
     </div>
   </div>
 
   <style>
-    .section-subtitle{color:#6b7280;font-size:1.1rem;margin:.5rem auto 0;max-width:600px}
     .guides-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:24px;margin-bottom:24px;align-items:stretch}
     .guide-card{background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 4px 6px rgba(0,0,0,.05);display:flex;flex-direction:column;height:100%}
     .guide-image{position:relative;overflow:hidden;aspect-ratio:16/9;background:#f8fafc}

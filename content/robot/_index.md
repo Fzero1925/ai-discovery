@@ -7,9 +7,9 @@ draft: false
 
 Welcome to the AI Discovery robotics hub. We curate the latest developments, case studies, and practical adoption guides across the robotics landscape. Use the anchors below to jump directly to the segment that matches your focus.
 
-- [Industrial Robotics](#industrial-robotics) — factory automation, cobots, production analytics.
-- [Service Robotics](#service-robotics) — logistics, healthcare, hospitality, consumer services.
-- [Research & Emerging Tech](#research-emerging-tech) — labs, humanoids, experimental platforms.
+- [Industrial Robotics](#industrial-robotics) ?factory automation, cobots, production analytics.
+- [Service Robotics](#service-robotics) ?logistics, healthcare, hospitality, consumer services.
+- [Research & Emerging Tech](#research-emerging-tech) ?labs, humanoids, experimental platforms.
 
 ## Industrial Robotics {#industrial-robotics}
 
