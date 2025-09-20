@@ -1,18 +1,13 @@
-{{ define "main" }}
+﻿{{ define "main" }}
 <section class="news-list-page">
   <header class="list-header">
     <div class="container">
       <h1 class="list-title">Latest Tech News</h1>
-      <p class="list-description">What’s new, why it matters, and context — curated from authoritative sources.</p>
+      <p class="list-description">What’s new, why it matters, and context - curated from authoritative sources.</p>
     </div>
   </header>
 
-  {{/* Resolve news pages: prefer section pages; fallback to category=news */}}
-  {{ $news := .Pages }}
-  {{ if eq (len $news) 0 }}
-    {{ $news = where site.RegularPages "Params.categories" "intersect" (slice "news") }}
-  {{ end }}
-
+  {{ $news := where site.RegularPages "Params.categories" "intersect" (slice "news") }}
   {{ $paginator := .Paginate (sort $news "Date" "desc") 12 }}
 
   <section class="news-grid-section">
@@ -48,13 +43,12 @@
 
       {{ if gt $paginator.TotalPages 1 }}
       <nav class="pagination">
-        {{ if $paginator.HasPrev }}<a class="page-link" href="{{ $paginator.Prev.URL }}">← Newer</a>{{ end }}
+        {{ if $paginator.HasPrev }}<a class="page-link" href="{{ $paginator.Prev.URL }}">< Newer</a>{{ end }}
         <span class="page-info">Page {{ $paginator.PageNumber }} of {{ $paginator.TotalPages }}</span>
-        {{ if $paginator.HasNext }}<a class="page-link" href="{{ $paginator.Next.URL }}">Older →</a>{{ end }}
+        {{ if $paginator.HasNext }}<a class="page-link" href="{{ $paginator.Next.URL }}">Older ></a>{{ end }}
       </nav>
       {{ end }}
     </div>
   </section>
 </section>
 {{ end }}
-

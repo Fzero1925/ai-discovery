@@ -1,12 +1,12 @@
 {{ define "main" }}
 <div class="hero-section">
   <div class="hero-content">
-    <h1 class="hero-title">Latest Tech News — Curated and Explained</h1>
-    <p class="hero-description">Concise, compliant, and value‑driven tech news: what’s new, why it matters, and context — updated throughout the day.</p>
+    <h1 class="hero-title">Latest Tech News 鈥?Curated and Explained</h1>
+    <p class="hero-description">Concise, compliant, and value鈥慸riven tech news: what鈥檚 new, why it matters, and context 鈥?updated throughout the day.</p>
     <div class="hero-stats">
       <div class="stat"><span class="stat-number">500+</span><span class="stat-label">AI Tools Reviewed</span></div>
       <div class="stat"><span class="stat-number">50K+</span><span class="stat-label">Monthly Readers</span></div>
-      <div class="stat"><span class="stat-number">4.8★</span><span class="stat-label">User Rating</span></div>
+      <div class="stat"><span class="stat-number">4.8鈽?/span><span class="stat-label">User Rating</span></div>
     </div>
   </div>
   <style>
@@ -24,10 +24,10 @@
   <div class="container">
     <h2>Explore News Categories</h2>
     <div class="categories-grid">
-      <div class="category-card"><div class="category-icon">⚙️</div><h3>Chips / Compute</h3><p>Semiconductors, accelerators and compute infrastructure updates.</p><div class="category-stats">News coverage</div><a href="/categories/chips-compute/" class="category-link">View News</a></div>
-      <div class="category-card"><div class="category-icon">🤖</div><h3>Robotics</h3><p>Robotics, automation and real‑world applications.</p><div class="category-stats">News coverage</div><a href="/categories/robotics/" class="category-link">View News</a></div>
-      <div class="category-card"><div class="category-icon">📱</div><h3>Consumer Electronics</h3><p>Devices, wearables, displays and consumer ecosystems.</p><div class="category-stats">News coverage</div><a href="/categories/consumer-electronics/" class="category-link">View News</a></div>
-      <div class="category-card"><div class="category-icon">🧠</div><h3>Productivity</h3><p>Task automation, workflow optimization, and AI‑powered business productivity solutions.</p><div class="category-stats">{{ len (where site.RegularPages "Params.categories" "intersect" (slice "productivity")) }} tools available</div><a href="/categories/productivity/" class="category-link">Explore Tools →</a></div>
+      <div class="category-card"><div class="category-icon">鈿欙笍</div><h3>Chips / Compute</h3><p>Semiconductors, accelerators and compute infrastructure updates.</p><div class="category-stats">News coverage</div><a href="/categories/chips-compute/" class="category-link">View News</a></div>
+      <div class="category-card"><div class="category-icon">馃</div><h3>Robotics</h3><p>Robotics, automation and real鈥憌orld applications.</p><div class="category-stats">News coverage</div><a href="/categories/robotics/" class="category-link">View News</a></div>
+      <div class="category-card"><div class="category-icon">馃摫</div><h3>Consumer Electronics</h3><p>Devices, wearables, displays and consumer ecosystems.</p><div class="category-stats">News coverage</div><a href="/categories/consumer-electronics/" class="category-link">View News</a></div>
+      <div class="category-card"><div class="category-icon">馃</div><h3>Productivity</h3><p>Task automation, workflow optimization, and AI鈥憄owered business productivity solutions.</p><div class="category-stats">{{ len (where site.RegularPages "Params.categories" "intersect" (slice "productivity")) }} tools available</div><a href="/categories/productivity/" class="category-link">Explore Tools 鈫?/a></div>
     </div>
   </div>
   <style>
@@ -44,11 +44,10 @@
   <div class="container">
     <div class="section-header">
       <h2>Latest Tech News</h2>
-      <p class="section-subtitle">What’s new, why it matters, and context — curated from authoritative sources</p>
+      <p class="section-subtitle">What鈥檚 new, why it matters, and context 鈥?curated from authoritative sources</p>
     </div>
     <div class="guides-grid">
-      {{ $newsSec := where site.RegularPages "Section" "news" }}
-      {{ $news := cond (gt (len $newsSec) 0) $newsSec (where site.RegularPages "Params.categories" "intersect" (slice "news")) }}
+      {{ $news := where site.RegularPages "Params.categories" "intersect" (slice "news") }}
       {{ range first 8 (sort $news "Date" "desc") }}
       <article class="guide-card">
         <div class="guide-image">
@@ -71,8 +70,8 @@
       </article>
       {{ end }}
     </div>
-    <div class="view-all"><a href="/news/" class="btn-primary">View All News →</a>
-      <p class="discovery-count">{{ len (cond (gt (len $newsSec) 0) $newsSec (where site.RegularPages "Params.categories" "intersect" (slice "news"))) }} news updates published</p>
+    <div class="view-all"><a href="/news/" class="btn-primary">View All News 鈫?/a>
+      <p class="discovery-count">{{ len $news }} news updates published</p>
     </div>
   </div>
 

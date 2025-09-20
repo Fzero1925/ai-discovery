@@ -2,7 +2,7 @@
 title: "iPhone 17 Early Preview: What Might Change and Why It Matters"
 description: "A concise look at what the iPhone 17 cycle could bring, why it matters for users and developers, and how to evaluate rumors responsibly."
 date: 2025-09-11T00:00:00Z
-categories: ["news", "consumer-electronics"]
+categories: ["News", "Apple"]
 tags: ["iPhone 17", "Apple", "smartphones", "consumer electronics"]
 draft: false
 ---

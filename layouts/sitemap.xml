@@ -1,4 +1,4 @@
-{{ printf "<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"yes\"?>" | safeHTML }}
+﻿{{ printf "<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"yes\"?>" | safeHTML }}
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
         xmlns:news="http://www.google.com/schemas/sitemap-news/0.9"
         xmlns:xhtml="http://www.w3.org/1999/xhtml"
@@ -22,9 +22,9 @@
     {{ if .IsHome }}
     <priority>1.0</priority>
     <changefreq>daily</changefreq>
-    {{ else if eq .Section "reviews" }}
+    {{ else if in .Params.categories "news" }}
     <priority>0.9</priority>
-    <changefreq>weekly</changefreq>
+    <changefreq>daily</changefreq>
     {{ else if eq .Type "categories" }}
     <priority>0.8</priority>
     <changefreq>weekly</changefreq>

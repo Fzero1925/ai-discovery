@@ -2,7 +2,7 @@
 title: "Claude ‘Model Degradation’ Reports: What Changed and Why It Matters"
 description: "Community reports suggest shifts in Claude’s behavior. Here’s what’s new, why it matters, and how to evaluate changes responsibly."
 date: 2025-09-11T00:00:00Z
-categories: ["news"]
+categories: ["News","claude"]
 tags: ["Claude AI", "model quality", "AI safety", "model updates"]
 draft: false
 ---

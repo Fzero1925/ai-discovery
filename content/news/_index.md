@@ -1,10 +1,8 @@
 ---
-title: "Tech News"
-description: "Latest technology news: what's new, why it matters, and context — updated throughout the day."
-cascade:
-  categories: ["news"]
+title: "AI News"
+description: "Concise AI news briefings with clear takeaways and trusted sources."
+layout: news/list
+date: 2025-09-20
 ---
 
-Welcome to AI Discovery News. We track authoritative sources and deliver concise, high-signal updates with context.
-
-
+We track policy shifts, research milestones, major product launches, and robotics updates across the AI ecosystem. Every briefing is tagged by category so you can filter to what matters most.

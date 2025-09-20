@@ -1,10 +1,10 @@
-<!-- Enhanced Internal Linking System for AI Tools -->
+﻿<!-- Enhanced Internal Linking System for AI Tools -->
 <section class="internal-links-section">
     <div class="container">
         <!-- Related AI Tools Section -->
-        {{ if eq .Section "reviews" }}
+        {{ if not (in .Params.categories "news") }}
         <div class="related-tools">
-            <h2>馃敆 Related AI Tools You Might Like</h2>
+            <h2>棣冩晢 Related AI Tools You Might Like</h2>
             
             <!-- Same category tools -->
             {{ $currentTool := . }}
@@ -31,7 +31,7 @@
                                 <span class="pricing">{{ .Params.pricing }}</span>
                                 {{ end }}
                             </div>
-                            <a href="{{ .Permalink }}" class="read-more">Read Complete Guide 鈫?/a>
+                            <a href="{{ .Permalink }}" class="read-more">Read Complete Guide 閳?/a>
                         </div>
                     </article>
                     {{ end }}
@@ -46,7 +46,7 @@
         {{ $popularTools := first 4 $popularTools }}
         {{ if $popularTools }}
         <div class="popular-tools">
-            <h2>馃敟 Most Popular AI Tools in 2024</h2>
+            <h2>棣冩暉 Most Popular AI Tools in 2024</h2>
             <div class="popular-grid">
                 {{ range $index, $tool := $popularTools }}
                 <div class="popular-item">
@@ -66,28 +66,28 @@
         
         <!-- Category Navigation with enhanced SEO -->
         <div class="category-navigation">
-            <h2>馃幆 Browse AI Tools by Category</h2>
+            <h2>棣冨箚 Browse AI Tools by Category</h2>
             <div class="category-links">
                 <div class="category-link-item">
-                    <h3><a href="/categories/content-creation/" title="Best AI Content Creation Tools 2024">馃摑 Content Creation AI</a></h3>
+                    <h3><a href="/categories/content-creation/" title="Best AI Content Creation Tools 2024">棣冩憫 Content Creation AI</a></h3>
                     <p>Discover the best AI writing assistants, copywriting tools, and content generators for creating high-quality written content.</p>
                     <div class="category-count">{{ len (where site.RegularPages ".Params.categories" "intersect" (slice "content-creation")) }} professional tools reviewed</div>
                 </div>
                 
                 <div class="category-link-item">
-                    <h3><a href="/categories/image-generation/" title="Best AI Image Generation Tools 2024">馃帹 Image Generation AI</a></h3>
+                    <h3><a href="/categories/image-generation/" title="Best AI Image Generation Tools 2024">棣冨腹 Image Generation AI</a></h3>
                     <p>Explore top-rated AI art generators, photo editors, and visual creation tools for designers and content creators.</p>
                     <div class="category-count">{{ len (where site.RegularPages ".Params.categories" "intersect" (slice "image-generation")) }} visual AI tools compared</div>
                 </div>
                 
                 <div class="category-link-item">
-                    <h3><a href="/categories/code-assistance/" title="Best AI Coding Assistant Tools 2024">馃懆鈥嶐煉?Code Assistance AI</a></h3>
+                    <h3><a href="/categories/code-assistance/" title="Best AI Coding Assistant Tools 2024">棣冩噯閳ュ稅鐓?Code Assistance AI</a></h3>
                     <p>Find the best AI programming assistants, code completion tools, and development aids for software engineers.</p>
                     <div class="category-count">{{ len (where site.RegularPages ".Params.categories" "intersect" (slice "code-assistance")) }} coding tools analyzed</div>
                 </div>
                 
                 <div class="category-link-item">
-                    <h3><a href="/categories/productivity/" title="Best AI Productivity Tools 2024">鈿?Productivity AI</a></h3>
+                    <h3><a href="/categories/productivity/" title="Best AI Productivity Tools 2024">閳?Productivity AI</a></h3>
                     <p>Boost your efficiency with workflow automation tools, task managers, and AI-powered productivity boosters.</p>
                     <div class="category-count">{{ len (where site.RegularPages ".Params.categories" "intersect" (slice "productivity")) }} productivity solutions</div>
                 </div>
@@ -96,7 +96,7 @@
         
         <!-- Intelligent Tool Comparisons -->
         <div class="comparison-tools">
-            <h2>鈿栵笍 AI Tool Comparisons</h2>
+            <h2>閳挎牭绗?AI Tool Comparisons</h2>
             <div class="comparison-grid">
                 <div class="comparison-item">
                     <h3><a href="/chatgpt-vs-claude-2024/" title="ChatGPT vs Claude: Complete Comparison 2024">ChatGPT vs Claude AI</a></h3>
@@ -140,7 +140,7 @@
         {{ $recentlyUpdated := first 3 (where site.RegularPages "Section" "reviews") }}
         {{ if $recentlyUpdated }}
         <div class="recent-updates">
-            <h2>馃搮 Recently Updated AI Tool Reviews</h2>
+            <h2>棣冩惍 Recently Updated AI Tool Reviews</h2>
             <div class="updates-list">
                 {{ range $recentlyUpdated }}
                 <div class="update-item">
@@ -149,9 +149,9 @@
                         <p class="update-date">Published {{ .Date.Format "January 2, 2006" }}</p>
                         <p class="update-summary">{{ .Summary | truncate 120 }}</p>
                         <div class="update-highlights">
-                            <span class="update-tag">鉁?Latest Features</span>
-                            <span class="update-tag">馃挵 Current Pricing</span>
-                            <span class="update-tag">馃攧 2024 Updates</span>
+                            <span class="update-tag">閴?Latest Features</span>
+                            <span class="update-tag">棣冩尩 Current Pricing</span>
+                            <span class="update-tag">棣冩敡 2024 Updates</span>
                         </div>
                     </div>
                 </div>
@@ -162,7 +162,7 @@
         
         <!-- SEO-Enhanced Footer Links -->
         <div class="footer-seo-links">
-            <h2>馃幆 Find Your Perfect AI Tool</h2>
+            <h2>棣冨箚 Find Your Perfect AI Tool</h2>
             <div class="seo-links-grid">
                 <div class="seo-section">
                     <h4>By Use Case</h4>

@@ -1,4 +1,4 @@
-{{ define "main" }}
+﻿{{ define "main" }}
 {{ partial "breadcrumb" . }}
 
 <section class="list-page tools-directory">
@@ -11,13 +11,15 @@
         </div>
     </header>
 
-    {{ $tools := where site.RegularPages "Section" "reviews" }}
+    {{ $articles := where site.RegularPages "Section" "articles" }}
+    {{ $newsArticles := where $articles "Params.categories" "intersect" (slice "news") }}
+    {{ $tools := $articles | complement $newsArticles }}
     {{ $tools = sort $tools "Date" "desc" }}
 
     <section class="tools-grid-section">
         <div class="container">
             <div class="results-info">
-                <p>{{ len $tools }} tools catalogued</p>
+                <p>{{ len $tools }} articles catalogued</p>
             </div>
 
             <div class="tools-grid">
@@ -50,7 +52,7 @@
                         <div class="tool-features">
                             <ul class="features-list">
                                 {{ range first 3 .Params.key_features }}
-                                <li>閳?{{ . }}</li>
+                                <li>- {{ . }}</li>
                                 {{ end }}
                             </ul>
                         </div>
@@ -58,10 +60,10 @@
 
                         <div class="tool-meta">
                             <div class="pricing-info">
-                                {{ if .Params.free_trial }}<span class="free-trial">棣冨晫 Free Trial</span>{{ end }}
+                                {{ if .Params.free_trial }}<span class="free-trial">🆓 Free Trial</span>{{ end }}
                                 {{ if .Params.pricing }}<span class="pricing-tag">{{ .Params.pricing }}</span>{{ end }}
                             </div>
-                            <a class="read-more" href="{{ .Permalink }}">Read Overview 閳?/a>
+                            <a class="read-more" href="{{ .Permalink }}">Read Overview →</a>
                         </div>
                     </div>
                 </article>

@@ -1,4 +1,4 @@
-{{ define "main" }}
+﻿{{ define "main" }}
 <!-- Schema.org Structured Data -->
 {{ partial "schema/softwareapplication" . }}
 {{ partial "schema/article" . }}
@@ -56,8 +56,8 @@
         {{ .Content }}
     </div>
 
-    <!-- 闂佽壈椴稿璇裁哄鈧幏鍐Ψ閳哄倹鏅跨紓渚囧灥瀹曠數鍒?- AI閻庤鎮堕崕閬嶅矗閹稿海鈻旈柟鎹愬煐閺?-->
-    {{ if eq .Section "reviews" }}
+    <!-- 闂備浇澹堟ご绋款潖鐠囪鍝勵潨閳ь剟骞忛崘顔嘉ㄩ柍鍝勫€归弲璺ㄧ磽娓氬洤鐏ョ€规洜鏁搁崚?- AI闁诲氦顫夐幃鍫曞磿闁秴鐭楅柟绋挎捣閳绘棃鏌熼幑鎰厫闁?-->
+    {{ if not (in .Params.categories "news") }}
     {{ partial "affiliate-marketing" . }}
     {{ end }}
 
@@ -151,23 +151,23 @@
         </div>
     </div>
 
-    <!-- 闂佹椿娼块崝宥夊春濞戙垹鐭楃€广儱顦藉ú顖滅磼椤栨繂鍚圭紒?-->
+    <!-- 闂備焦妞垮鍧楀礉瀹ュ鏄ユ繛鎴欏灩閻鈧箍鍎遍ˇ钘壝洪婊呯＜妞ゆ牗绻傞崥鍦磼?-->
     <div class="user-feedback-section">
-        <h3>濡絽鍟幆?闁哄鏅滈悷褔鎯侀幒鏃€瀚氶柛鏇ㄥ墰閵堟挳鎮楁担鍐炬綈闁稿绉瑰鍨緞婵犲倻鐩庨梺鍛婃煛閺呮盯骞冭閺?/h3>
+        <h3>婵☆偓绲介崯顖炲箚?闂佸搫顦弲婊堟偡瑜旈幆渚€骞掗弮鈧€氭岸鏌涢弴銊ュ闁靛牊鎸抽幃妤佹媴閸愮偓缍堥梺绋款儏缁夌懓顕ｉ崹顐㈢窞濠电姴鍊婚惄搴ㄦ⒑閸涘﹥鐓涢柡鍛洴楠炲啳顦归柡?/h3>
         <div class="feedback-buttons">
             <button class="feedback-btn helpful" onclick="submitFeedback('{{ .Title }}', 'helpful')">
-                濡絽鍟崯?闂佸搫鐗嗛ˇ顖涙償濠婂牆绀?<span id="helpful-count">0</span>
+                婵☆偓绲介崯顖炲疮?闂備礁鎼悧鍡浰囬娑欏劅婵犲﹤鐗嗙粈?<span id="helpful-count">0</span>
             </button>
             <button class="feedback-btn not-helpful" onclick="submitFeedback('{{ .Title }}', 'not-helpful')">
-                濡絽鍟崯?闂傚倸娲犻崑鎾绘偡閺囨氨鍔嶉柡浣稿悑濞?<span id="not-helpful-count">0</span>
+                婵☆偓绲介崯顖炲疮?闂傚倸鍊稿ú鐘诲磻閹剧粯鍋￠柡鍥ㄦ皑閸斿秹鏌℃担绋挎倯婵?<span id="not-helpful-count">0</span>
             </button>
         </div>
         <div class="feedback-form" id="feedback-form" style="display: none;">
-            <textarea placeholder="闁荤姴娲ら崲鏌ュ箟閿涘嫭瀚氬璺侯儏閻忓霉閻欌偓閸撴瑩銆呰閹峰懘寮撮悢鍛婃瘔闁哄鏅滅粙鏍崲閺嶎偄濮柛銉簽濡叉垶绻?.." id="feedback-text"></textarea>
-            <button onclick="submitDetailedFeedback('{{ .Title }}')">闂佸湱绮崝鎺戭潩閿曞倸鐭楃€广儱顦藉ú?/button>
+            <textarea placeholder="闂佽崵濮村ú銈夊床閺屻儱绠熼柨娑樺鐎氭艾顭跨捄渚剰闁诲繐顦湁闁绘瑢鍋撻柛鎾寸懇閵嗗懓顦抽柟宄版嚇瀵挳鎮㈤崨濠冪様闂佸搫顦弲婊呯矙閺嶎偅宕查柡宥庡亜婵剟鏌涢妷顔荤敖婵″弶鍨剁换?.." id="feedback-text"></textarea>
+            <button onclick="submitDetailedFeedback('{{ .Title }}')">闂備礁婀辩划顖炲礉閹烘埈娼╅柨鏇炲€搁惌妤冣偓骞垮劚椤﹁棄煤?/button>
         </div>
         <div class="feedback-stats">
-            <small>閻庡湱顭堝璺猴耿?<span id="total-feedback">0</span> 婵炶揪绲界粔鍫曞极閵堝绠ｉ梺鍨儏缁茬懓銆掑顓犫槈鐎殿喛濮ら敍?/small>
+            <small>闁诲骸婀遍…鍫濐嚕鐠虹尨鑰?<span id="total-feedback">0</span> 濠电偠鎻徊鐣岀矓閸洖鏋侀柕鍫濐槸缁狅綁姊洪崹顕呭剰缂佽尙鎳撻妴鎺戭潩椤撶姭妲堥悗娈垮枦婵倝鏁?/small>
         </div>
     </div>
 
@@ -179,9 +179,9 @@
                 <h3>Written by {{ site.Params.author }}</h3>
                 <p>Our team of AI specialists and technology researchers provides comprehensive, unbiased guides of AI tools and software. We test each tool extensively to help you make informed decisions.</p>
                 <div class="author-stats">
-                    <span class="stat">濡絽鍟幉?閻庤鐡曠亸顏堟儊鎼粹埗?{{ len (where site.RegularPages "Section" "reviews") }}+ AI閻庤鎮堕崕閬嶅矗?/span>
-                    <span class="stat">闁?濡ょ姷鍋涢崯鍨焽鎼达絾瀚氶柛鏇ㄥ亜閻?4.8/5</span>
-                    <span class="stat">濡絽鍟崳?闂佸搫鐗嗙粔瀛樻叏?10,000+ 婵炴垶鎸婚幐椋庣箔閻斿吋鍋ㄩ柕濠忕畱閻?/span>
+                    <span class="stat">婵☆偓绲介崯顖炲箟?闁诲氦顫夐悺鏇犱焊椤忓牊鍎婇幖绮瑰煑?{{ len (where site.RegularPages "Section" "reviews") }}+ AI闁诲氦顫夐幃鍫曞磿闁秴鐭?/span>
+                    <span class="stat">闂?婵°倗濮烽崑娑㈠疮閸噮鐒介幖杈剧稻鐎氭岸鏌涢弴銊ヤ簻闁?4.8/5</span>
+                    <span class="stat">婵☆偓绲介崯顖炲闯?闂備礁鎼悧鍡欑矓鐎涙ɑ鍙?10,000+ 濠电偞鍨堕幐濠氬箰妞嬪海绠旈柣鏂垮悑閸嬨劑鏌曟繝蹇曠暠闁?/span>
                 </div>
             </div>
         </div>
@@ -206,21 +206,21 @@
     </div>
 </section>
 
-<!-- 闂佹椿娼块崝宥夊春濞戙垹鐭楃€广儱顦藉ú顖炴煕濠婂啰鐏辨繛鎻掑暣楠炴帟顦堕柛鎾炽偢瀵?-->
+<!-- 闂備焦妞垮鍧楀礉瀹ュ鏄ユ繛鎴欏灩閻鈧箍鍎遍ˇ钘壝洪鐐寸厱婵犲﹤鍟伴悘杈ㄧ箾閹绘帒鏆ｆ鐐村笩椤﹀爼鏌涢幘鐐藉仮鐎?-->
 <script>
-// 闂佹椿娼块崝宥夊春濞戙垹鐭楃€广儱顦藉ú顖滅磼椤栨繂鍚圭紒?
+// 闂備焦妞垮鍧楀礉瀹ュ鏄ユ繛鎴欏灩閻鈧箍鍎遍ˇ钘壝洪婊呯＜妞ゆ牗绻傞崥鍦磼?
 function submitFeedback(title, type) {
-    // 闂佸搫娲ら悺銊╁蓟婵犲嫭濯奸柍鈺佸暞濞堝爼鏌￠崟顐⑩挃闁?
+    // 闂備礁鎼ú銈夋偤閵娾晛钃熷┑鐘插婵ジ鏌嶉埡浣告殲婵炲牆鐖奸弻锟犲礋椤愨懇鎸冮梺?
     const countElement = document.getElementById(type === 'helpful' ? 'helpful-count' : 'not-helpful-count');
     const currentCount = parseInt(countElement.textContent);
     countElement.textContent = currentCount + 1;
     
-    // 闂佸搫娲ら悺銊╁蓟婵犲洤绠戦柡鍕禋閸氣偓闂?
+    // 闂備礁鎼ú銈夋偤閵娾晛钃熷┑鐘叉搐缁犳垿鏌￠崟顐ｇ闁告埃鍋撻梻?
     const totalElement = document.getElementById('total-feedback');
     const totalCount = parseInt(totalElement.textContent);
     totalElement.textContent = totalCount + 1;
     
-    // Google Analytics婵炲瓨绮岄鍕枎閵忋垺宕夐柣鏂款煼閸?
+    // Google Analytics濠电偛鐡ㄧ划宀勵敄閸曨偀鏋庨柕蹇嬪灪瀹曞鏌ｉ弬娆剧吋闁?
     if (typeof gtag !== 'undefined') {
         gtag('event', 'feedback_submitted', {
             event_category: 'User Engagement',
@@ -229,11 +229,11 @@ function submitFeedback(title, type) {
         });
     }
     
-    // 闂佸搫瀚晶浠嬪Φ濮樿鲸瀚氶柨鏂垮⒔閻酣鏌涘▎蹇曅фい鈺婂幘閹即濡搁妷銉ь槹
+    // 闂備礁鎼€氼剚鏅舵禒瀣︽慨妯块哺鐎氭岸鏌ㄩ弬鍨挃闁活厼閰ｉ弻娑樷枎韫囨泤褎銇勯埡濠傚箻闁诡喕鍗虫俊鎼佸Ψ閵壯屾Ч
     if (type === 'not-helpful') {
         document.getElementById('feedback-form').style.display = 'block';
     } else {
-        // 闂佸搫瀚晶浠嬪Φ濮樿泛绠涢柣鏂款煼濡绻涢幋婵堝濞?
+        // 闂備礁鎼€氼剚鏅舵禒瀣︽慨妯挎硾缁犳盯鏌ｉ弬娆剧吋婵☆垰顑嗙换娑㈠箣濠靛牆顤€婵?
         const btn = document.querySelector('.feedback-btn.helpful');
         const originalText = btn.innerHTML;
         btn.innerHTML = 'Thanks for the feedback!';
@@ -242,7 +242,7 @@ function submitFeedback(title, type) {
         }, 2000);
     }
     
-    // 闂佸搫鐗滈崜娆忥耿鐎电硶鍋撳☉娅亪宕戝澶婄煑鐎广儱顦藉ú?
+    // 闂備礁鎼悧婊堝礈濞嗗骏鑰块悗鐢电《閸嬫挸鈽夊▍顓т邯瀹曟垵顓兼径濠勭厬閻庡箍鍎遍ˇ钘壝?
     const feedback = JSON.parse(localStorage.getItem('ai-discovery-feedback') || '{}');
     feedback[title] = feedback[title] || { helpful: 0, not_helpful: 0 };
     feedback[title][type.replace('-', '_')]++;
@@ -253,7 +253,7 @@ function submitDetailedFeedback(title) {
     const feedbackText = document.getElementById('feedback-text').value;
     if (!feedbackText.trim()) return;
     
-    // Google Analytics婵炲瓨绮岄鍕枎閵忋垺宕夐柣鏂款煼閸?
+    // Google Analytics濠电偛鐡ㄧ划宀勵敄閸曨偀鏋庨柕蹇嬪灪瀹曞鏌ｉ弬娆剧吋闁?
     if (typeof gtag !== 'undefined') {
         gtag('event', 'detailed_feedback_submitted', {
             event_category: 'User Engagement',
@@ -262,15 +262,15 @@ function submitDetailedFeedback(title) {
         });
     }
     
-    // 闂佸搫瀚晶浠嬪Φ濮樿泛绠涢柣鏂款煼濡绻涢幋婵堝濞?
+    // 闂備礁鎼€氼剚鏅舵禒瀣︽慨妯挎硾缁犳盯鏌ｉ弬娆剧吋婵☆垰顑嗙换娑㈠箣濠靛牆顤€婵?
     const form = document.getElementById('feedback-form');
-    form.innerHTML = '<p style="color: #28a745; text-align: center;">闂?闂佽澹嗛崰鏇㈡⒓閸ф绠栭柕濞у嫮鏆犻柣鐘叉祫婵″洨鍒掕箛娑樼煑鐎广儱顦藉ú顖炴煥濞戞鍔嶉柛銊︾矋缁傛帡顢栫捄銊х崶闁荤姳闄嶉崐妤€锕㈤敓鐘冲殌闁告劦鍘介姘舵煙椤斿搫濡挎繛鍫熷灥椤曟瑦銈﹀▎鎯ф暥闂?/p>';
+    form.innerHTML = '<p style="color: #28a745; text-align: center;">闂?闂備浇顫夋竟鍡涘窗閺囥垺鈷撻柛褎顨呯粻鏍煏婵炑冨閺嗙娀鏌ｉ悩鍙夌カ濠碘€虫川閸掓帟绠涘☉妯肩厬閻庡箍鍎遍ˇ钘壝洪鐐寸叆婵炴垶顨堥崝宥夋煕閵婏妇鐭嬬紒鍌涘浮椤㈡牜鎹勯妸褏宕堕梺鑽ゅС闂勫秹宕愬Δ鈧敃銏ゆ晸閻樺啿娈岄梺鍛婂姦閸樹粙顢撳鑸电厵妞ゆ柨鎼俊鎸庣箾閸喎鐏ユい鏇熺懄閵堬箑鈻庨幆褎鏆ラ梻?/p>';
     
-    // 闁哄鏅滈悷鈺呭闯閻戣棄鐭楁い鏍ㄧ懁缁ㄧ増绻涢敐鍫殭濠殿喚鍋ゅ畷锝夊箣閿旂懓浜惧ù锝囶焾閸愨偓婵☆偓绲介悧鍡涘春瀹€鍕Е閹艰揪缍嗘导鍌炴煟閵娿儱顏柍褜鍓氬Σ鎺旀?
+    // 闂佸搫顦弲婊堟偡閳哄懎闂柣鎴ｆ閻銇勯弽銊ф噥缂併劎澧楃换娑㈡晲閸偄娈繝娈垮枤閸嬨倕鐣烽敐澶婄闁挎梻鎳撴禍鎯归敐鍥剁劸闁告劏鍋撳┑鈽嗗亾缁蹭粙鎮ч崱娑樻槬鐎光偓閸曨偉袝闁硅壈鎻紞鍡樺閸岀偞鐓熼柕濞垮劚椤忣參鏌嶈閸撴艾危閹烘梹顐?
     console.log('Detailed feedback for:', title, feedbackText);
 }
 
-// 闂佽鍎搁崱妤€骞嬮梺鐑╂櫆閸ㄥ墎鏁?
+// 闂備浇顕栭崕鎼佸幢濡も偓楠炲姊洪悜鈺傛珕闁搞劌澧庨弫?
 function trackPagePerformance() {
     if ('performance' in window) {
         window.addEventListener('load', function() {
@@ -280,7 +280,7 @@ function trackPagePerformance() {
                     const loadTime = perfData.loadEventEnd - perfData.fetchStart;
                     const domReady = perfData.domContentLoadedEventEnd - perfData.fetchStart;
                     
-                    // Google Analytics闂佽鍎搁崱妤€骞嬮柣鐘烘閸犳洟鏌?
+                    // Google Analytics闂備浇顕栭崕鎼佸幢濡も偓楠炲鏌ｉ悩鐑橆仩闁哥姵娲熼弻?
                     if (typeof gtag !== 'undefined') {
                         gtag('event', 'page_load_time', {
                             event_category: 'Performance',
@@ -292,7 +292,7 @@ function trackPagePerformance() {
                         });
                     }
                     
-                    console.log('婵＄偑鍊楅弫璇差焽娴兼潙绠戠憸鎴﹀礂濮椻偓楠炴劙宕堕妸褍鐏?', {
+                    console.log('濠碉紕鍋戦崐妤呭极鐠囧樊鐒藉ù鍏兼綑缁犳垹鎲搁幋锕€绀傛慨妞诲亾妤犵偞鍔欏畷鍫曞Ω瑜嶉悘?', {
                         totalLoadTime: Math.round(loadTime) + 'ms',
                         domReady: Math.round(domReady) + 'ms'
                     });
@@ -302,18 +302,18 @@ function trackPagePerformance() {
     }
 }
 
-// 闂佹椿娼块崝宥夊春濞戞碍鍋橀悘鐐跺缁€瀣偣閾忕懓鏋欓梺?
+// 闂備焦妞垮鍧楀礉瀹ュ鏄ユ繛鎴炵閸嬫﹢鎮橀悙璺侯棈缂佲偓鐎ｎ喗鍋ｉ柧蹇曟嚀閺嬫瑩姊?
 function trackUserBehavior() {
     let scrollDepth = 0;
     let timeOnPage = Date.now();
     
-    // 濠电姴锕ラ懝鐐叏閳轰脊搴ㄥ础閻愬樊鍞洪柣鐘烘閸犳洟鏌?
+    // 婵犵數濮撮敃銉╂嚌閻愵剚鍙忛柍杞拌剨鎼淬劌纭€闁绘劕妯婇崬娲煟閻樼儤顏犻柛鐘虫礋閺?
     window.addEventListener('scroll', function() {
         const docHeight = document.documentElement.scrollHeight - window.innerHeight;
         const scrolled = (window.scrollY / docHeight) * 100;
         
         if (scrolled > scrollDepth) {
-            scrollDepth = Math.round(scrolled / 25) * 25; // 闂?5%闂備緡鍋呯敮鎺椔?
+            scrollDepth = Math.round(scrolled / 25) * 25; // 闂?5%闂傚倷绶￠崑鍛暜閹烘?
             
             if (typeof gtag !== 'undefined') {
                 gtag('event', 'scroll_depth', {
@@ -325,7 +325,7 @@ function trackUserBehavior() {
         }
     });
     
-    // 婵＄偑鍊楅弫璇差焽娴兼潙纾绘繝濠傛噺濞堝矂鏌￠崘銊у煟婵☆偉娉曢幑鍕偄婵犳艾娈?
+    // 濠碉紕鍋戦崐妤呭极鐠囧樊鐒藉ù鍏兼綑绾剧粯绻濇繝鍌涘櫤婵炲牆鐭傞弻锟犲礃閵娧冪厽濠碘槅鍋夊▔鏇㈠箲閸曨垱鍋勫┑鐘宠壘濞?
     window.addEventListener('beforeunload', function() {
         const timeSpent = Math.round((Date.now() - timeOnPage) / 1000);
         
@@ -338,9 +338,9 @@ function trackUserBehavior() {
     });
 }
 
-// 闂佸憡甯楃换鍌烇綖閹版澘绀岄柡宥庡亝绾狙囨煙?
+// 闂備礁鎲＄敮妤冩崲閸岀儑缍栭柟鐗堟緲缁€宀勬煛瀹ュ骸浜濈痪鐙欏洦鐓?
 document.addEventListener('DOMContentLoaded', function() {
-    // 闂佸憡姊绘慨鎯归崶褜鍟呴柛娆忣槹缁犳帡鏌涘▎蹇曅фい鈺婂弮瀵偊鎮ч崼婵堛偊
+    // 闂備礁鎲″缁樻叏閹灐褰掑炊瑜滈崯鍛存煕濞嗗浚妲圭紒鐘冲浮閺屾稑鈻庤箛鏇呇勩亜閳哄﹤寮€殿噮鍋婇幃褔宕煎┑鍫涘亰
     const savedFeedback = JSON.parse(localStorage.getItem('ai-discovery-feedback') || '{}');
     const currentTitle = '{{ .Title }}';
     
@@ -351,13 +351,13 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('total-feedback').textContent = (feedback.helpful || 0) + (feedback.not_helpful || 0);
     }
     
-    // 闂佸憡鍑归崹鐗堟叏閳哄懎绠戠憸鎴﹀礂濮椻偓閹嫰骞嬮悙韫帛
+    // 闂備礁鎲￠崙褰掑垂閻楀牊鍙忛柍鍝勬噹缁犳垹鎲搁幋锕€绀傛慨妞诲亾闁诡垰瀚伴獮瀣倷闊厾甯?
     trackPagePerformance();
     trackUserBehavior();
 });
 </script>
 
-<!-- 闂佹椿娼块崝宥夊春濞戙垹鐭楃€广儱顦藉ú鐤孲S闂佸搫绉撮崲鑼?-->
+<!-- 闂備焦妞垮鍧楀礉瀹ュ鏄ユ繛鎴欏灩閻鈧箍鍎遍ˇ钘壝洪悿瀛睸闂備礁鎼粔鎾床閼碱剚顫?-->
 <style>
 .user-feedback-section {
     background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);

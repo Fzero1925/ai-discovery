@@ -4,7 +4,7 @@ date: 2025-09-06T10:30:00Z
 lastmod: 2025-09-06T10:30:00Z
 draft: false
 description: "Comprehensive guide to Nano Banana AI - the revolutionary productivity tool transforming workflow automation. Features, pricing, alternatives, and expert analysis."
-categories: ["productivity"]
+categories: ["Tools","productivity"]
 tags: ["ai-tools", "productivity", "automation", "workflow", "nano-banana"]
 author: "AI Discovery Team"
 featured_image: "/images/tools/nano-banana-featured.jpg"
