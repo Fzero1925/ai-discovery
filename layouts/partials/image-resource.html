@@ -1,0 +1,27 @@
+﻿{{- $src := .Src -}}
+{{- $alt := .Alt | default "" -}}
+{{- $class := .Class | default "" -}}
+{{- $width := .Width -}}
+{{- $height := .Height -}}
+{{- $loading := .Loading | default "lazy" -}}
+{{- $fallback := .Fallback -}}
+
+{{- if $src }}
+  <img src="{{ $src }}" alt="{{ $alt }}" loading="{{ $loading }}"{{ if $class }} class="{{ $class }}"{{ end }}{{ if $width }} width="{{ $width }}"{{ end }}{{ if $height }} height="{{ $height }}"{{ end }}>
+{{- else if $fallback }}
+  {{- $asset := resources.Get $fallback -}}
+  {{- if not $asset -}}
+    {{- errorf "fallback asset %q not found" $fallback -}}
+  {{- end -}}
+  {{- $processed := $asset -}}
+  {{- if and $width $height -}}
+    {{- $processed = $asset.Fill (printf "%dx%d center" $width $height) -}}
+  {{- else if $width -}}
+    {{- $processed = $asset.Resize (printf "%dx" $width) -}}
+  {{- else if $height -}}
+    {{- $processed = $asset.Resize (printf "x%d" $height) -}}
+  {{- end -}}
+  <img src="{{ $processed.RelPermalink }}" alt="{{ $alt }}" loading="{{ $loading }}"{{ if $class }} class="{{ $class }}"{{ end }} width="{{ $processed.Width }}" height="{{ $processed.Height }}">
+{{- else -}}
+  <img src="" alt="{{ $alt }}" loading="{{ $loading }}"{{ if $class }} class="{{ $class }}"{{ end }}>
+{{- end -}}

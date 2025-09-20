@@ -1,4 +1,4 @@
-{{ define "main" }}
+﻿{{ define "main" }}
 <!-- Schema.org Structured Data -->
 {{ partial "schema/softwareapplication" . }}
 {{ partial "schema/article" . }}
@@ -31,7 +31,8 @@
         
         {{ if .Params.featured_image }}
         <div class="article-image">
-            <img src="{{ .Params.featured_image }}" alt="{{ .Title }} - Complete Guide and Review" loading="eager" width="1200" height="630">
+            {{ $imgSrc := .Params.featured_image }}
+            {{ partial "image-resource" (dict "Src" $imgSrc "Alt" .Title "Width" 1200 "Height" 630 "Loading" "eager" "Fallback" "images/hero-default.png") }}
         </div>
         {{ end }}
     </header>

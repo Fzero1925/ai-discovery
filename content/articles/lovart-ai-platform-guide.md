@@ -4,7 +4,7 @@ date: 2025-09-06T11:00:00Z
 lastmod: 2025-09-06T11:00:00Z
 draft: false
 description: "In-depth review of Lovart AI - the innovative art generation platform combining creativity with advanced AI. Features, pricing, alternatives, and professional analysis."
-categories: ["Tools","image-generation"]
+categories: ["tools", "image-generation"]
 tags: ["ai-art", "image-generation", "creative-tools", "digital-art", "lovart"]
 author: "AI Discovery Team"
 featured_image: "/images/tools/lovart-featured.jpg"

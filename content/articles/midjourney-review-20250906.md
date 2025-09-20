@@ -2,7 +2,7 @@
 title: "Ultimate Midjourney Alternatives Guide 2025: Review, Pricing & Free Alternatives"
 description: "Honest midjourney alternatives review 2025: Features, pricing, pros, cons, and alternatives. Find out if midjourney alternatives is worth your investment with our comprehensive analysis."
 date: 2025-09-06T17:48:43.874484Z
-categories: ["Tools","image-generation"]
+categories: ["tools", "image-generation"]
 tags: ["midjourney", "AI tool", "review", "2025", "pricing", "alternatives"]
 keywords: ["midjourney", "AI tool", "review", "2025", "pricing"]
 featured: true

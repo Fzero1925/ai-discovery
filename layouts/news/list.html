@@ -16,11 +16,8 @@
         {{ range $paginator.Pages }}
         <article class="guide-card">
           <div class="guide-image">
-            {{ if .Params.featured_image }}
-              <img src="{{ .Params.featured_image }}" alt="{{ .Params.image_alt | default .Title }}" loading="lazy">
-            {{ else }}
-              <img src="/images/ai-discovery-og.jpg" alt="{{ .Title }}" loading="lazy">
-            {{ end }}
+            {{ $imgSrc := .Params.featured_image }}
+            {{ partial "image-resource" (dict "Src" $imgSrc "Alt" (.Params.image_alt | default .Title) "Width" 800 "Height" 450 "Fallback" "images/news-default.png") }}
             <div class="image-overlay"><span class="new-badge">News</span></div>
           </div>
           <div class="guide-content">

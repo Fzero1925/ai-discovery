@@ -22,11 +22,8 @@
       {{ range first 8 (sort $news "Date" "desc") }}
       <article class="guide-card">
         <div class="guide-image">
-          {{ if .Params.featured_image }}
-            <img src="{{ .Params.featured_image }}" alt="{{ .Title }}" loading="lazy">
-          {{ else }}
-            <img src="/images/ai-discovery-og.jpg" alt="{{ .Title }}" loading="lazy">
-          {{ end }}
+          {{ $imgSrc := .Params.featured_image }}
+          {{ partial "image-resource" (dict "Src" $imgSrc "Alt" .Title "Width" 800 "Height" 450 "Fallback" "images/news-default.png") }}
           <div class="image-overlay"><span class="new-badge">Latest</span></div>
         </div>
         <div class="guide-content">
@@ -81,11 +78,8 @@
       {{ range first 4 (sort $tools "Date" "desc") }}
       <article class="tool-card">
         <div class="tool-image">
-          {{ if .Params.featured_image }}
-          <img src="{{ .Params.featured_image }}" alt="{{ .Title }}" loading="lazy">
-          {{ else }}
-          <img src="/images/default-ai-tool.jpg" alt="{{ .Title }}" loading="lazy">
-          {{ end }}
+          {{ $imgSrc := .Params.featured_image }}
+          {{ partial "image-resource" (dict "Src" $imgSrc "Alt" .Title "Width" 600 "Height" 360 "Fallback" "images/tools-default.png") }}
         </div>
         <div class="tool-info">
           <div class="tool-header">

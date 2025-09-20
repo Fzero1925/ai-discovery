@@ -29,12 +29,9 @@
                          data-pricing="{{ .Params.pricing_type | default "unknown" }}"
                          data-name="{{ .Title }}">
                     <div class="tool-image">
-                        {{ if .Params.featured_image }}
-                        <img src="{{ .Params.featured_image }}" alt="{{ .Title }}" loading="lazy">
-                        {{ else }}
-                        <img src="/images/default-ai-tool.jpg" alt="{{ .Title }}" loading="lazy">
-                        {{ end }}
-                    </div>
+          {{ $imgSrc := .Params.featured_image | default "https://dummyimage.com/600x360/f1f5f9/0f172a&text=AI+Tool" }}
+          {{ partial "image-resource" (dict "Src" $imgSrc "Alt" .Title "Width" 600 "Height" 360 "Fallback" "images/tools-default.png") }}
+        </div>
 
                     <div class="tool-info">
                         <div class="tool-header">

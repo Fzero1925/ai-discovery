@@ -2,7 +2,7 @@
 title: "Claude odel Degradation?Reports: What Changed and Why It Matters"
 description: "Community reports suggest shifts in Claude behavior. Here what new, why it matters, and how to evaluate changes responsibly."
 date: 2025-09-11T00:00:00Z
-categories: ["News","claude"]
+categories: ["news", "claude"]
 tags: ["Claude AI", "model quality", "AI safety", "model updates"]
 draft: false
 ---
